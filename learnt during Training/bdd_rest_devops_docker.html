@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Dive Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7}
+
+  /* COVER */
+  .cover{min-height:60vh;background:linear-gradient(135deg,#0f172a,#1e1b4b,#0f172a);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 30%,rgba(139,92,246,.2) 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,rgba(20,184,166,.15) 0%,transparent 50%)}
+  .cover h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;background:linear-gradient(135deg,#a78bfa,#60a5fa,#34d399,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1;margin-bottom:12px}
+  .cover p{color:#94a3b8;font-size:1rem;position:relative;z-index:1;max-width:600px}
+  .cover-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;position:relative;z-index:1}
+  .pill{padding:8px 20px;border-radius:50px;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.1)}
+
+  /* NAV */
+  nav{background:#1e293b;padding:16px 24px;display:flex;gap:12px;flex-wrap:wrap;border-bottom:1px solid #334155;position:sticky;top:0;z-index:100}
+  .nav-btn{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;text-decoration:none;transition:all .2s}
+  .nav-btn:hover{border-color:#8b5cf6;color:#a78bfa}
+  .nav-btn.green{border-color:#10b981;color:#34d399}
+  .nav-btn.orange{border-color:#f59e0b;color:#fbbf24}
+  .nav-btn.blue{border-color:#3b82f6;color:#60a5fa}
+  .nav-btn.teal{border-color:#14b8a6;color:#2dd4bf}
+
+  /* MAIN */
+  .main{max-width:1000px;margin:0 auto;padding:40px 20px}
+
+  /* CHAPTER */
+  .chapter{margin-bottom:60px;background:#1e293b;border-radius:20px;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,.3)}
+  .ch-header{padding:28px 36px;display:flex;align-items:center;gap:16px}
+  .ch-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+  .ch-title{font-size:1.5rem;font-weight:800;color:#fff}
+  .ch-sub{font-size:13px;opacity:.7;margin-top:3px}
+  .ch-body{padding:28px 36px}
+
+  /* SECTION */
+  .sec{margin-bottom:32px}
+  .sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .sec-title::after{content:'';flex:1;height:1px;background:currentColor;opacity:.15}
+
+  /* CARDS */
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:#0f172a;border-radius:12px;padding:18px;border:1px solid #334155}
+  .card.hl{border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.05)}
+  .card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;opacity:.8}
+  .card-body{font-size:13.5px;color:#cbd5e1;line-height:1.7}
+  .card-body code{background:#1e293b;padding:1px 6px;border-radius:4px;font-family:'Fira Code',monospace;font-size:12px;color:#c3e88d}
+
+  /* CODE */
+  .code{background:#0a0f1e;border:1px solid #334155;border-radius:12px;padding:20px 24px;font-family:'Fira Code',monospace;font-size:12.5px;color:#e2e8f0;overflow-x:auto;margin:12px 0;line-height:2;position:relative}
+  .code-label{position:absolute;top:10px;right:14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.5;font-family:'Inter',monospace}
+  .kw{color:#c792ea}.cls{color:#82aaff}.str{color:#c3e88d}.cmt{color:#546e7a}
+  .ann{color:#ffcb6b}.num{color:#f78c6c}.met{color:#89ddff}.tag{color:#f07178}
+  .key{color:#ff9cac}.val{color:#c3e88d}
+
+  /* TABLE */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th{padding:10px 14px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;background:#0f172a;color:#94a3b8}
+  .tbl td{padding:10px 14px;border-top:1px solid #334155;color:#cbd5e1;vertical-align:top}
+  .tbl tr:hover td{background:rgba(255,255,255,.02)}
+
+  /* CALLOUT */
+  .callout{border-radius:10px;padding:14px 18px;margin:12px 0;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .cl-green{background:rgba(16,185,129,.1);border-left:3px solid #10b981}
+  .cl-orange{background:rgba(245,158,11,.1);border-left:3px solid #f59e0b}
+  .cl-blue{background:rgba(59,130,246,.1);border-left:3px solid #3b82f6}
+  .cl-teal{background:rgba(20,184,166,.1);border-left:3px solid #14b8a6}
+  .cl-red{background:rgba(239,68,68,.1);border-left:3px solid #ef4444}
+  .cl-purple{background:rgba(139,92,246,.1);border-left:3px solid #8b5cf6}
+  .cl-icon{font-size:18px;flex-shrink:0}
+  .cl-text{color:#cbd5e1;line-height:1.7}
+  .cl-text strong{color:#f1f5f9}
+
+  /* FLOW */
+  .flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:12px 0}
+  .fstep{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:#e2e8f0}
+  .farr{color:#475569;font-size:16px}
+
+  /* BADGE */
+  .b{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;margin:2px}
+  .bg{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+  .bo{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+  .bb{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+  .bt{background:rgba(20,184,166,.15);color:#2dd4bf;border:1px solid rgba(20,184,166,.3)}
+  .br{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+  .bp{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3)}
+
+  /* QA */
+  .qa-list{display:flex;flex-direction:column;gap:10px}
+  .qa{background:#0f172a;border-radius:10px;overflow:hidden;border:1px solid #334155}
+  .qa-q{padding:12px 16px;font-size:13px;font-weight:600;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+  .qa-badge{background:#8b5cf6;color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:50px;flex-shrink:0;margin-top:1px}
+  .qa-a{padding:10px 16px 14px 38px;font-size:13px;color:#94a3b8;line-height:1.6;border-top:1px solid #1e293b}
+
+  /* STEP NUMBER */
+  .step-list{display:flex;flex-direction:column;gap:14px}
+  .step-item{display:flex;gap:14px;align-items:flex-start}
+  .step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:2px}
+  .step-content{flex:1}
+  .step-title{font-size:14px;font-weight:700;color:#f1f5f9;margin-bottom:4px}
+  .step-desc{font-size:13px;color:#94a3b8;line-height:1.6}
+
+  /* COLOR HEADERS */
+  .hg{background:linear-gradient(135deg,#047857,#10b981)}
+  .ho{background:linear-gradient(135deg,#b45309,#f59e0b)}
+  .hb{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+  .ht{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .ig{background:rgba(16,185,129,.15)}
+  .io{background:rgba(245,158,11,.15)}
+  .ib{background:rgba(59,130,246,.15)}
+  .iit{background:rgba(20,184,166,.15)}
+
+  .sg{color:#10b981}.so{color:#f59e0b}.sb{color:#3b82f6}.st{color:#14b8a6}
+
+  .divider{height:1px;background:#334155;margin:24px 0}
+
+  @media(max-width:600px){.g2,.g3{grid-template-columns:1fr}.ch-body{padding:20px}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>Deep Dive: 4 Advanced Topics</h1>
+  <p>BDD Cucumber · REST Assured + Postman · DevOps (Git/Maven/Jenkins/Grid) · Docker + GenAI — Complete theory, code, and viva prep aligned to your Cognizant QEA syllabus</p>
+  <div class="cover-pills">
+    <div class="pill" style="background:rgba(16,185,129,.15);color:#34d399;border-color:rgba(16,185,129,.3)">🥒 BDD Cucumber</div>
+    <div class="pill" style="background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.3)">🔌 REST Assured</div>
+    <div class="pill" style="background:rgba(59,130,246,.15);color:#60a5fa;border-color:rgba(59,130,246,.3)">⚙️ DevOps</div>
+    <div class="pill" style="background:rgba(20,184,166,.15);color:#2dd4bf;border-color:rgba(20,184,166,.3)">🐳 Docker + GenAI</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-btn green" href="#bdd">🥒 BDD Cucumber</a>
+  <a class="nav-btn orange" href="#rest">🔌 REST Assured</a>
+  <a class="nav-btn orange" href="#postman">📮 Postman</a>
+  <a class="nav-btn blue" href="#git">🌿 Git</a>
+  <a class="nav-btn blue" href="#maven">📦 Maven</a>
+  <a class="nav-btn blue" href="#jenkins">⚙️ Jenkins</a>
+  <a class="nav-btn blue" href="#grid">🌐 Selenium Grid</a>
+  <a class="nav-btn teal" href="#docker">🐳 Docker</a>
+  <a class="nav-btn teal" href="#genai">🤖 GenAI</a>
+</nav>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- BDD CUCUMBER -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="bdd">
+  <div class="ch-header hg">
+    <div class="ch-icon ig">🥒</div>
+    <div>
+      <div class="ch-title">BDD Cucumber — Behavior Driven Development</div>
+      <div class="ch-sub">Introduction to BDD · Gherkin Syntax · Feature Files · Step Definitions · Hooks · Runner · Reports · Integration with Selenium</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <!-- WHAT IS BDD -->
+    <div class="sec">
+      <div class="sec-title sg">What is BDD and Why?</div>
+      <div class="callout cl-green">
+        <div class="cl-icon">💡</div>
+        <div class="cl-text"><strong>BDD = Behavior Driven Development.</strong> A software development approach where tests are written in plain English that EVERYONE — developers, testers, and business people — can read and understand. No technical jargon. The test IS the documentation.</div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sg">Problem BDD Solves</div>
+          <div class="card-body">Traditional test code — only developers understand it. Business analyst writes requirement in Word document. Developer interprets it differently. Tester tests something else. Everyone is confused.<br><br><strong>BDD fixes this</strong> — tests written in language everyone understands.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sg">How BDD Works</div>
+          <div class="card-body">
+            1. Business writes plain English requirements<br>
+            2. These become <strong>Feature Files</strong> using Gherkin syntax<br>
+            3. Developer writes <strong>Step Definitions</strong> (Java code) behind each English line<br>
+            4. Cucumber runs the feature file, executes the Java code behind each step
+          </div>
+        </div>
+      </div>
+      <div class="grid g3" style="margin-top:12px">
+        <div class="card">
+          <div class="card-label sg">Cucumber</div>
+          <div class="card-body">The BDD framework for Java. Reads feature files, maps each step to Java method, executes and reports results.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sg">Gherkin</div>
+          <div class="card-body">The plain English language used to write feature files. Uses keywords: Feature, Scenario, Given, When, Then, And, But.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sg">Living Documentation</div>
+          <div class="card-body">Feature files serve as documentation that is always up to date because if code changes, tests fail — forcing documentation update.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT STRUCTURE -->
+    <div class="sec">
+      <div class="sec-title sg">Project Structure</div>
+      <div class="code"><span class="code-label">folder structure</span>
+src/
+├── test/
+│   ├── java/
+│   │   ├── stepDefinitions/
+│   │   │   ├── LoginSteps.java       <span class="cmt">← Java code behind each Gherkin step</span>
+│   │   │   └── HomeSteps.java
+│   │   ├── pages/
+│   │   │   └── LoginPage.java        <span class="cmt">← POM page classes</span>
+│   │   ├── hooks/
+│   │   │   └── Hooks.java            <span class="cmt">← @Before @After setup/teardown</span>
+│   │   └── runner/
+│   │       └── TestRunner.java       <span class="cmt">← Entry point, runs everything</span>
+│   └── resources/
+│       └── features/
+│           ├── login.feature         <span class="cmt">← Plain English test scenarios</span>
+│           └── checkout.feature
+pom.xml                               <span class="cmt">← Cucumber + Selenium dependencies</span></div>
+    </div>
+
+    <!-- GHERKIN SYNTAX -->
+    <div class="sec">
+      <div class="sec-title sg">Gherkin Syntax — Complete Keywords</div>
+      <table class="tbl">
+        <tr><th>Keyword</th><th>Purpose</th><th>Analogy</th></tr>
+        <tr><td><span class="b bg">Feature</span></td><td>High level description of the feature being tested</td><td>Chapter title of a book</td></tr>
+        <tr><td><span class="b bg">Background</span></td><td>Steps common to ALL scenarios in a feature file — runs before each scenario</td><td>Setup that repeats — like @BeforeMethod</td></tr>
+        <tr><td><span class="b bg">Scenario</span></td><td>One specific test case with steps</td><td>One test method in TestNG</td></tr>
+        <tr><td><span class="b bg">Scenario Outline</span></td><td>Same scenario run multiple times with different data from Examples table</td><td>Like @DataProvider in TestNG</td></tr>
+        <tr><td><span class="b bb">Given</span></td><td>Initial state / precondition before action</td><td>Browser is open, user is on page</td></tr>
+        <tr><td><span class="b bb">When</span></td><td>The action performed by user</td><td>User clicks, types, selects</td></tr>
+        <tr><td><span class="b bb">Then</span></td><td>Expected outcome / result to verify</td><td>Assert statement</td></tr>
+        <tr><td><span class="b bb">And</span></td><td>Continue previous step (Given/When/Then)</td><td>Multiple actions chained</td></tr>
+        <tr><td><span class="b bb">But</span></td><td>Negative continuation</td><td>"But user should NOT see..."</td></tr>
+        <tr><td><span class="b bo">Examples</span></td><td>Data table for Scenario Outline</td><td>Excel rows of test data</td></tr>
+        <tr><td><span class="b bp">@TagName</span></td><td>Tag scenarios for selective execution</td><td>Groups in TestNG</td></tr>
+        <tr><td><span class="b br">"""</span></td><td>Doc string — multi-line string value</td><td>Long text input</td></tr>
+        <tr><td><span class="b bt">| col |</span></td><td>Data table — inline table in a step</td><td>Multiple values to one step</td></tr>
+      </table>
+    </div>
+
+    <!-- FEATURE FILE -->
+    <div class="sec">
+      <div class="sec-title sg">Feature File — Complete Example</div>
+      <div class="code"><span class="code-label">login.feature</span>
+<span class="cmt"># This is a comment. Feature files live in src/test/resources/features/</span>
+
+<span class="ann">Feature:</span> User Authentication on the Application
+  <span class="cmt"># Description — optional, explains the feature</span>
+  <span class="kw">As a</span> registered user
+  <span class="kw">I want to</span> log into the application
+  <span class="kw">So that</span> I can access my account dashboard
+
+  <span class="cmt"># Background runs before EACH scenario in this file</span>
+  <span class="ann">Background:</span>
+    <span class="kw">Given</span> the browser is open
+    <span class="kw">And</span> user is on the login page
+
+  <span class="cmt"># Simple scenario — single test case</span>
+  <span class="ann">@smoke @regression</span>
+  <span class="ann">Scenario:</span> Successful login with valid credentials
+    <span class="kw">When</span> user enters username <span class="str">"tomsmith"</span>
+    <span class="kw">And</span> user enters password <span class="str">"SuperSecretPassword!"</span>
+    <span class="kw">And</span> user clicks the Login button
+    <span class="kw">Then</span> user should see message <span class="str">"You logged into a secure area!"</span>
+    <span class="kw">And</span> the URL should contain <span class="str">"secure"</span>
+
+  <span class="cmt"># Scenario with failure case</span>
+  <span class="ann">@regression</span>
+  <span class="ann">Scenario:</span> Login fails with invalid credentials
+    <span class="kw">When</span> user enters username <span class="str">"wronguser"</span>
+    <span class="kw">And</span> user enters password <span class="str">"wrongpass"</span>
+    <span class="kw">And</span> user clicks the Login button
+    <span class="kw">Then</span> user should see error <span class="str">"Your username is invalid!"</span>
+
+  <span class="cmt"># Scenario Outline — runs 3 times with each row of data</span>
+  <span class="ann">@regression</span>
+  <span class="ann">Scenario Outline:</span> Login with multiple users
+    <span class="kw">When</span> user enters username <span class="str">"&lt;username&gt;"</span>
+    <span class="kw">And</span> user enters password <span class="str">"&lt;password&gt;"</span>
+    <span class="kw">And</span> user clicks the Login button
+    <span class="kw">Then</span> user should see <span class="str">"&lt;expectedMessage&gt;"</span>
+
+    <span class="ann">Examples:</span>
+      | username   | password             | expectedMessage              |
+      | tomsmith   | SuperSecretPassword! | You logged into a secure area|
+      | wronguser  | wrongpass            | Your username is invalid     |
+      | tomsmith   | wrongpass            | Your password is invalid     |</div>
+    </div>
+
+    <!-- STEP DEFINITIONS -->
+    <div class="sec">
+      <div class="sec-title sg">Step Definitions — Complete Implementation</div>
+      <div class="callout cl-green">
+        <div class="cl-icon">🔗</div>
+        <div class="cl-text"><strong>Step Definition</strong> = Java method that maps to a Gherkin step using annotations. The text in the annotation must <strong>exactly match</strong> (or use regex/Cucumber expressions) the text in the feature file.</div>
+      </div>
+      <div class="code"><span class="code-label">LoginSteps.java</span>
+<span class="kw">package</span> stepDefinitions;
+
+<span class="kw">import</span> io.cucumber.java.en.*;
+<span class="kw">import</span> org.openqa.selenium.WebDriver;
+<span class="kw">import</span> org.openqa.selenium.chrome.ChromeDriver;
+<span class="kw">import</span> org.testng.Assert;
+<span class="kw">import</span> pages.LoginPage;
+
+<span class="kw">public class</span> <span class="cls">LoginSteps</span> {
+
+    WebDriver driver;
+    LoginPage loginPage;
+
+    <span class="cmt">// Maps to: Given the browser is open</span>
+    <span class="ann">@Given</span>(<span class="str">"the browser is open"</span>)
+    <span class="kw">public void</span> <span class="met">openBrowser</span>() {
+        driver = <span class="kw">new</span> <span class="cls">ChromeDriver</span>();
+        driver.<span class="met">manage</span>().<span class="met">window</span>().<span class="met">maximize</span>();
+    }
+
+    <span class="cmt">// Maps to: And user is on the login page</span>
+    <span class="ann">@Given</span>(<span class="str">"user is on the login page"</span>)
+    <span class="kw">public void</span> <span class="met">navigateToLoginPage</span>() {
+        driver.<span class="met">get</span>(<span class="str">"https://the-internet.herokuapp.com/login"</span>);
+        loginPage = <span class="kw">new</span> <span class="cls">LoginPage</span>(driver);
+    }
+
+    <span class="cmt">// {string} = Cucumber expression captures value in "quotes"</span>
+    <span class="ann">@When</span>(<span class="str">"user enters username {string}"</span>)
+    <span class="kw">public void</span> <span class="met">enterUsername</span>(String username) {
+        loginPage.<span class="met">enterUsername</span>(username);
+    }
+
+    <span class="ann">@When</span>(<span class="str">"user enters password {string}"</span>)
+    <span class="kw">public void</span> <span class="met">enterPassword</span>(String password) {
+        loginPage.<span class="met">enterPassword</span>(password);
+    }
+
+    <span class="ann">@When</span>(<span class="str">"user clicks the Login button"</span>)
+    <span class="kw">public void</span> <span class="met">clickLogin</span>() {
+        loginPage.<span class="met">clickLoginButton</span>();
+    }
+
+    <span class="ann">@Then</span>(<span class="str">"user should see message {string}"</span>)
+    <span class="kw">public void</span> <span class="met">verifySuccessMessage</span>(String expectedMsg) {
+        String actualMsg = loginPage.<span class="met">getFlashMessage</span>();
+        Assert.<span class="met">assertTrue</span>(actualMsg.<span class="met">contains</span>(expectedMsg),
+            <span class="str">"Expected: "</span> + expectedMsg + <span class="str">" | Actual: "</span> + actualMsg);
+    }
+
+    <span class="ann">@Then</span>(<span class="str">"user should see error {string}"</span>)
+    <span class="kw">public void</span> <span class="met">verifyErrorMessage</span>(String expectedError) {
+        Assert.<span class="met">assertTrue</span>(loginPage.<span class="met">getFlashMessage</span>().<span class="met">contains</span>(expectedError));
+    }
+
+    <span class="ann">@Then</span>(<span class="str">"the URL should contain {string}"</span>)
+    <span class="kw">public void</span> <span class="met">verifyUrl</span>(String urlPart) {
+        Assert.<span class="met">assertTrue</span>(driver.<span class="met">getCurrentUrl</span>().<span class="met">contains</span>(urlPart));
+    }
+}</div>
+    </div>
+
+    <!-- HOOKS -->
+    <div class="sec">
+      <div class="sec-title sg">Hooks — @Before and @After</div>
+      <div class="callout cl-green">
+        <div class="cl-icon">🪝</div>
+        <div class="cl-text"><strong>Hooks</strong> = code that runs automatically before/after EACH scenario. Like @BeforeMethod/@AfterMethod in TestNG but for Cucumber. Put browser setup here to keep step definitions clean.</div>
+      </div>
+      <div class="code"><span class="code-label">Hooks.java</span>
+<span class="kw">package</span> hooks;
+
+<span class="kw">import</span> io.cucumber.java.*;
+<span class="kw">import</span> org.openqa.selenium.WebDriver;
+<span class="kw">import</span> org.openqa.selenium.chrome.ChromeDriver;
+<span class="kw">import</span> org.openqa.selenium.OutputType;
+<span class="kw">import</span> org.openqa.selenium.TakesScreenshot;
+
+<span class="kw">public class</span> <span class="cls">Hooks</span> {
+
+    <span class="kw">public static</span> WebDriver driver;
+
+    <span class="cmt">// Runs BEFORE each scenario</span>
+    <span class="ann">@Before</span>
+    <span class="kw">public void</span> <span class="met">setUp</span>(Scenario scenario) {
+        driver = <span class="kw">new</span> <span class="cls">ChromeDriver</span>();
+        driver.<span class="met">manage</span>().<span class="met">window</span>().<span class="met">maximize</span>();
+        System.<span class="met">out</span>.<span class="met">println</span>(<span class="str">"Starting: "</span> + scenario.<span class="met">getName</span>());
+    }
+
+    <span class="cmt">// Runs AFTER each scenario — takes screenshot on failure!</span>
+    <span class="ann">@After</span>
+    <span class="kw">public void</span> <span class="met">tearDown</span>(Scenario scenario) {
+        <span class="kw">if</span> (scenario.<span class="met">isFailed</span>()) {
+            <span class="cmt">// Capture and attach screenshot to Cucumber report</span>
+            <span class="kw">byte</span>[] screenshot = ((<span class="cls">TakesScreenshot</span>) driver)
+                .<span class="met">getScreenshotAs</span>(OutputType.BYTES);
+            scenario.<span class="met">attach</span>(screenshot, <span class="str">"image/png"</span>, scenario.<span class="met">getName</span>());
+            System.<span class="met">out</span>.<span class="met">println</span>(<span class="str">"FAILED: "</span> + scenario.<span class="met">getName</span>());
+        }
+        driver.<span class="met">quit</span>();
+    }
+
+    <span class="cmt">// Tagged hooks — only for @smoke scenarios</span>
+    <span class="ann">@Before</span>(<span class="str">"@smoke"</span>)
+    <span class="kw">public void</span> <span class="met">smokeSetup</span>() {
+        System.<span class="met">out</span>.<span class="met">println</span>(<span class="str">"Smoke test setup"</span>);
+    }
+}</div>
+    </div>
+
+    <!-- RUNNER -->
+    <div class="sec">
+      <div class="sec-title sg">Runner Class — Entry Point</div>
+      <div class="callout cl-purple">
+        <div class="cl-icon">🚀</div>
+        <div class="cl-text"><strong>Runner Class</strong> = the class you right-click and run. It tells Cucumber WHERE to find feature files, WHERE to find step definitions, WHICH tags to run, and HOW to generate reports.</div>
+      </div>
+      <div class="code"><span class="code-label">TestRunner.java</span>
+<span class="kw">package</span> runner;
+
+<span class="kw">import</span> io.cucumber.testng.AbstractTestNGCucumberTests;
+<span class="kw">import</span> io.cucumber.testng.CucumberOptions;
+
+<span class="ann">@CucumberOptions</span>(
+    <span class="cmt">// Where to find .feature files</span>
+    features = <span class="str">"src/test/resources/features"</span>,
+
+    <span class="cmt">// Package containing Step Definition classes</span>
+    glue = {<span class="str">"stepDefinitions"</span>, <span class="str">"hooks"</span>},
+
+    <span class="cmt">// Run only scenarios with @smoke tag</span>
+    tags = <span class="str">"@smoke"</span>,
+    <span class="cmt">// tags = "@smoke and @regression"  ← AND</span>
+    <span class="cmt">// tags = "@smoke or @regression"   ← OR</span>
+    <span class="cmt">// tags = "not @skip"               ← NOT</span>
+
+    <span class="cmt">// Report plugins</span>
+    plugin = {
+        <span class="str">"pretty"</span>,                                  <span class="cmt">// readable console output</span>
+        <span class="str">"html:target/cucumber-reports/report.html"</span>,  <span class="cmt">// HTML report</span>
+        <span class="str">"json:target/cucumber-reports/report.json"</span>,  <span class="cmt">// JSON for CI tools</span>
+        <span class="str">"rerun:target/rerun.txt"</span>                     <span class="cmt">// rerun failed tests</span>
+    },
+
+    <span class="cmt">// Show step details in console</span>
+    monochrome = <span class="kw">true</span>,
+
+    <span class="cmt">// Fail if step definitions are missing (strict mode)</span>
+    <span class="cmt">// dryRun = true  ← check mappings without running browser</span>
+    dryRun = <span class="kw">false</span>
+)
+<span class="kw">public class</span> <span class="cls">TestRunner</span> <span class="kw">extends</span> <span class="cls">AbstractTestNGCucumberTests</span> {
+    <span class="cmt">// Extend AbstractTestNGCucumberTests for TestNG integration</span>
+    <span class="cmt">// Or use @RunWith(Cucumber.class) for JUnit</span>
+}</div>
+    </div>
+
+    <!-- POM.XML -->
+    <div class="sec">
+      <div class="sec-title sg">pom.xml Dependencies for Cucumber</div>
+      <div class="code"><span class="code-label">pom.xml</span>
+<span class="cmt">&lt;!-- Cucumber Java --&gt;</span>
+&lt;<span class="tag">dependency</span>&gt;
+    &lt;<span class="tag">groupId</span>&gt;io.cucumber&lt;/<span class="tag">groupId</span>&gt;
+    &lt;<span class="tag">artifactId</span>&gt;cucumber-java&lt;/<span class="tag">artifactId</span>&gt;
+    &lt;<span class="tag">version</span>&gt;7.15.0&lt;/<span class="tag">version</span>&gt;
+&lt;/<span class="tag">dependency</span>&gt;
+
+<span class="cmt">&lt;!-- Cucumber TestNG integration --&gt;</span>
+&lt;<span class="tag">dependency</span>&gt;
+    &lt;<span class="tag">groupId</span>&gt;io.cucumber&lt;/<span class="tag">groupId</span>&gt;
+    &lt;<span class="tag">artifactId</span>&gt;cucumber-testng&lt;/<span class="tag">artifactId</span>&gt;
+    &lt;<span class="tag">version</span>&gt;7.15.0&lt;/<span class="tag">version</span>&gt;
+&lt;/<span class="tag">dependency</span>&gt;
+
+<span class="cmt">&lt;!-- Selenium --&gt;</span>
+&lt;<span class="tag">dependency</span>&gt;
+    &lt;<span class="tag">groupId</span>&gt;org.seleniumhq.selenium&lt;/<span class="tag">groupId</span>&gt;
+    &lt;<span class="tag">artifactId</span>&gt;selenium-java&lt;/<span class="tag">artifactId</span>&gt;
+    &lt;<span class="tag">version</span>&gt;4.20.0&lt;/<span class="tag">version</span>&gt;
+&lt;/<span class="tag">dependency</span>&gt;</div>
+    </div>
+
+    <!-- DATA TABLES -->
+    <div class="sec">
+      <div class="sec-title sg">Data Tables in Steps — Inline Data</div>
+      <div class="code"><span class="code-label">feature file</span>
+<span class="ann">Scenario:</span> Register new user with form data
+  <span class="kw">Given</span> user fills the registration form with:
+    | Field     | Value         |
+    | FirstName | John          |
+    | LastName  | Doe           |
+    | Email     | john@test.com |
+    | Phone     | 9876543210    |
+  <span class="kw">When</span> user submits the form
+  <span class="kw">Then</span> registration should be successful</div>
+      <div class="code"><span class="code-label">Step Definition for Data Table</span>
+<span class="ann">@Given</span>(<span class="str">"user fills the registration form with:"</span>)
+<span class="kw">public void</span> <span class="met">fillForm</span>(DataTable dataTable) {
+    <span class="cmt">// Convert to Map — key=Field, value=Value</span>
+    Map&lt;String, String&gt; formData = dataTable.<span class="met">asMap</span>(String.<span class="kw">class</span>, String.<span class="kw">class</span>);
+
+    driver.<span class="met">findElement</span>(By.<span class="met">id</span>(<span class="str">"firstName"</span>)).<span class="met">sendKeys</span>(formData.<span class="met">get</span>(<span class="str">"FirstName"</span>));
+    driver.<span class="met">findElement</span>(By.<span class="met">id</span>(<span class="str">"email"</span>)).<span class="met">sendKeys</span>(formData.<span class="met">get</span>(<span class="str">"Email"</span>));
+    <span class="cmt">// ... etc</span>
+}</div>
+    </div>
+
+    <!-- BDD VIVA -->
+    <div class="sec">
+      <div class="sec-title sg">Viva Q&A — BDD Cucumber</div>
+      <div class="qa-list">
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is BDD?</div><div class="qa-a">Behavior Driven Development. A development approach where tests are written in plain English (Gherkin) readable by both technical and non-technical stakeholders. Bridges gap between business requirements and automated tests.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Gherkin?</div><div class="qa-a">Plain English language used to write feature files. Uses keywords: Feature, Scenario, Given, When, Then, And, But, Background, Scenario Outline, Examples. Files have .feature extension.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>Difference between Scenario and Scenario Outline?</div><div class="qa-a">Scenario = single test case with fixed values. Scenario Outline = same scenario repeated with different data from an Examples table. Like @DataProvider in TestNG.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Background in Cucumber?</div><div class="qa-a">Steps that run before EACH scenario in a feature file. Like a @BeforeMethod scoped to that feature file. Used for common setup like navigating to a page.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What are Hooks in Cucumber?</div><div class="qa-a">@Before and @After annotations that run before/after each scenario. Used for browser setup/teardown and taking screenshots on failure. Can be tagged: @Before("@smoke").</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is dryRun in @CucumberOptions?</div><div class="qa-a">When dryRun=true, Cucumber checks if all step definitions exist for all feature file steps WITHOUT running the browser. Useful to verify mappings before actual execution.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is the role of the Runner class?</div><div class="qa-a">Entry point for Cucumber execution. Specifies features location, glue (step definitions package), tags to run, and report plugins. Extends AbstractTestNGCucumberTests for TestNG integration.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>How do you run only smoke tests?</div><div class="qa-a">Tag scenarios with @smoke in feature file. In Runner: tags = "@smoke". Can also run from command line: mvn test -Dcucumber.filter.tags="@smoke"</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- REST ASSURED -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="rest">
+  <div class="ch-header ho">
+    <div class="ch-icon io">🔌</div>
+    <div>
+      <div class="ch-title">REST Assured — API Automation</div>
+      <div class="ch-sub">API Fundamentals · HTTP Methods · Status Codes · Given/When/Then · Validations · Auth · JSON Schema · Serialization</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <!-- API FUNDAMENTALS -->
+    <div class="sec">
+      <div class="sec-title so">API Fundamentals — What You Must Know</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label so">What is an API?</div>
+          <div class="card-body">Application Programming Interface. A contract between two software systems on how to communicate. Like a waiter in a restaurant — you (client) give order to waiter (API) who gets it from kitchen (server) and brings back food (response).</div>
+        </div>
+        <div class="card">
+          <div class="card-label so">What is REST?</div>
+          <div class="card-body">Representational State Transfer. An architectural style for APIs using HTTP. Uses JSON/XML for data. Stateless — each request is independent. Uses standard HTTP methods (GET, POST, PUT, DELETE).</div>
+        </div>
+        <div class="card">
+          <div class="card-label so">Request Components</div>
+          <div class="card-body">
+            <strong>URL</strong> = endpoint address<br>
+            <strong>Method</strong> = GET/POST/PUT/DELETE<br>
+            <strong>Headers</strong> = metadata (Content-Type, Auth token)<br>
+            <strong>Body</strong> = data sent (JSON/XML) — POST/PUT only<br>
+            <strong>Query params</strong> = filters in URL (?key=value)<br>
+            <strong>Path params</strong> = values in URL (/users/{id})
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label so">Response Components</div>
+          <div class="card-body">
+            <strong>Status Code</strong> = result number (200, 404, 500)<br>
+            <strong>Headers</strong> = Content-Type, Cache-Control etc<br>
+            <strong>Body</strong> = response data in JSON/XML<br>
+            <strong>Response Time</strong> = how long it took
+          </div>
+        </div>
+      </div>
+      <table class="tbl" style="margin-top:14px">
+        <tr><th>Method</th><th>Action</th><th>Body?</th><th>Idempotent?</th></tr>
+        <tr><td><span class="b bg">GET</span></td><td>Retrieve data</td><td>No</td><td>Yes — same result every call</td></tr>
+        <tr><td><span class="b bb">POST</span></td><td>Create new resource</td><td>Yes</td><td>No — creates new each time</td></tr>
+        <tr><td><span class="b bo">PUT</span></td><td>Update ENTIRE resource</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td><span class="b bp">PATCH</span></td><td>Update PARTIAL resource</td><td>Yes</td><td>No</td></tr>
+        <tr><td><span class="b br">DELETE</span></td><td>Remove resource</td><td>No</td><td>Yes</td></tr>
+      </table>
+      <table class="tbl" style="margin-top:14px">
+        <tr><th>Status Code</th><th>Meaning</th><th>When</th></tr>
+        <tr><td><span class="b bg">200 OK</span></td><td>Success</td><td>GET, PUT, DELETE success</td></tr>
+        <tr><td><span class="b bg">201 Created</span></td><td>Resource created</td><td>POST success</td></tr>
+        <tr><td><span class="b bg">204 No Content</span></td><td>Success, no body</td><td>DELETE success</td></tr>
+        <tr><td><span class="b bo">301 Moved</span></td><td>Redirect permanently</td><td>URL changed</td></tr>
+        <tr><td><span class="b br">400 Bad Request</span></td><td>Invalid request data</td><td>Wrong format/missing fields</td></tr>
+        <tr><td><span class="b br">401 Unauthorized</span></td><td>Auth required</td><td>No/wrong token</td></tr>
+        <tr><td><span class="b br">403 Forbidden</span></td><td>Access denied</td><td>No permission</td></tr>
+        <tr><td><span class="b br">404 Not Found</span></td><td>Resource doesn't exist</td><td>Wrong URL/ID</td></tr>
+        <tr><td><span class="b br">500 Server Error</span></td><td>Server crashed</td><td>Bug in server code</td></tr>
+      </table>
+    </div>
+
+    <!-- REST ASSURED BASICS -->
+    <div class="sec">
+      <div class="sec-title so">REST Assured — Given / When / Then Pattern</div>
+      <div class="callout cl-orange">
+        <div class="cl-icon">⚡</div>
+        <div class="cl-text"><strong>REST Assured</strong> = Java library for API testing. Uses BDD-style Given/When/Then syntax. Given = setup request (headers, body, auth). When = execute HTTP call. Then = validate response (status, body, headers).</div>
+      </div>
+      <div class="code"><span class="code-label">Basic REST Assured structure</span>
+<span class="cmt">// Static imports at top — needed for given/when/then</span>
+<span class="kw">import static</span> io.restassured.RestAssured.*;
+<span class="kw">import static</span> org.hamcrest.Matchers.*;
+
+<span class="cmt">// Simple GET — verify status and body</span>
+<span class="met">given</span>()
+    .<span class="met">baseUri</span>(<span class="str">"https://api.example.com"</span>)
+    .<span class="met">header</span>(<span class="str">"Accept"</span>, <span class="str">"application/json"</span>)
+.<span class="met">when</span>()
+    .<span class="met">get</span>(<span class="str">"/users/1"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>)                          <span class="cmt">// verify status code</span>
+    .<span class="met">contentType</span>(<span class="str">"application/json"</span>)           <span class="cmt">// verify content type</span>
+    .<span class="met">body</span>(<span class="str">"name"</span>, <span class="met">equalTo</span>(<span class="str">"John"</span>))            <span class="cmt">// verify field value</span>
+    .<span class="met">body</span>(<span class="str">"email"</span>, <span class="met">notNullValue</span>())             <span class="cmt">// verify not null</span>
+    .<span class="met">body</span>(<span class="str">"age"</span>, <span class="met">greaterThan</span>(<span class="num">18</span>));            <span class="cmt">// verify numeric condition</span></div>
+    </div>
+
+    <!-- ALL REQUEST TYPES -->
+    <div class="sec">
+      <div class="sec-title so">All HTTP Methods in REST Assured</div>
+      <div class="code"><span class="code-label">REST Assured — all methods</span>
+<span class="cmt">// ── GET request ──</span>
+Response response = <span class="met">given</span>()
+    .<span class="met">queryParam</span>(<span class="str">"country"</span>, <span class="str">"India"</span>)        <span class="cmt">// ?country=India</span>
+    .<span class="met">queryParam</span>(<span class="str">"limit"</span>, <span class="str">"10"</span>)               <span class="cmt">// &limit=10</span>
+.<span class="met">when</span>()
+    .<span class="met">get</span>(<span class="str">"https://university.hipolabs.com/search"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>)
+    .<span class="met">extract</span>().<span class="met">response</span>();
+
+<span class="cmt">// Path parameter: GET /users/5</span>
+<span class="met">given</span>()
+    .<span class="met">pathParam</span>(<span class="str">"id"</span>, <span class="num">5</span>)
+.<span class="met">when</span>()
+    .<span class="met">get</span>(<span class="str">"/users/{id}"</span>)
+.<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// ── POST request ──</span>
+String requestBody = <span class="str">"{ \"name\": \"John\", \"email\": \"john@test.com\" }"</span>;
+Response postResponse = <span class="met">given</span>()
+    .<span class="met">contentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">body</span>(requestBody)
+.<span class="met">when</span>()
+    .<span class="met">post</span>(<span class="str">"https://reqres.in/api/users"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">201</span>)
+    .<span class="met">extract</span>().<span class="met">response</span>();
+
+String createdId = postResponse.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"id"</span>);  <span class="cmt">// extract created ID</span>
+
+<span class="cmt">// ── PUT request (update entire resource) ──</span>
+<span class="met">given</span>()
+    .<span class="met">contentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">body</span>(<span class="str">"{ \"name\": \"John Updated\" }"</span>)
+.<span class="met">when</span>()
+    .<span class="met">put</span>(<span class="str">"https://reqres.in/api/users/2"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// ── PATCH request (update partial) ──</span>
+<span class="met">given</span>()
+    .<span class="met">contentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">body</span>(<span class="str">"{ \"name\": \"John Patched\" }"</span>)
+.<span class="met">when</span>()
+    .<span class="met">patch</span>(<span class="str">"https://reqres.in/api/users/2"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// ── DELETE request ──</span>
+<span class="met">given</span>()
+.<span class="met">when</span>()
+    .<span class="met">delete</span>(<span class="str">"https://reqres.in/api/users/2"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">204</span>);  <span class="cmt">// No content</span></div>
+    </div>
+
+    <!-- EXTRACT + JSONPATH -->
+    <div class="sec">
+      <div class="sec-title so">Extracting Values — JsonPath</div>
+      <div class="code"><span class="code-label">Extract from response</span>
+<span class="cmt">// Extract single value</span>
+String name = <span class="met">given</span>().<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/1"</span>)
+    .<span class="met">then</span>().<span class="met">extract</span>().<span class="met">path</span>(<span class="str">"name"</span>);
+
+<span class="cmt">// Extract full response object</span>
+Response res = <span class="met">given</span>().<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/1"</span>).<span class="met">then</span>().<span class="met">extract</span>().<span class="met">response</span>();
+
+String id    = res.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"id"</span>);
+int age      = res.<span class="met">jsonPath</span>().<span class="met">getInt</span>(<span class="str">"age"</span>);
+String email = res.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"data.email"</span>);   <span class="cmt">// nested</span>
+int count    = res.<span class="met">jsonPath</span>().<span class="met">getInt</span>(<span class="str">"universities.size()"</span>); <span class="cmt">// array size</span>
+String first = res.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"universities[0].name"</span>); <span class="cmt">// first element</span>
+
+System.<span class="met">out</span>.<span class="met">println</span>(<span class="str">"ID: "</span> + id + <span class="str">" Name: "</span> + name);</div>
+    </div>
+
+    <!-- AUTHENTICATION -->
+    <div class="sec">
+      <div class="sec-title so">Authentication Types</div>
+      <div class="code"><span class="code-label">Different auth types in REST Assured</span>
+<span class="cmt">// Basic Authentication</span>
+<span class="met">given</span>()
+    .<span class="met">auth</span>().<span class="met">basic</span>(<span class="str">"username"</span>, <span class="str">"password"</span>)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/protected"</span>).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// Bearer Token (most common in modern APIs)</span>
+<span class="met">given</span>()
+    .<span class="met">header</span>(<span class="str">"Authorization"</span>, <span class="str">"Bearer eyJhbGci..."</span>)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/profile"</span>).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// API Key</span>
+<span class="met">given</span>()
+    .<span class="met">header</span>(<span class="str">"x-api-key"</span>, <span class="str">"your-api-key"</span>)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/data"</span>).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);
+
+<span class="cmt">// Digest Authentication</span>
+<span class="met">given</span>()
+    .<span class="met">auth</span>().<span class="met">digest</span>(<span class="str">"username"</span>, <span class="str">"password"</span>)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/secure"</span>).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);</div>
+    </div>
+
+    <!-- REQUEST/RESPONSE SPEC -->
+    <div class="sec">
+      <div class="sec-title so">Request + Response Specification — Reusability</div>
+      <div class="code"><span class="code-label">Reusable specifications (RequestSpecification, ResponseSpecification)</span>
+<span class="cmt">// Build reusable request spec (avoid repeating base URI, headers)</span>
+RequestSpecification reqSpec = <span class="kw">new</span> <span class="cls">RequestSpecBuilder</span>()
+    .<span class="met">setBaseUri</span>(<span class="str">"https://api.example.com"</span>)
+    .<span class="met">setContentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">addHeader</span>(<span class="str">"Authorization"</span>, <span class="str">"Bearer token"</span>)
+    .<span class="met">build</span>();
+
+<span class="cmt">// Build reusable response spec</span>
+ResponseSpecification resSpec = <span class="kw">new</span> <span class="cls">ResponseSpecBuilder</span>()
+    .<span class="met">expectStatusCode</span>(<span class="num">200</span>)
+    .<span class="met">expectContentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">build</span>();
+
+<span class="cmt">// Use specs — no repetition!</span>
+<span class="met">given</span>().<span class="met">spec</span>(reqSpec)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/1"</span>)
+.<span class="met">then</span>().<span class="met">spec</span>(resSpec).<span class="met">body</span>(<span class="str">"name"</span>, <span class="met">equalTo</span>(<span class="str">"John"</span>));
+
+<span class="cmt">// Overwrite spec for specific case</span>
+<span class="met">given</span>().<span class="met">spec</span>(reqSpec)
+.<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/missing"</span>)
+.<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">404</span>);  <span class="cmt">// overrides spec's 200</span></div>
+    </div>
+
+    <!-- JSON SCHEMA VALIDATION -->
+    <div class="sec">
+      <div class="sec-title so">JSON Schema Validation</div>
+      <div class="callout cl-orange">
+        <div class="cl-icon">📋</div>
+        <div class="cl-text"><strong>JSON Schema</strong> = validates the STRUCTURE of JSON response — field names, data types, required fields. Like checking if the response has the right shape, not just the right values.</div>
+      </div>
+      <div class="code"><span class="code-label">JSON schema validation</span>
+<span class="kw">import static</span> io.restassured.module.jsv.JsonSchemaValidator.*;
+
+<span class="cmt">// Create schema file: src/test/resources/userSchema.json</span>
+<span class="cmt">// {</span>
+<span class="cmt">//   "$schema": "http://json-schema.org/draft-04/schema#",</span>
+<span class="cmt">//   "type": "object",</span>
+<span class="cmt">//   "properties": {</span>
+<span class="cmt">//     "id":    { "type": "integer" },</span>
+<span class="cmt">//     "name":  { "type": "string"  },</span>
+<span class="cmt">//     "email": { "type": "string"  }</span>
+<span class="cmt">//   },</span>
+<span class="cmt">//   "required": ["id", "name", "email"]</span>
+<span class="cmt">// }</span>
+
+<span class="met">given</span>().<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/1"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>)
+    .<span class="met">body</span>(<span class="met">matchesJsonSchemaInClasspath</span>(<span class="str">"userSchema.json"</span>));  <span class="cmt">// validates structure</span></div>
+    </div>
+
+    <!-- LOGGING -->
+    <div class="sec">
+      <div class="sec-title so">Logging in REST Assured</div>
+      <div class="code"><span class="code-label">Request and response logging</span>
+<span class="cmt">// Log request details</span>
+<span class="met">given</span>().<span class="met">log</span>().<span class="met">all</span>()  <span class="cmt">// log everything</span>
+<span class="met">given</span>().<span class="met">log</span>().<span class="met">headers</span>()
+<span class="met">given</span>().<span class="met">log</span>().<span class="met">body</span>()
+
+<span class="cmt">// Log response details</span>
+.<span class="met">then</span>().<span class="met">log</span>().<span class="met">all</span>()
+.<span class="met">then</span>().<span class="met">log</span>().<span class="met">status</span>()
+.<span class="met">then</span>().<span class="met">log</span>().<span class="met">ifError</span>()   <span class="cmt">// only log on error (best practice)</span>
+
+<span class="cmt">// Write response log to file</span>
+PrintStream fileLog = <span class="kw">new</span> <span class="cls">PrintStream</span>(<span class="kw">new</span> <span class="cls">File</span>(<span class="str">"test-results/api.log"</span>));
+RestAssured.filters(<span class="kw">new</span> <span class="cls">ResponseLoggingFilter</span>(fileLog));</div>
+    </div>
+
+    <!-- REST ASSURED VIVA -->
+    <div class="sec">
+      <div class="sec-title so">Viva Q&A — REST Assured</div>
+      <div class="qa-list">
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is REST Assured?</div><div class="qa-a">Java library for API testing. Uses BDD-style Given/When/Then syntax. given() = request setup, when() = HTTP call execution, then() = response validation.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is the difference between PUT and PATCH?</div><div class="qa-a">PUT = update ENTIRE resource. If you only send name field in PUT, all other fields become null. PATCH = update PARTIAL resource. Only fields sent are updated, others stay unchanged.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is the difference between query param and path param?</div><div class="qa-a">Path param = part of URL path: /users/{id} → /users/5. Query param = filter appended to URL: /search?country=India&limit=10. Use queryParam() and pathParam() in REST Assured.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>How do you extract values from response?</div><div class="qa-a">Use extract().path("fieldName") for single value, or extract().response() for full Response object, then use response.jsonPath().getString("field").</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is JSON Schema validation?</div><div class="qa-a">Validates the STRUCTURE of JSON response — data types, required fields, field names. Uses matchesJsonSchemaInClasspath("schema.json"). Ensures API contract is not broken.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is RequestSpecification?</div><div class="qa-a">Reusable request specification built with RequestSpecBuilder. Stores common settings (base URI, headers, auth token) so they don't need to be repeated in every test.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- POSTMAN -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="postman">
+  <div class="ch-header ho">
+    <div class="ch-icon io">📮</div>
+    <div>
+      <div class="ch-title">Postman — API Testing Tool</div>
+      <div class="ch-sub">Collections · Environments · Tests · Data Parameterization · Swagger UI</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title so">Postman Key Concepts</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label so">What is Postman?</div>
+          <div class="card-body">GUI tool for testing APIs manually and automated. No code needed for basic testing. Create requests, send them, inspect responses, write test scripts in JavaScript. Industry standard for API testing.</div>
+        </div>
+        <div class="card">
+          <div class="card-label so">Collection</div>
+          <div class="card-body">A group of related API requests saved together. Like a test suite for APIs. Can have folders inside. Run entire collection at once with Collection Runner. Share with team via export/import.</div>
+        </div>
+        <div class="card">
+          <div class="card-label so">Environment</div>
+          <div class="card-body">Set of variables that change based on environment (dev, staging, prod). Variable: {{baseUrl}}. In dev env: baseUrl = https://dev.api.com. In prod: baseUrl = https://api.com. Switch env → all requests update automatically.</div>
+        </div>
+        <div class="card">
+          <div class="card-label so">Variables</div>
+          <div class="card-body">
+            <strong>Global</strong> — available across ALL workspaces<br>
+            <strong>Environment</strong> — for current environment<br>
+            <strong>Collection</strong> — within a collection<br>
+            <strong>Local</strong> — only in current request/script<br>
+            Use: <code>{{variableName}}</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title so">Tests Tab — JavaScript Assertions</div>
+      <div class="code"><span class="code-label">Postman Tests tab — JavaScript</span>
+<span class="cmt">// Verify status code</span>
+pm.test(<span class="str">"Status code is 200"</span>, <span class="kw">function</span>() {
+    pm.response.to.have.status(<span class="num">200</span>);
+});
+
+<span class="cmt">// Verify response body field</span>
+pm.test(<span class="str">"Name is correct"</span>, <span class="kw">function</span>() {
+    <span class="kw">var</span> json = pm.response.json();
+    pm.expect(json.name).to.equal(<span class="str">"John"</span>);
+});
+
+<span class="cmt">// Verify response time</span>
+pm.test(<span class="str">"Response time under 500ms"</span>, <span class="kw">function</span>() {
+    pm.expect(pm.response.responseTime).to.be.below(<span class="num">500</span>);
+});
+
+<span class="cmt">// Save value to environment variable (for next request)</span>
+<span class="kw">var</span> id = pm.response.json().id;
+pm.environment.set(<span class="str">"userId"</span>, id);
+
+<span class="cmt">// Get environment variable</span>
+<span class="kw">var</span> savedId = pm.environment.get(<span class="str">"userId"</span>);
+
+<span class="cmt">// Verify header</span>
+pm.test(<span class="str">"Content-Type is JSON"</span>, <span class="kw">function</span>() {
+    pm.response.to.have.header(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>);
+});</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title so">Data Parameterization — CSV in Postman</div>
+      <div class="callout cl-orange">
+        <div class="cl-icon">📊</div>
+        <div class="cl-text">Create a CSV file with test data. In Collection Runner, upload the CSV. Postman runs the request once for EACH row in CSV. Variables from CSV available as <code>{{columnName}}</code> in request URL/body/headers.</div>
+      </div>
+      <div class="code"><span class="code-label">CSV file + request body</span>
+<span class="cmt"># testdata.csv</span>
+username,password,expectedStatus
+tomsmith,SuperSecretPassword!,200
+wronguser,wrongpass,401
+admin,admin123,200
+
+<span class="cmt"># In Postman request body (use {{variable}}):</span>
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+<span class="cmt"># In Tests tab:</span>
+pm.test(<span class="str">"Status matches"</span>, <span class="kw">function</span>() {
+    pm.response.to.have.status(parseInt(pm.iterationData.get(<span class="str">"expectedStatus"</span>)));
+});</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- GIT -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="git">
+  <div class="ch-header hb">
+    <div class="ch-icon ib">🌿</div>
+    <div>
+      <div class="ch-title">Git — Version Control System</div>
+      <div class="ch-sub">Commands · Branching · Merging · Conflict Resolution · GitHub Integration</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title sb">Git Fundamentals</div>
+      <div class="callout cl-blue">
+        <div class="cl-icon">🌿</div>
+        <div class="cl-text"><strong>Git</strong> = distributed version control system. Tracks every change to code over time. Multiple developers can work on same project without overwriting each other. Every change is recorded with who made it and when.</div>
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <div class="card-label sb">Local Repository</div>
+          <div class="card-body">Copy of entire repo on YOUR computer. You work here. Commit here. Push to remote when ready.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Remote Repository</div>
+          <div class="card-body">Shared copy on GitHub/GitLab/Bitbucket server. Team pushes to and pulls from here.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Branch</div>
+          <div class="card-body">Independent line of development. main/master = stable. Feature branch = work in progress. Merge back when done.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">All Git Commands from Your Syllabus</div>
+      <div class="code"><span class="code-label">Git commands</span>
+<span class="cmt"># ── SETUP ──</span>
+git config --global user.name <span class="str">"Harmeet"</span>        <span class="cmt"># set identity</span>
+git config --global user.email <span class="str">"h@email.com"</span>
+
+<span class="cmt"># ── START ──</span>
+git init                                        <span class="cmt"># initialize new repo</span>
+git clone &lt;url&gt;                                 <span class="cmt"># copy remote repo to local</span>
+
+<span class="cmt"># ── DAILY WORKFLOW ──</span>
+git status                                      <span class="cmt"># see what changed</span>
+git add filename.java                           <span class="cmt"># stage specific file</span>
+git add .                                       <span class="cmt"># stage ALL changes</span>
+git commit -m <span class="str">"feat: add login automation"</span>     <span class="cmt"># save snapshot locally</span>
+git push origin main                            <span class="cmt"># send to remote</span>
+git pull origin main                            <span class="cmt"># get latest from remote</span>
+
+<span class="cmt"># ── BRANCHING ──</span>
+git branch                                      <span class="cmt"># list all branches</span>
+git branch feature-login                        <span class="cmt"># create branch</span>
+git checkout feature-login                      <span class="cmt"># switch to branch</span>
+git checkout -b feature-login                   <span class="cmt"># create AND switch</span>
+git merge feature-login                         <span class="cmt"># merge into current branch</span>
+git branch -d feature-login                     <span class="cmt"># delete branch</span>
+
+<span class="cmt"># ── CONFLICT RESOLUTION ──</span>
+<span class="cmt"># When merge conflict happens, file shows:</span>
+<span class="cmt"># &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="cmt"># your code</span>
+<span class="cmt"># =======</span>
+<span class="cmt"># their code</span>
+<span class="cmt"># &gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</span>
+<span class="cmt"># Edit file to keep correct version, then:</span>
+git add conflicted-file.java
+git commit -m <span class="str">"resolve merge conflict"</span>
+
+<span class="cmt"># ── TAGS ──</span>
+git tag v1.0                                    <span class="cmt"># create tag at current commit</span>
+git tag -a v1.0 -m <span class="str">"Release version 1.0"</span>     <span class="cmt"># annotated tag</span>
+git push origin v1.0                            <span class="cmt"># push tag to remote</span>
+
+<span class="cmt"># ── HISTORY ──</span>
+git log                                         <span class="cmt"># full history</span>
+git log --oneline                               <span class="cmt"># compact history</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Git Workflow for Selenium Project</div>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">1</div>
+          <div class="step-content"><div class="step-title">Clone the project</div><div class="step-desc"><code>git clone https://github.com/org/selenium-project.git</code> — get entire project on your machine</div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">2</div>
+          <div class="step-content"><div class="step-title">Create feature branch</div><div class="step-desc"><code>git checkout -b feature/login-tests</code> — don't work directly on main</div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">3</div>
+          <div class="step-content"><div class="step-title">Write tests, commit regularly</div><div class="step-desc"><code>git add . && git commit -m "add login test cases"</code></div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">4</div>
+          <div class="step-content"><div class="step-title">Push and create Pull Request</div><div class="step-desc"><code>git push origin feature/login-tests</code> → GitHub → Create PR → Team reviews → Merge to main</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- MAVEN -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="maven">
+  <div class="ch-header hb">
+    <div class="ch-icon ib">📦</div>
+    <div>
+      <div class="ch-title">Maven — Build Automation + Dependency Management</div>
+      <div class="ch-sub">pom.xml · Lifecycle · Dependencies · Plugins · Running tests from command line</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title sb">Maven in Selenium Context</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sb">Dependency Management</div>
+          <div class="card-body">Declare Selenium, TestNG, POI in pom.xml → Maven auto-downloads from Maven Central. No manual JAR downloading. Version conflicts handled automatically.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Build Automation</div>
+          <div class="card-body">Run all tests with one command: <code>mvn test</code>. Jenkins uses this to run tests automatically. Generates reports, compiles code, runs tests — all in one command.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Complete pom.xml for QEA Project</div>
+      <div class="code"><span class="code-label">pom.xml</span>
+&lt;<span class="tag">project</span>&gt;
+  &lt;<span class="tag">groupId</span>&gt;org.example&lt;/<span class="tag">groupId</span>&gt;
+  &lt;<span class="tag">artifactId</span>&gt;SeleniumProject&lt;/<span class="tag">artifactId</span>&gt;
+  &lt;<span class="tag">version</span>&gt;1.0-SNAPSHOT&lt;/<span class="tag">version</span>&gt;
+
+  &lt;<span class="tag">dependencies</span>&gt;
+    <span class="cmt">&lt;!-- Selenium --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;org.seleniumhq.selenium&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;selenium-java&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;4.20.0&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- TestNG — scope test means only available during testing --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;org.testng&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;testng&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;7.10.2&lt;/<span class="tag">version</span>&gt;
+      &lt;<span class="tag">scope</span>&gt;test&lt;/<span class="tag">scope</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- Apache POI --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;org.apache.poi&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;poi-ooxml&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;5.2.4&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- WebDriverManager --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;io.github.bonigarcia&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;webdrivermanager&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;5.8.0&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- Cucumber --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;io.cucumber&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;cucumber-java&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;7.15.0&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- REST Assured --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;io.rest-assured&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;rest-assured&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;5.4.0&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+
+    <span class="cmt">&lt;!-- ExtentReports --&gt;</span>
+    &lt;<span class="tag">dependency</span>&gt;
+      &lt;<span class="tag">groupId</span>&gt;com.aventstack&lt;/<span class="tag">groupId</span>&gt;
+      &lt;<span class="tag">artifactId</span>&gt;extentreports&lt;/<span class="tag">artifactId</span>&gt;
+      &lt;<span class="tag">version</span>&gt;5.1.1&lt;/<span class="tag">version</span>&gt;
+    &lt;/<span class="tag">dependency</span>&gt;
+  &lt;/<span class="tag">dependencies</span>&gt;
+
+  &lt;<span class="tag">build</span>&gt;
+    &lt;<span class="tag">plugins</span>&gt;
+      <span class="cmt">&lt;!-- Surefire plugin — runs TestNG/JUnit tests with mvn test --&gt;</span>
+      &lt;<span class="tag">plugin</span>&gt;
+        &lt;<span class="tag">groupId</span>&gt;org.apache.maven.plugins&lt;/<span class="tag">groupId</span>&gt;
+        &lt;<span class="tag">artifactId</span>&gt;maven-surefire-plugin&lt;/<span class="tag">artifactId</span>&gt;
+        &lt;<span class="tag">version</span>&gt;3.2.5&lt;/<span class="tag">version</span>&gt;
+        &lt;<span class="tag">configuration</span>&gt;
+          &lt;<span class="tag">suiteXmlFiles</span>&gt;
+            &lt;<span class="tag">suiteXmlFile</span>&gt;testng.xml&lt;/<span class="tag">suiteXmlFile</span>&gt;
+          &lt;/<span class="tag">suiteXmlFiles</span>&gt;
+        &lt;/<span class="tag">configuration</span>&gt;
+      &lt;/<span class="tag">plugin</span>&gt;
+    &lt;/<span class="tag">plugins</span>&gt;
+  &lt;/<span class="tag">build</span>&gt;
+&lt;/<span class="tag">project</span>&gt;</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Maven Commands</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sb">Common Commands</div>
+          <div class="card-body">
+            <code>mvn clean</code> — delete target/ folder<br>
+            <code>mvn compile</code> — compile src code<br>
+            <code>mvn test</code> — run tests<br>
+            <code>mvn clean test</code> — clean + run ✅ most used<br>
+            <code>mvn package</code> — create JAR/WAR<br>
+            <code>mvn install</code> — install to local .m2 repo
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Dependency Scopes</div>
+          <div class="card-body">
+            <code>compile</code> — always available (default)<br>
+            <code>test</code> — only during testing (TestNG) — NOT in main<br>
+            <code>provided</code> — at compile, not packaged<br>
+            <code>runtime</code> — only at runtime<br><br>
+            <strong>Why TestNG scope=test?</strong> Classes in src/main/java can't see TestNG. Only src/test/java can. That's why test files MUST be in test folder!
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- JENKINS -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="jenkins">
+  <div class="ch-header hb">
+    <div class="ch-icon ib">⚙️</div>
+    <div>
+      <div class="ch-title">Jenkins — CI/CD Pipeline</div>
+      <div class="ch-sub">Installation · Jobs · Pipeline · Scheduling · Reports · Git Integration</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title sb">Jenkins Fundamentals</div>
+      <div class="callout cl-blue">
+        <div class="cl-icon">⚙️</div>
+        <div class="cl-text"><strong>Jenkins</strong> = open source CI/CD automation server. Automatically builds, tests, and deploys code whenever a developer pushes changes. "Tests run themselves" — no one needs to manually click Run every time code changes.</div>
+      </div>
+      <div class="flow">
+        <div class="fstep">Dev pushes to GitHub</div><div class="farr">→</div>
+        <div class="fstep">Jenkins webhook triggered</div><div class="farr">→</div>
+        <div class="fstep">Jenkins pulls code</div><div class="farr">→</div>
+        <div class="fstep">mvn clean test</div><div class="farr">→</div>
+        <div class="fstep">TestNG runs</div><div class="farr">→</div>
+        <div class="fstep">Report generated</div><div class="farr">→</div>
+        <div class="fstep">Email sent if fail</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Jenkins Job Types</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sb">Freestyle Project</div>
+          <div class="card-body">GUI-based job configuration. Point and click — no scripting needed. Good for simple builds. You set: Source Code (GitHub URL), Build (mvn clean test), Post-build (publish reports, email). Used in your syllabus hands-on.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Pipeline Job</div>
+          <div class="card-body">Code-based job using Groovy script (Jenkinsfile). More powerful and flexible. Can be stored in source control alongside code. Used for complex workflows with multiple stages.</div>
+        </div>
+      </div>
+      <div class="code"><span class="code-label">Jenkinsfile — Pipeline as Code</span>
+pipeline {
+    agent any
+
+    stages {
+        stage(<span class="str">'Checkout'</span>) {
+            steps {
+                git url: <span class="str">'https://github.com/org/selenium-project.git'</span>,
+                    branch: <span class="str">'main'</span>
+            }
+        }
+        stage(<span class="str">'Compile'</span>) {
+            steps {
+                sh <span class="str">'mvn compile'</span>
+            }
+        }
+        stage(<span class="str">'Test'</span>) {
+            steps {
+                sh <span class="str">'mvn clean test'</span>
+            }
+            post {
+                always {
+                    junit <span class="str">'target/surefire-reports/*.xml'</span>      <span class="cmt">// publish results</span>
+                    publishHTML(target: [reportDir: <span class="str">'target/extent-reports'</span>,
+                                         reportFiles: <span class="str">'report.html'</span>])
+                }
+                failure {
+                    mail to: <span class="str">'team@company.com'</span>,
+                         subject: <span class="str">'Build FAILED'</span>,
+                         body: <span class="str">'Check Jenkins for details'</span>
+                }
+            }
+        }
+    }
+}</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Build Triggers</div>
+      <table class="tbl">
+        <tr><th>Trigger</th><th>When it runs</th><th>Use case</th></tr>
+        <tr><td><span class="b bb">Manual</span></td><td>Only when you click "Build Now"</td><td>On demand testing</td></tr>
+        <tr><td><span class="b bb">SCM Poll</span></td><td>Jenkins checks Git every X minutes for new commits</td><td>When webhooks not available</td></tr>
+        <tr><td><span class="b bb">GitHub Webhook</span></td><td>GitHub notifies Jenkins instantly on push</td><td>Real-time CI — most common</td></tr>
+        <tr><td><span class="b bb">Scheduled</span></td><td>Cron expression: <code>0 22 * * *</code> = 10pm daily</td><td>Nightly regression runs</td></tr>
+        <tr><td><span class="b bb">Upstream</span></td><td>Another Jenkins job finishes</td><td>Chain of jobs</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Hands-on from Syllabus — What You Need to Know</div>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">1</div>
+          <div class="step-content"><div class="step-title">Git Config</div><div class="step-desc">Set username and email before using Git: <code>git config --global user.name "Name"</code></div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">2</div>
+          <div class="step-content"><div class="step-title">Clone Repo</div><div class="step-desc">First time: <code>git clone URL</code>. Gets entire project history and code.</div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">3</div>
+          <div class="step-content"><div class="step-title">Build Maven Project in Jenkins</div><div class="step-desc">Freestyle job → Source: Git URL → Build: <code>mvn clean test</code> → Post: Publish TestNG/HTML reports</div></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num" style="background:rgba(59,130,246,.2);color:#60a5fa">4</div>
+          <div class="step-content"><div class="step-title">Pipeline — compile and test</div><div class="step-desc">Jenkinsfile with stages: Checkout → Compile → Test → Report</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SELENIUM GRID -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="grid">
+  <div class="ch-header hb">
+    <div class="ch-icon ib">🌐</div>
+    <div>
+      <div class="ch-title">Selenium Grid — Distributed Test Execution</div>
+      <div class="ch-sub">Hub and Node · Setup · Parallel execution · Cloud grids (SauceLabs, BrowserStack)</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title sb">Selenium Grid Architecture</div>
+      <div class="callout cl-blue">
+        <div class="cl-icon">🌐</div>
+        <div class="cl-text"><strong>Selenium Grid</strong> = run tests on MULTIPLE browsers and machines SIMULTANEOUSLY. Hub distributes tests to Nodes. Each Node has a browser. Results from all Nodes reported back to Hub.</div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sb">Hub</div>
+          <div class="card-body">Central server. Receives test requests. Distributes to nodes based on browser capability requested. Runs on <code>localhost:4444</code>. All nodes register with Hub. One Hub, many Nodes.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">Node</div>
+          <div class="card-body">Worker machine with actual browser installed. Registers with Hub. Waits for tests. Executes tests when Hub assigns. Can have multiple browsers on one Node.</div>
+        </div>
+      </div>
+      <div class="code"><span class="code-label">Selenium Grid 4 Setup</span>
+<span class="cmt"># Terminal 1 — Start Hub</span>
+java -jar selenium-server-4.x.jar hub
+
+<span class="cmt"># Terminal 2 — Start Node (registers with Hub)</span>
+java -jar selenium-server-4.x.jar node --hub http://localhost:4444
+
+<span class="cmt"># Or standalone mode (Hub + Node in one)</span>
+java -jar selenium-server-4.x.jar standalone</div>
+      <div class="code"><span class="code-label">Test code — send test to Grid</span>
+<span class="cmt">// Use RemoteWebDriver to send tests to Hub</span>
+ChromeOptions options = <span class="kw">new</span> <span class="cls">ChromeOptions</span>();
+URL hubUrl = <span class="kw">new</span> <span class="cls">URL</span>(<span class="str">"http://localhost:4444"</span>);
+WebDriver driver = <span class="kw">new</span> <span class="cls">RemoteWebDriver</span>(hubUrl, options);
+
+<span class="cmt">// Hub routes to a Node that has Chrome available</span>
+driver.<span class="met">get</span>(<span class="str">"https://example.com"</span>);
+<span class="cmt">// test runs on the Node machine, not your local machine</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title sb">Cloud Grids — SauceLabs and BrowserStack</div>
+      <div class="callout cl-purple">
+        <div class="cl-icon">☁️</div>
+        <div class="cl-text">Instead of maintaining your own Grid infrastructure, use cloud services. They provide hundreds of browser/OS combinations. No setup needed. Just send tests to their Hub URL with credentials.</div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label sb">SauceLabs</div>
+          <div class="card-body">Cloud-based testing platform. 800+ browser/OS combinations. Real devices for mobile. Automated video recording. Access Hub at sauce URL with your credentials.</div>
+        </div>
+        <div class="card">
+          <div class="card-label sb">BrowserStack</div>
+          <div class="card-body">Similar to SauceLabs. 3000+ real device/browser combos. Automate using their Hub URL. Live testing also available (manual). Popular choice in enterprises.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- DOCKER -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="docker">
+  <div class="ch-header ht">
+    <div class="ch-icon iit">🐳</div>
+    <div>
+      <div class="ch-title">Docker — Containerization</div>
+      <div class="ch-sub">Images · Containers · Dockerfile · Docker Compose · Selenium Grid in Docker</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title st">Docker Fundamentals</div>
+      <div class="callout cl-teal">
+        <div class="cl-icon">🐳</div>
+        <div class="cl-text"><strong>"Works on my machine" problem</strong> — code works on developer's laptop but breaks on test server. Docker solves this by packaging code + ALL dependencies + configuration into one portable unit called a <strong>Container</strong>. Runs identically everywhere.</div>
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <div class="card-label st">Docker Image</div>
+          <div class="card-body">Blueprint/template. Read-only. Contains OS, dependencies, app code. Like a class in Java. Built from Dockerfile. Published to Docker Hub (public registry).</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Docker Container</div>
+          <div class="card-body">Running instance of an image. Like an object in Java. Isolated, lightweight. Multiple containers from same image. Start, stop, delete without affecting image.</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Docker Hub</div>
+          <div class="card-body">Public registry for Docker images. Like Maven Central but for Docker images. Pull official images: selenium/hub, selenium/node-chrome, postgres, nginx etc.</div>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card">
+          <div class="card-label st">VM vs Docker</div>
+          <div class="card-body">
+            <strong>VM</strong> = full OS copy per VM (heavy, 10+ GB, slow to start)<br>
+            <strong>Docker</strong> = shares host OS kernel (lightweight, MB size, starts in seconds)<br>
+            Docker containers = much more efficient than VMs
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Why Docker for Testing?</div>
+          <div class="card-body">
+            ✅ Consistent environment — dev/test/prod same<br>
+            ✅ Selenium Grid in Docker — easy setup<br>
+            ✅ Clean browser for every test run<br>
+            ✅ Run many browser containers in parallel<br>
+            ✅ No "ChromeDriver version mismatch" issues
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Docker Commands</div>
+      <div class="code"><span class="code-label">Docker commands</span>
+<span class="cmt"># Pull image from Docker Hub</span>
+docker pull selenium/hub
+docker pull selenium/node-chrome
+
+<span class="cmt"># Run a container</span>
+docker run -d -p 4444:4444 selenium/hub
+<span class="cmt"># -d = detached (background), -p = port mapping (host:container)</span>
+
+<span class="cmt"># List running containers</span>
+docker ps
+
+<span class="cmt"># List all containers (including stopped)</span>
+docker ps -a
+
+<span class="cmt"># Stop a container</span>
+docker stop container-id
+
+<span class="cmt"># Remove container</span>
+docker rm container-id
+
+<span class="cmt"># List images</span>
+docker images
+
+<span class="cmt"># Remove image</span>
+docker rmi selenium/hub
+
+<span class="cmt"># Build custom image from Dockerfile</span>
+docker build -t my-selenium-image .
+
+<span class="cmt"># View container logs</span>
+docker logs container-id</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Dockerfile — Custom Image</div>
+      <div class="code"><span class="code-label">Dockerfile</span>
+<span class="cmt"># Start from official Java image</span>
+<span class="ann">FROM</span> openjdk:17-slim
+
+<span class="cmt"># Set working directory inside container</span>
+<span class="ann">WORKDIR</span> /app
+
+<span class="cmt"># Copy pom.xml and src code</span>
+<span class="ann">COPY</span> pom.xml .
+<span class="ann">COPY</span> src ./src
+
+<span class="cmt"># Install Maven and run tests</span>
+<span class="ann">RUN</span> apt-get update && apt-get install -y maven
+<span class="ann">RUN</span> mvn dependency:resolve
+
+<span class="cmt"># Command to run when container starts</span>
+<span class="ann">CMD</span> ["mvn", "clean", "test"]</div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Selenium Grid with Docker Compose</div>
+      <div class="callout cl-teal">
+        <div class="cl-icon">🔧</div>
+        <div class="cl-text"><strong>Docker Compose</strong> = tool to run MULTIPLE containers together with one command. Define all containers in docker-compose.yml file. Run with <code>docker-compose up</code>. Perfect for Selenium Grid — Hub + multiple browser Nodes.</div>
+      </div>
+      <div class="code"><span class="code-label">docker-compose.yml — Selenium Grid</span>
+version: <span class="str">"3"</span>
+services:
+  <span class="cmt"># Selenium Hub</span>
+  selenium-hub:
+    image: selenium/hub:4.20.0
+    ports:
+      - <span class="str">"4444:4444"</span>
+    environment:
+      - SE_NODE_MAX_SESSIONS=5
+
+  <span class="cmt"># Chrome Node — can scale to many instances</span>
+  chrome:
+    image: selenium/node-chrome:4.20.0
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    shm_size: 2gb   <span class="cmt"># shared memory for browser</span>
+
+  <span class="cmt"># Firefox Node</span>
+  firefox:
+    image: selenium/node-firefox:4.20.0
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+
+<span class="cmt"># Run: docker-compose up -d</span>
+<span class="cmt"># Scale chrome: docker-compose up --scale chrome=5</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Viva Q&A — Docker</div>
+      <div class="qa-list">
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Docker?</div><div class="qa-a">Containerization platform that packages applications and all their dependencies into lightweight, portable containers. Solves "works on my machine" problem. Containers run identically across dev, test, and production environments.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>Difference between Docker Image and Container?</div><div class="qa-a">Image = read-only blueprint/template (like a class). Container = running instance of image (like an object). Multiple containers can run from same image. Deleting a container doesn't affect the image.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>VM vs Docker Container?</div><div class="qa-a">VM = runs full OS copy — heavy (GBs), slow to start, resource intensive. Docker = shares host OS kernel — lightweight (MBs), starts in seconds, much more efficient. Docker is preferred for CI/CD.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Docker Compose?</div><div class="qa-a">Tool for defining and running multi-container Docker applications. One docker-compose.yml file defines all services. docker-compose up starts them all. Perfect for Selenium Grid — Hub + browser Nodes.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>How does Docker help with Selenium Grid?</div><div class="qa-a">Run Selenium Hub and browser Nodes as Docker containers. Clean environment for every test run. Easily scale — run 10 Chrome containers in parallel. No driver version conflicts. Consistent across all machines.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- GENAI -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="chapter" id="genai">
+  <div class="ch-header ht">
+    <div class="ch-icon iit">🤖</div>
+    <div>
+      <div class="ch-title">GenAI + GitHub Copilot</div>
+      <div class="ch-sub">Generative AI Fundamentals · Responsible AI · Prompt Engineering · GitHub Copilot in QA</div>
+    </div>
+  </div>
+  <div class="ch-body">
+
+    <div class="sec">
+      <div class="sec-title st">Generative AI Fundamentals</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label st">What is Generative AI?</div>
+          <div class="card-body">AI that can CREATE new content — text, code, images, audio. Learns patterns from massive training data. Examples: ChatGPT (text), Copilot (code), DALL-E (images), Claude (text). Powered by Large Language Models (LLMs).</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">How LLMs Work</div>
+          <div class="card-body">Trained on billions of text/code samples. Learns patterns and relationships. Given input (prompt), predicts most likely next tokens. Does NOT "understand" — statistically predicts what should come next based on training.</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">GenAI in QA Testing</div>
+          <div class="card-body">
+            ✅ Generate test cases from requirements<br>
+            ✅ Create XPath/CSS locators<br>
+            ✅ Write Gherkin feature files<br>
+            ✅ Generate test data<br>
+            ✅ Suggest bug fixes<br>
+            ✅ Review and explain code<br>
+            ✅ Create edge case scenarios
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Tokens and Context Window</div>
+          <div class="card-body">Token = word or word-piece (~4 chars). LLMs have a context window — max tokens they can process at once. GPT-4 = 128k tokens. Longer context = can read more of your code/requirements. Manage tokens by being concise in prompts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Prompt Engineering</div>
+      <div class="callout cl-teal">
+        <div class="cl-icon">✍️</div>
+        <div class="cl-text"><strong>Prompt Engineering</strong> = the skill of writing clear, specific instructions to AI models to get high-quality, accurate outputs. Poor prompt → generic useless answer. Good prompt → exactly what you need.</div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label st">Bad Prompt ❌</div>
+          <div class="card-body"><code>"Write Selenium test"</code><br><br>Too vague. AI doesn't know: what to test, which page, which framework, what to verify.</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Good Prompt ✅</div>
+          <div class="card-body"><code>"Write a Selenium Java TestNG test for the login page at https://the-internet.herokuapp.com/login using Page Object Model. Test should: 1) Enter username 'tomsmith', 2) Enter password 'SuperSecretPassword!', 3) Click login, 4) Assert success message contains 'secure area'. Use @FindBy annotations and WebDriverManager."</code></div>
+        </div>
+      </div>
+      <div class="grid g3" style="margin-top:12px">
+        <div class="card">
+          <div class="card-label st">Prompt Tips</div>
+          <div class="card-body">
+            Be specific — mention language, framework<br>
+            Give context — explain the scenario<br>
+            Provide examples — show format wanted<br>
+            Specify constraints — "use TestNG, not JUnit"<br>
+            Ask for explanation — "explain each line"
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Use in BDD</div>
+          <div class="card-body">Prompt: "Given this user story: [story], generate a Gherkin feature file with 5 scenarios covering happy path and edge cases." AI generates complete .feature file ready to use.</div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Use for Locators</div>
+          <div class="card-body">Prompt: "Given this HTML: [paste HTML], generate XPath and CSS selectors for the username input field, password field, and submit button." AI gives all locators instantly.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">GitHub Copilot in QA Automation</div>
+      <div class="callout cl-teal">
+        <div class="cl-icon">🤖</div>
+        <div class="cl-text"><strong>GitHub Copilot</strong> = AI coding assistant that lives INSIDE your IDE (IntelliJ, VS Code). Watches what you type, suggests code completions. Powered by OpenAI Codex. Trained on billions of lines of public code.</div>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label st">What Copilot Can Do</div>
+          <div class="card-body">
+            Auto-complete Selenium methods<br>
+            Generate entire test methods from comments<br>
+            Suggest XPath based on context<br>
+            Generate step definition stubs for feature files<br>
+            Explain existing code<br>
+            Suggest bug fixes<br>
+            Generate test data patterns
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label st">How to Use Effectively</div>
+          <div class="card-body">
+            Write a comment describing what you want:<br>
+            <code>// Click login button and verify success message</code><br>
+            Press Tab to accept suggestion<br>
+            Or press Alt+] to cycle through suggestions<br>
+            Always REVIEW generated code — don't blindly accept
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Responsible AI</div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-label st">Do's ✅</div>
+          <div class="card-body">
+            Use AI to speed up repetitive tasks<br>
+            Review all AI-generated code before using<br>
+            Use for inspiration and starting points<br>
+            Verify AI suggestions are correct<br>
+            Learn from AI explanations
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label st">Don'ts ❌</div>
+          <div class="card-body">
+            Never feed real customer data to AI tools<br>
+            Don't blindly copy-paste AI code without review<br>
+            Don't share company secrets in prompts<br>
+            Don't use AI output without understanding it<br>
+            Don't rely on AI for critical security decisions
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title st">Viva Q&A — GenAI</div>
+      <div class="qa-list">
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Generative AI?</div><div class="qa-a">AI that can create new content (text, code, images) by learning patterns from massive training data. Powered by Large Language Models. Examples: ChatGPT, Gemini, Claude. In testing: generates test cases, locators, feature files.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Prompt Engineering?</div><div class="qa-a">Skill of writing clear, specific, and contextual instructions to AI models to get high-quality outputs. Good prompt includes: context, specific requirements, examples, constraints, expected format.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is GitHub Copilot?</div><div class="qa-a">AI coding assistant integrated into IDE. Suggests code completions in real-time. Can generate entire test methods from comments. Powered by OpenAI Codex trained on billions of lines of public code.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>How does GenAI help in QA?</div><div class="qa-a">Generates test cases from requirements, creates XPath locators from HTML, writes Gherkin feature files from user stories, generates test data, suggests edge cases, explains bugs, writes automation code faster.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is Responsible AI?</div><div class="qa-a">Using AI ethically — don't feed customer/sensitive data to AI tools, always review AI-generated code, understand what the code does, don't blindly trust AI output for critical decisions.</div></div>
+        <div class="qa"><div class="qa-q"><span class="qa-badge">Q</span>What is a token in AI?</div><div class="qa-a">Basic unit of text an LLM processes (approximately one word or part of word). Context window = max tokens model can process at once. Important for managing long prompts and code inputs.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINAL FOOTER -->
+<div style="text-align:center;padding:48px 20px;color:#475569">
+  <div style="font-size:32px;margin-bottom:12px">🚀</div>
+  <div style="font-weight:800;color:#94a3b8;font-size:18px;margin-bottom:6px">Deep Dive Complete</div>
+  <div style="margin-bottom:20px">BDD Cucumber · REST Assured · Postman · Git · Maven · Jenkins · Selenium Grid · Docker · GenAI</div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3);padding:6px 16px;border-radius:50px;font-size:12px;font-weight:600">🥒 BDD Done ✓</span>
+    <span style="background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3);padding:6px 16px;border-radius:50px;font-size:12px;font-weight:600">🔌 REST Assured Done ✓</span>
+    <span style="background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3);padding:6px 16px;border-radius:50px;font-size:12px;font-weight:600">⚙️ DevOps Done ✓</span>
+    <span style="background:rgba(20,184,166,.15);color:#2dd4bf;border:1px solid rgba(20,184,166,.3);padding:6px 16px;border-radius:50px;font-size:12px;font-weight:600">🐳 Docker + GenAI Done ✓</span>
+  </div>
+  <div style="margin-top:24px;color:#ef4444;font-weight:700;font-size:16px">You've got this! 🔥</div>
+</div>
+
+</div>
+</body>
+</html>

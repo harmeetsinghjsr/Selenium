@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QEA Complete Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --blue: #3b82f6; --blue-dark: #1d4ed8; --blue-light: #eff6ff;
+    --purple: #8b5cf6; --purple-dark: #6d28d9; --purple-light: #f5f3ff;
+    --green: #10b981; --green-dark: #047857; --green-light: #ecfdf5;
+    --orange: #f59e0b; --orange-dark: #b45309; --orange-light: #fffbeb;
+    --red: #ef4444; --red-dark: #b91c1c; --red-light: #fef2f2;
+    --pink: #ec4899; --pink-dark: #be185d; --pink-light: #fdf2f8;
+    --teal: #14b8a6; --teal-dark: #0f766e; --teal-light: #f0fdfa;
+    --gray: #6b7280; --gray-light: #f9fafb; --gray-dark: #111827;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    line-height: 1.7;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 40px;
+    position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(139,92,246,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(59,130,246,0.15) 0%, transparent 50%);
+  }
+  .cover-badge {
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: white; padding: 8px 24px; border-radius: 50px;
+    font-size: 13px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800; line-height: 1.2;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    position: relative; z-index: 1; margin-bottom: 16px;
+  }
+  .cover-sub {
+    font-size: 1.1rem; color: #94a3b8;
+    position: relative; z-index: 1; margin-bottom: 40px;
+  }
+  .cover-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; max-width: 700px; position: relative; z-index: 1;
+  }
+  .cover-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 12px; font-weight: 500; color: #cbd5e1;
+  }
+  .fire-badge {
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    color: white; padding: 6px 16px; border-radius: 50px;
+    font-size: 12px; font-weight: 700; display: inline-block;
+    margin-bottom: 12px; position: relative; z-index: 1;
+  }
+
+  /* NAV */
+  .toc {
+    background: #1e293b; padding: 40px;
+    border-bottom: 1px solid #334155;
+  }
+  .toc h2 {
+    font-size: 1.5rem; font-weight: 700; color: #f1f5f9;
+    margin-bottom: 24px;
+  }
+  .toc-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 10px;
+    background: #0f172a; border-radius: 10px; padding: 12px 16px;
+    border-left: 3px solid var(--blue);
+    font-size: 13px; font-weight: 500; color: #cbd5e1;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .toc-item:hover { background: #1d4ed820; border-left-color: var(--purple); }
+  .toc-num { font-size: 11px; color: var(--blue); font-weight: 700; }
+
+  /* MAIN */
+  .main { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+
+  /* CHAPTER */
+  .chapter {
+    margin-bottom: 60px;
+    background: #1e293b;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.3);
+  }
+  .chapter-header {
+    padding: 28px 36px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .chapter-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .chapter-title { font-size: 1.4rem; font-weight: 800; color: white; }
+  .chapter-sub { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+  .chapter-body { padding: 28px 36px; }
+
+  /* PRIORITY BANNER */
+  .priority-banner {
+    background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(245,158,11,0.15));
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 12px; padding: 16px 20px; margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .priority-banner .fire { font-size: 20px; }
+  .priority-text { font-size: 13px; color: #fca5a5; font-weight: 600; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.2;
+  }
+
+  /* CONCEPT CARDS */
+  .concept-grid { display: grid; gap: 10px; }
+  .concept-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .concept-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .concept-card {
+    background: #0f172a; border-radius: 12px; padding: 16px;
+    border: 1px solid #334155;
+  }
+  .concept-card.highlight { border-color: var(--blue); background: rgba(59,130,246,0.05); }
+  .concept-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 6px; opacity: 0.7;
+  }
+  .concept-value { font-size: 13.5px; color: #e2e8f0; line-height: 1.6; }
+
+  /* Q&A */
+  .qa-list { display: flex; flex-direction: column; gap: 10px; }
+  .qa-item { background: #0f172a; border-radius: 10px; overflow: hidden; border: 1px solid #334155; }
+  .qa-q {
+    padding: 12px 16px; font-size: 13px; font-weight: 600;
+    display: flex; align-items: flex-start; gap: 10px; color: #e2e8f0;
+  }
+  .qa-q-badge {
+    background: var(--blue); color: white; font-size: 10px;
+    font-weight: 800; padding: 2px 7px; border-radius: 50px;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .qa-a {
+    padding: 10px 16px 14px 38px; font-size: 13px;
+    color: #94a3b8; line-height: 1.6;
+    border-top: 1px solid #1e293b;
+  }
+
+  /* CODE */
+  .code-block {
+    background: #0a0f1e; border: 1px solid #334155;
+    border-radius: 10px; padding: 16px 20px;
+    font-family: 'Fira Code', monospace; font-size: 12.5px;
+    color: #e2e8f0; overflow-x: auto; margin: 12px 0;
+    line-height: 1.8;
+  }
+  .code-block .kw { color: #c792ea; }
+  .code-block .cls { color: #82aaff; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .cmt { color: #546e7a; }
+  .code-block .ann { color: #ffcb6b; }
+  .code-block .num { color: #f78c6c; }
+  .code-block .met { color: #89ddff; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    padding: 10px 14px; text-align: left; font-weight: 700;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    background: #0f172a; color: #94a3b8;
+  }
+  .data-table td {
+    padding: 10px 14px; border-top: 1px solid #334155;
+    color: #cbd5e1; vertical-align: top;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* BADGES */
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 50px;
+    font-size: 11px; font-weight: 700; margin: 2px;
+  }
+  .badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+  .badge-green { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+  .badge-orange { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+  .badge-red { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-purple { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+  .badge-teal { background: rgba(20,184,166,0.15); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.3); }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 10px; padding: 14px 18px; margin: 12px 0;
+    font-size: 13px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout-blue { background: rgba(59,130,246,0.1); border-left: 3px solid var(--blue); }
+  .callout-green { background: rgba(16,185,129,0.1); border-left: 3px solid var(--green); }
+  .callout-orange { background: rgba(245,158,11,0.1); border-left: 3px solid var(--orange); }
+  .callout-red { background: rgba(239,68,68,0.1); border-left: 3px solid var(--red); }
+  .callout-purple { background: rgba(139,92,246,0.1); border-left: 3px solid var(--purple); }
+  .callout-icon { font-size: 16px; flex-shrink: 0; }
+  .callout-text { color: #cbd5e1; line-height: 1.6; }
+  .callout-text strong { color: #f1f5f9; }
+
+  /* FLOW */
+  .flow {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+    margin: 12px 0;
+  }
+  .flow-step {
+    background: #0f172a; border: 1px solid #334155;
+    border-radius: 8px; padding: 8px 14px;
+    font-size: 12px; font-weight: 600; color: #e2e8f0;
+  }
+  .flow-arrow { color: #475569; font-size: 16px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: #334155; margin: 24px 0; }
+
+  /* COLOR HEADERS */
+  .ch-blue { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+  .ch-purple { background: linear-gradient(135deg, #6d28d9, #8b5cf6); }
+  .ch-green { background: linear-gradient(135deg, #047857, #10b981); }
+  .ch-orange { background: linear-gradient(135deg, #b45309, #f59e0b); }
+  .ch-red { background: linear-gradient(135deg, #b91c1c, #ef4444); }
+  .ch-pink { background: linear-gradient(135deg, #be185d, #ec4899); }
+  .ch-teal { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+  .ch-indigo { background: linear-gradient(135deg, #3730a3, #6366f1); }
+
+  .ci-blue { background: rgba(59,130,246,0.15); }
+  .ci-purple { background: rgba(139,92,246,0.15); }
+  .ci-green { background: rgba(16,185,129,0.15); }
+  .ci-orange { background: rgba(245,158,11,0.15); }
+  .ci-red { background: rgba(239,68,68,0.15); }
+  .ci-pink { background: rgba(236,72,153,0.15); }
+  .ci-teal { background: rgba(20,184,166,0.15); }
+  .ci-indigo { background: rgba(99,102,241,0.15); }
+
+  .st-blue { color: var(--blue); }
+  .st-purple { color: var(--purple); }
+  .st-green { color: var(--green); }
+  .st-orange { color: var(--orange); }
+  .st-red { color: var(--red); }
+  .st-pink { color: var(--pink); }
+  .st-teal { color: var(--teal); }
+  .st-indigo { color: #6366f1; }
+
+  /* LOCATOR BOX */
+  .locator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .locator-card {
+    background: #0f172a; border-radius: 10px; padding: 14px;
+    border: 1px solid #334155;
+  }
+  .locator-name { font-size: 12px; font-weight: 700; color: #60a5fa; margin-bottom: 6px; }
+  .locator-example { font-family: 'Fira Code', monospace; font-size: 11.5px; color: #c3e88d; }
+  .locator-note { font-size: 11px; color: #64748b; margin-top: 4px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .concept-grid.cols-2, .concept-grid.cols-3, .locator-grid { grid-template-columns: 1fr; }
+    .cover-grid { grid-template-columns: repeat(2, 1fr); }
+    .chapter-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="fire-badge">🔥 FINAL EVALUATION EDITION</div>
+  <div class="cover-badge">Cognizant GenC · QEA Track · 2025–26</div>
+  <h1>Complete Study Guide<br>Quality Engineer with<br>Selenium Automation</h1>
+  <p class="cover-sub">Everything you need — Java · SQL · Selenium · TestNG · POM · POI · BDD · REST Assured · DevOps</p>
+  <div class="cover-grid">
+    <div class="cover-tag">☕ Core Java</div>
+    <div class="cover-tag">🗄️ SQL</div>
+    <div class="cover-tag">🌐 Selenium</div>
+    <div class="cover-tag">🧪 TestNG</div>
+    <div class="cover-tag">📐 POM</div>
+    <div class="cover-tag">📊 Apache POI</div>
+    <div class="cover-tag">🥒 BDD Cucumber</div>
+    <div class="cover-tag">🔌 REST Assured</div>
+    <div class="cover-tag">🐳 Docker</div>
+    <div class="cover-tag">⚙️ Jenkins</div>
+    <div class="cover-tag">🤖 GenAI</div>
+    <div class="cover-tag">📝 JIRA</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>📚 Table of Contents</h2>
+  <div class="toc-grid">
+    <div class="toc-item"><span class="toc-num">01</span>🔥 Tomorrow's Priorities</div>
+    <div class="toc-item"><span class="toc-num">02</span>☕ Java OOP + Collections</div>
+    <div class="toc-item"><span class="toc-num">03</span>🌐 Selenium Basics + Locators</div>
+    <div class="toc-item"><span class="toc-num">04</span>⏳ Waits (All Types)</div>
+    <div class="toc-item"><span class="toc-num">05</span>🔧 Selenium Advanced</div>
+    <div class="toc-item"><span class="toc-num">06</span>📐 POM + PageFactory</div>
+    <div class="toc-item"><span class="toc-num">07</span>🧪 TestNG Complete</div>
+    <div class="toc-item"><span class="toc-num">08</span>📊 Apache POI</div>
+    <div class="toc-item"><span class="toc-num">09</span>🏗️ Hybrid Framework</div>
+    <div class="toc-item"><span class="toc-num">10</span>🗄️ SQL Advanced</div>
+    <div class="toc-item"><span class="toc-num">11</span>🥒 BDD Cucumber</div>
+    <div class="toc-item"><span class="toc-num">12</span>🔌 REST Assured + Postman</div>
+    <div class="toc-item"><span class="toc-num">13</span>⚙️ DevOps (Git/Maven/Jenkins)</div>
+    <div class="toc-item"><span class="toc-num">14</span>🐳 Docker</div>
+    <div class="toc-item"><span class="toc-num">15</span>🤖 GenAI + GitHub Copilot</div>
+    <div class="toc-item"><span class="toc-num">16</span>🎯 Viva Q&A Master List</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 1: PRIORITIES -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-red">
+    <div class="chapter-icon ci-red">🔥</div>
+    <div>
+      <div class="chapter-title">Chapter 1 — Tomorrow's Priorities</div>
+      <div class="chapter-sub">Focus here FIRST — most asked in technical discussions</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+    <div class="concept-grid cols-2">
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 1</div>
+        <div class="concept-value"><strong>Selenium Basics</strong> — WebDriver, browser setup, driver methods, all element interactions</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 2</div>
+        <div class="concept-value"><strong>Waits</strong> — Implicit, Explicit, Fluent, ExpectedConditions, why NOT Thread.sleep</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 3</div>
+        <div class="concept-value"><strong>XPath & Locators</strong> — All 8 locators, CSS deep dive, XPath axes, dynamic XPath</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 4</div>
+        <div class="concept-value"><strong>Testing Concepts</strong> — SDLC, STLC, defect lifecycle, smoke vs sanity, QA vs QC</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 5</div>
+        <div class="concept-value"><strong>Java OOPs</strong> — 4 pillars, interface vs abstract, static, constructors, exceptions</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 6</div>
+        <div class="concept-value"><strong>Collections</strong> — ArrayList, HashMap, HashSet, List vs Set, Iterator</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 7</div>
+        <div class="concept-value"><strong>SQL Joins + Aggregates</strong> — INNER/LEFT/RIGHT JOIN, GROUP BY, HAVING, COUNT/SUM/AVG</div>
+      </div>
+      <div class="concept-card highlight">
+        <div class="concept-label st-red">🥇 Priority 8</div>
+        <div class="concept-value"><strong>POM + TestNG</strong> — PageFactory, @FindBy, BaseTest, annotations order, assertions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 2: JAVA OOP -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-blue">
+    <div class="chapter-icon ci-blue">☕</div>
+    <div>
+      <div class="chapter-title">Chapter 2 — Java OOP + Collections</div>
+      <div class="chapter-sub">Core Java fundamentals — extremely high viva frequency</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-blue">4 OOP Pillars</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-blue">Encapsulation</div>
+          <div class="concept-value">Wrap data + methods. Private variables + public getters/setters. Like ATM — press buttons but can't see internals. In Selenium: <code>private WebDriver driver;</code></div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-blue">Inheritance</div>
+          <div class="concept-value">Child gets parent properties via <code>extends</code>. BaseTest → LoginTest. Multiple inheritance NOT allowed with classes (diamond problem). Only with interfaces.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-blue">Polymorphism</div>
+          <div class="concept-value">Compile-time = overloading (same name, diff params). Runtime = overriding (child redefines parent). <code>WebDriver driver = new ChromeDriver();</code> is runtime polymorphism.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-blue">Abstraction</div>
+          <div class="concept-value">Hide complexity, show only functionality. WebDriver is interface — says WHAT to do. ChromeDriver is class — says HOW. You call <code>driver.click()</code> without knowing internals.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-blue">Interface vs Abstract Class</div>
+      <table class="data-table">
+        <tr><th>Feature</th><th>Interface</th><th>Abstract Class</th></tr>
+        <tr><td>Methods</td><td>Only abstract (before Java 8)</td><td>Both abstract + concrete</td></tr>
+        <tr><td>Constructor</td><td>❌ No</td><td>✅ Yes</td></tr>
+        <tr><td>Multiple</td><td>✅ implements multiple</td><td>❌ extends only one</td></tr>
+        <tr><td>Keyword</td><td>implements</td><td>extends</td></tr>
+        <tr><td>Example</td><td>WebDriver interface</td><td>BaseTest class</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-blue">Key Concepts — Quick Fire</div>
+      <div class="qa-list">
+        <div class="qa-item">
+          <div class="qa-q"><span class="qa-q-badge">Q</span>== vs .equals()?</div>
+          <div class="qa-a">== compares memory address (same object?). .equals() compares content (same value?). ALWAYS use .equals() for Strings in Selenium assertions.</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q"><span class="qa-q-badge">Q</span>final, finally, finalize?</div>
+          <div class="qa-a"><strong>final</strong> = cannot change/override/extend. <strong>finally</strong> = always runs after try-catch (perfect for driver.quit()). <strong>finalize</strong> = called by GC before object destroyed.</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q"><span class="qa-q-badge">Q</span>static keyword?</div>
+          <div class="qa-a">Belongs to CLASS not object. Shared across all instances. Called without creating object. Driver is often static in BaseTest so all test classes share it.</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q"><span class="qa-q-badge">Q</span>this vs super?</div>
+          <div class="qa-a"><strong>this</strong> = current class/object. <strong>super</strong> = parent class. super(driver) in LoginPage constructor calls BaseTest/BasePage constructor.</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-q"><span class="qa-q-badge">Q</span>String immutability?</div>
+          <div class="qa-a">Once created, cannot change. Any modification creates NEW String object. StringBuilder is mutable (not thread safe). StringBuffer is mutable + thread safe.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-blue">Collections — What Selenium Uses</div>
+      <div class="locator-grid">
+        <div class="locator-card">
+          <div class="locator-name">ArrayList — findElements()</div>
+          <div class="locator-example">List&lt;WebElement&gt; els = driver.findElements(By.tagName("a"));</div>
+          <div class="locator-note">Ordered, allows duplicates, dynamic size</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">Set — getWindowHandles()</div>
+          <div class="locator-example">Set&lt;String&gt; handles = driver.getWindowHandles();</div>
+          <div class="locator-note">Unordered, NO duplicates — each handle is unique</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">HashMap — ChromeOptions</div>
+          <div class="locator-example">Map&lt;String,Object&gt; prefs = new HashMap&lt;&gt;();<br>prefs.put("download.dir", "C:/");</div>
+          <div class="locator-note">Key-value pairs for browser preferences</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">Iterator — window switching</div>
+          <div class="locator-example">for(String w : handles) {<br>  driver.switchTo().window(w);<br>}</div>
+          <div class="locator-note">Traverse Set of window handles</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-blue">Exception Handling in Selenium</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-red">NoSuchElementException</div>
+          <div class="concept-value">Element not found on page. Fix: check locator, add wait.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-red">StaleElementReferenceException</div>
+          <div class="concept-value">Element found, page refreshed, reference invalid. Fix: find element again.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-red">ElementClickInterceptedException</div>
+          <div class="concept-value">Another element blocking click. Fix: JS click or close overlay first.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-red">TimeoutException</div>
+          <div class="concept-value">Wait condition not met in time. Fix: increase timeout or fix locator.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 3: SELENIUM BASICS -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-purple">
+    <div class="chapter-icon ci-purple">🌐</div>
+    <div>
+      <div class="chapter-title">Chapter 3 — Selenium Basics + Locators</div>
+      <div class="chapter-sub">WebDriver fundamentals + all 8 locators in depth</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-purple">Selenium Architecture</div>
+      <div class="flow">
+        <div class="flow-step">Java Code</div><div class="flow-arrow">→</div>
+        <div class="flow-step">WebDriver API</div><div class="flow-arrow">→</div>
+        <div class="flow-step">ChromeDriver</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Chrome Browser</div>
+      </div>
+      <div class="callout callout-blue">
+        <div class="callout-icon">💡</div>
+        <div class="callout-text"><strong>WebDriver</strong> is an interface. <strong>ChromeDriver</strong> is the class that implements it. <strong>W3C Protocol</strong> (Selenium 4) — all browsers follow same standard. More stable.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-purple">Key WebDriver Methods</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-purple">Navigation</div>
+          <div class="concept-value">
+            <code>driver.get(url)</code> — open URL (no history)<br>
+            <code>driver.navigate().to(url)</code> — open with history<br>
+            <code>driver.navigate().back()</code> — ← button<br>
+            <code>driver.navigate().forward()</code> — → button<br>
+            <code>driver.navigate().refresh()</code> — F5
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-purple">Info Methods</div>
+          <div class="concept-value">
+            <code>driver.getTitle()</code> — page title<br>
+            <code>driver.getCurrentUrl()</code> — current URL<br>
+            <code>driver.getPageSource()</code> — full HTML<br>
+            <code>driver.close()</code> — current tab<br>
+            <code>driver.quit()</code> — entire browser ✅
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-purple">All 8 Locators + When to Use</div>
+      <div class="locator-grid">
+        <div class="locator-card">
+          <div class="locator-name">1. By.id ⭐ Best</div>
+          <div class="locator-example">By.id("username")</div>
+          <div class="locator-note">Always first choice. Fastest. Most reliable.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">2. By.name</div>
+          <div class="locator-example">By.name("user")</div>
+          <div class="locator-note">When id not available</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">3. By.className</div>
+          <div class="locator-example">By.className("inputBox")</div>
+          <div class="locator-note">When unique class exists. Avoid if multiple elements share class.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">4. By.tagName</div>
+          <div class="locator-example">By.tagName("input")</div>
+          <div class="locator-note">For getting all elements of a type. Use with findElements.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">5. By.linkText</div>
+          <div class="locator-example">By.linkText("Form Authentication")</div>
+          <div class="locator-note">Only for &lt;a&gt; tags. Exact full text match.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">6. By.partialLinkText</div>
+          <div class="locator-example">By.partialLinkText("Form")</div>
+          <div class="locator-note">Only for &lt;a&gt; tags. Partial text match.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">7. By.cssSelector ⭐ Fast</div>
+          <div class="locator-example">By.cssSelector("input#username")<br>By.cssSelector(".form-control")<br>By.cssSelector("input[type='text']")<br>By.cssSelector("tr:nth-child(2)")</div>
+          <div class="locator-note">Faster than XPath. Only goes DOWNWARD.</div>
+        </div>
+        <div class="locator-card">
+          <div class="locator-name">8. By.xpath ⭐ Powerful</div>
+          <div class="locator-example">//input[@id='username']<br>//button[text()='Login']<br>//input[contains(@class,'box')]<br>//input[starts-with(@id,'field_')]</div>
+          <div class="locator-note">Most powerful. Goes ANY direction. Slower than CSS.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-purple">XPath Axes — Navigate Relative to Element</div>
+      <div class="callout callout-purple">
+        <div class="callout-icon">🎯</div>
+        <div class="callout-text"><strong>Real use case:</strong> Find "Edit" button in row containing "John" — no id/class on button.<br>
+        <code>//td[text()='John']/following-sibling::td/button[text()='Edit']</code></div>
+      </div>
+      <table class="data-table">
+        <tr><th>Axis</th><th>Direction</th><th>Example</th></tr>
+        <tr><td><span class="badge badge-purple">parent::</span></td><td>Go UP one level</td><td><code>//input[@id='x']/parent::div</code></td></tr>
+        <tr><td><span class="badge badge-purple">ancestor::</span></td><td>Any level UP</td><td><code>//input/ancestor::form</code></td></tr>
+        <tr><td><span class="badge badge-purple">child::</span></td><td>Direct children</td><td><code>//div/child::input</code></td></tr>
+        <tr><td><span class="badge badge-purple">descendant::</span></td><td>Any level DOWN</td><td><code>//form/descendant::input</code></td></tr>
+        <tr><td><span class="badge badge-purple">following-sibling::</span></td><td>Siblings AFTER</td><td><code>//label/following-sibling::input</code></td></tr>
+        <tr><td><span class="badge badge-purple">preceding-sibling::</span></td><td>Siblings BEFORE</td><td><code>//input[@id='pass']/preceding-sibling::input</code></td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-purple">WebElement Actions</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-purple">Interactions</div>
+          <div class="concept-value">
+            <code>el.click()</code> — click<br>
+            <code>el.sendKeys("text")</code> — type<br>
+            <code>el.clear()</code> — clear field<br>
+            <code>el.getText()</code> — get visible text<br>
+            <code>el.getAttribute("value")</code> — get attribute
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-purple">State Checks</div>
+          <div class="concept-value">
+            <code>el.isDisplayed()</code> — visible?<br>
+            <code>el.isEnabled()</code> — clickable?<br>
+            <code>el.isSelected()</code> — checkbox/radio checked?<br>
+            <code>el.getTagName()</code> — HTML tag<br>
+            <code>el.getCssValue("color")</code> — CSS property
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 4: WAITS -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-orange">
+    <div class="chapter-icon ci-orange">⏳</div>
+    <div>
+      <div class="chapter-title">Chapter 4 — Waits (All Types)</div>
+      <div class="chapter-sub">Most tested concept in every Selenium interview</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="callout callout-orange">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-text"><strong>Why waits?</strong> Modern websites use AJAX — content loads dynamically AFTER page opens. Selenium tries to find elements before they load → NoSuchElementException. Waits = patience for Selenium.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-orange">3 Types Comparison</div>
+      <table class="data-table">
+        <tr><th>Type</th><th>Scope</th><th>Timing</th><th>Use When</th></tr>
+        <tr><td><span class="badge badge-red">Thread.sleep(3000)</span></td><td>Entire program</td><td>Fixed — ALWAYS waits 3s even if ready in 0.5s</td><td>❌ NEVER in real code</td></tr>
+        <tr><td><span class="badge badge-orange">Implicit Wait</span></td><td>ALL findElements</td><td>Up to X seconds, moves on when ready</td><td>General page loads</td></tr>
+        <tr><td><span class="badge badge-green">Explicit Wait</span></td><td>ONE specific element</td><td>Up to X seconds, for specific condition</td><td>Dynamic content</td></tr>
+        <tr><td><span class="badge badge-blue">Fluent Wait</span></td><td>ONE specific element</td><td>Custom polling + ignore exceptions</td><td>Complex dynamic elements</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-orange">Code Examples</div>
+      <div class="code-block">
+<span class="cmt">// Implicit Wait — set once, applies everywhere</span>
+driver.<span class="met">manage</span>().<span class="met">timeouts</span>().<span class="met">implicitlyWait</span>(Duration.<span class="met">ofSeconds</span>(<span class="num">10</span>));
+
+<span class="cmt">// Explicit Wait — specific element + condition</span>
+WebDriverWait wait = <span class="kw">new</span> <span class="cls">WebDriverWait</span>(driver, Duration.<span class="met">ofSeconds</span>(<span class="num">10</span>));
+wait.<span class="met">until</span>(ExpectedConditions.<span class="met">visibilityOfElementLocated</span>(By.<span class="met">id</span>(<span class="str">"btn"</span>)));
+wait.<span class="met">until</span>(ExpectedConditions.<span class="met">elementToBeClickable</span>(By.<span class="met">id</span>(<span class="str">"submit"</span>))).<span class="met">click</span>();
+
+<span class="cmt">// Fluent Wait — custom polling + ignore exceptions</span>
+FluentWait&lt;WebDriver&gt; fwait = <span class="kw">new</span> <span class="cls">FluentWait</span>&lt;&gt;(driver)
+    .<span class="met">withTimeout</span>(Duration.<span class="met">ofSeconds</span>(<span class="num">30</span>))
+    .<span class="met">pollingEvery</span>(Duration.<span class="met">ofSeconds</span>(<span class="num">2</span>))
+    .<span class="met">ignoring</span>(NoSuchElementException.<span class="kw">class</span>);
+WebElement el = fwait.<span class="met">until</span>(d -> d.<span class="met">findElement</span>(By.<span class="met">id</span>(<span class="str">"dynamicEl"</span>)));
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-orange">All ExpectedConditions</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-orange">Element Conditions</div>
+          <div class="concept-value">
+            <code>visibilityOfElementLocated</code> — visible + present<br>
+            <code>presenceOfElementLocated</code> — in DOM (even hidden)<br>
+            <code>elementToBeClickable</code> — visible + enabled<br>
+            <code>invisibilityOfElementLocated</code> — disappears (spinner)
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-orange">Page/Browser Conditions</div>
+          <div class="concept-value">
+            <code>alertIsPresent</code> — alert popup appears<br>
+            <code>titleContains("text")</code> — title has text<br>
+            <code>urlContains("/path")</code> — URL has path<br>
+            <code>frameToBeAvailableAndSwitchToIt</code> — frame ready<br>
+            <code>numberOfElementsToBe(By, 5)</code> — element count
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 5: SELENIUM ADVANCED -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-teal">
+    <div class="chapter-icon ci-teal">🔧</div>
+    <div>
+      <div class="chapter-title">Chapter 5 — Selenium Advanced</div>
+      <div class="chapter-sub">Actions, JS Executor, Screenshots, Alerts, Frames, Windows, Grid</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-teal">Actions Class</div>
+      <div class="callout callout-teal">
+        <div class="callout-icon">🖱️</div>
+        <div class="callout-text"><strong>Why Actions?</strong> Regular click() just clicks. Actions class simulates REAL user behavior — hover, drag, right-click, keyboard combos. Needs <code>.perform()</code> to execute.</div>
+      </div>
+      <div class="code-block">
+<span class="cls">Actions</span> actions = <span class="kw">new</span> <span class="cls">Actions</span>(driver);
+
+actions.<span class="met">moveToElement</span>(element).<span class="met">perform</span>();           <span class="cmt">// hover</span>
+actions.<span class="met">contextClick</span>(element).<span class="met">perform</span>();              <span class="cmt">// right-click</span>
+actions.<span class="met">doubleClick</span>(element).<span class="met">perform</span>();               <span class="cmt">// double-click</span>
+actions.<span class="met">dragAndDrop</span>(source, target).<span class="met">perform</span>();        <span class="cmt">// drag & drop</span>
+actions.<span class="met">sendKeys</span>(Keys.CONTROL, <span class="str">"a"</span>).<span class="met">perform</span>();       <span class="cmt">// Ctrl+A</span>
+actions.<span class="met">keyDown</span>(Keys.SHIFT).<span class="met">sendKeys</span>(<span class="str">"hello"</span>).<span class="met">keyUp</span>(Keys.SHIFT).<span class="met">perform</span>();
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-teal">JavaScript Executor</div>
+      <div class="callout callout-teal">
+        <div class="callout-icon">⚡</div>
+        <div class="callout-text"><strong>Why JSExecutor?</strong> When Selenium native methods fail — hidden elements, overlays, forced scrolling. Cast WebDriver to JavascriptExecutor since WebDriver doesn't expose JS execution directly.</div>
+      </div>
+      <div class="code-block">
+<span class="cls">JavascriptExecutor</span> js = (<span class="cls">JavascriptExecutor</span>) driver;
+
+<span class="cmt">// Click element (bypasses overlay)</span>
+js.<span class="met">executeScript</span>(<span class="str">"arguments[0].click();"</span>, element);
+
+<span class="cmt">// Scroll to element</span>
+js.<span class="met">executeScript</span>(<span class="str">"arguments[0].scrollIntoView(true);"</span>, element);
+
+<span class="cmt">// Scroll by pixels</span>
+js.<span class="met">executeScript</span>(<span class="str">"window.scrollBy(0, 500);"</span>);
+
+<span class="cmt">// Get value</span>
+String val = (String) js.<span class="met">executeScript</span>(<span class="str">"return arguments[0].value;"</span>, el);
+
+<span class="cmt">// Highlight element (debugging)</span>
+js.<span class="met">executeScript</span>(<span class="str">"arguments[0].style.border='3px solid red';"</span>, element);
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-teal">Alerts, Frames, Windows — Switching</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-teal">Alerts</div>
+          <div class="concept-value">
+            <code>Alert a = driver.switchTo().alert();</code><br>
+            <code>a.getText()</code> — get text<br>
+            <code>a.accept()</code> — click OK<br>
+            <code>a.dismiss()</code> — click Cancel<br>
+            <code>a.sendKeys("text")</code> — type in prompt
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Frames</div>
+          <div class="concept-value">
+            <code>driver.switchTo().frame("id")</code><br>
+            <code>driver.switchTo().frame(0)</code> — by index<br>
+            <code>driver.switchTo().frame(webEl)</code><br>
+            <code>driver.switchTo().defaultContent()</code> — back to main<br>
+            <code>driver.switchTo().parentFrame()</code> — up one level
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Multiple Windows</div>
+          <div class="concept-value">
+            <code>String main = driver.getWindowHandle();</code><br>
+            <code>Set&lt;String&gt; all = driver.getWindowHandles();</code><br>
+            Loop through all, switch to the one that's not main<br>
+            <code>driver.close()</code> — close new tab<br>
+            <code>driver.switchTo().window(main)</code> — back
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Screenshots</div>
+          <div class="concept-value">
+            <code>TakesScreenshot ts = (TakesScreenshot) driver;</code><br>
+            <code>File src = ts.getScreenshotAs(OutputType.FILE);</code><br>
+            <code>FileUtils.copyFile(src, new File("path/name.png"));</code><br>
+            Best used in <code>onTestFailure()</code> listener
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-teal">Selenium Grid</div>
+      <div class="callout callout-blue">
+        <div class="callout-icon">🌐</div>
+        <div class="callout-text"><strong>Hub</strong> = central server that receives test requests and distributes to nodes.<br>
+        <strong>Node</strong> = machine that actually runs the browser.<br>
+        <strong>Why?</strong> Run same tests on Chrome + Firefox + Edge simultaneously. Parallel execution = faster.</div>
+      </div>
+      <div class="flow">
+        <div class="flow-step">Test Code</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Hub (localhost:4444)</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Node 1 (Chrome)</div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-step">Node 2 (Firefox)</div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-step">Node 3 (Edge)</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-teal">Parallel Execution</div>
+      <div class="code-block">
+<span class="cmt">&lt;!-- testng.xml parallel execution --&gt;</span>
+&lt;<span class="cls">suite</span> name=<span class="str">"Suite"</span> parallel=<span class="str">"tests"</span> thread-count=<span class="str">"3"</span>&gt;
+  &lt;<span class="cls">test</span> name=<span class="str">"Chrome Test"</span>&gt; ... &lt;/<span class="cls">test</span>&gt;
+  &lt;<span class="cls">test</span> name=<span class="str">"Firefox Test"</span>&gt; ... &lt;/<span class="cls">test</span>&gt;
+&lt;/<span class="cls">suite</span>&gt;
+
+<span class="cmt">// ThreadLocal — each thread gets its own driver</span>
+<span class="kw">private static</span> ThreadLocal&lt;WebDriver&gt; driver = <span class="kw">new</span> <span class="cls">ThreadLocal</span>&lt;&gt;();
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 6: POM + TESTNG -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-green">
+    <div class="chapter-icon ci-green">📐</div>
+    <div>
+      <div class="chapter-title">Chapter 6 — POM + TestNG Complete</div>
+      <div class="chapter-sub">PageFactory, BaseTest, Annotations, Assertions, Listeners</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-green">POM — Why + How</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-red">Without POM ❌</div>
+          <div class="concept-value">findElement scattered everywhere. Change one locator = update 20 files. Messy, not reusable, hard to read.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-green">With POM ✅</div>
+          <div class="concept-value">Each page = one class with all locators + actions. Change one locator = update ONE file. Clean, reusable, readable.</div>
+        </div>
+      </div>
+      <div class="code-block">
+<span class="cmt">// LoginPage.java — Page class (locators + actions)</span>
+<span class="kw">public class</span> <span class="cls">LoginPage</span> {
+    <span class="ann">@FindBy</span>(id = <span class="str">"username"</span>) WebElement usernameField;
+    <span class="ann">@FindBy</span>(id = <span class="str">"password"</span>) WebElement passwordField;
+    <span class="ann">@FindBy</span>(css = <span class="str">"button[type='submit']"</span>) WebElement loginBtn;
+
+    <span class="kw">public</span> <span class="cls">LoginPage</span>(WebDriver driver) {
+        PageFactory.<span class="met">initElements</span>(driver, <span class="kw">this</span>); <span class="cmt">// activates @FindBy</span>
+    }
+    <span class="kw">public void</span> <span class="met">login</span>(String user, String pass) {
+        usernameField.<span class="met">sendKeys</span>(user);
+        passwordField.<span class="met">sendKeys</span>(pass);
+        loginBtn.<span class="met">click</span>();
+    }
+}
+<span class="cmt">// LoginTest.java — Test class (only calls methods)</span>
+loginPage = <span class="kw">new</span> <span class="cls">LoginPage</span>(driver);
+loginPage.<span class="met">login</span>(<span class="str">"tomsmith"</span>, <span class="str">"SuperSecretPassword!"</span>);
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">TestNG Annotation Order</div>
+      <div class="callout callout-green">
+        <div class="callout-icon">📋</div>
+        <div class="callout-text">
+          <strong>BeforeSuite</strong> → BeforeTest → <strong>BeforeClass</strong> → <strong>BeforeMethod</strong> → <strong>@Test</strong> → <strong>AfterMethod</strong> → AfterClass → AfterTest → <strong>AfterSuite</strong>
+        </div>
+      </div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-red">@BeforeMethod vs @BeforeClass</div>
+          <div class="concept-value">BeforeMethod = runs before EACH test → opens browser 5 times. BeforeClass = runs ONCE → all 5 tests share one browser. <strong>Use BeforeClass for efficiency.</strong></div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-green">Hard vs Soft Assert</div>
+          <div class="concept-value"><strong>Hard Assert</strong> — stops test immediately on fail. <strong>Soft Assert</strong> — continues, collects all, reports at end with <code>soft.assertAll()</code>. Use soft when checking multiple things.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">TestNG Advanced Features</div>
+      <div class="code-block">
+<span class="ann">@Test</span>(priority=<span class="num">1</span>, groups=<span class="str">"smoke"</span>, enabled=<span class="kw">true</span>, timeOut=<span class="num">5000</span>)
+<span class="ann">@Test</span>(dependsOnMethods=<span class="str">"testLogin"</span>) <span class="cmt">// skip if testLogin fails</span>
+
+<span class="ann">@DataProvider</span>(name=<span class="str">"loginData"</span>)
+<span class="kw">public</span> Object[][] <span class="met">data</span>() {
+    <span class="kw">return new</span> Object[][] { {<span class="str">"user1"</span>,<span class="str">"pass1"</span>}, {<span class="str">"user2"</span>,<span class="str">"pass2"</span>} };
+}
+<span class="ann">@Test</span>(dataProvider=<span class="str">"loginData"</span>)
+<span class="kw">public void</span> <span class="met">testLogin</span>(String user, String pass) { ... }
+
+<span class="cmt">// Listeners — screenshot on failure</span>
+<span class="kw">public class</span> <span class="cls">MyListener</span> <span class="kw">implements</span> ITestListener {
+    <span class="kw">public void</span> <span class="met">onTestFailure</span>(ITestResult result) {
+        <span class="cmt">// take screenshot here</span>
+    }
+}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 7: POI + FRAMEWORK -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-indigo">
+    <div class="chapter-icon ci-indigo">📊</div>
+    <div>
+      <div class="chapter-title">Chapter 7 — Apache POI + Hybrid Framework</div>
+      <div class="chapter-sub">Excel handling, Log4j, ExtentReports, framework architecture</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-indigo">Apache POI — Excel Read/Write</div>
+      <div class="code-block">
+<span class="cmt">// READ Excel</span>
+FileInputStream fis = <span class="kw">new</span> <span class="cls">FileInputStream</span>(<span class="str">"TestData.xlsx"</span>);
+Workbook wb = <span class="kw">new</span> <span class="cls">XSSFWorkbook</span>(fis);
+Sheet sh = wb.<span class="met">getSheetAt</span>(<span class="num">0</span>);
+Row row = sh.<span class="met">getRow</span>(<span class="num">1</span>);           <span class="cmt">// row 0 = header, row 1 = data</span>
+String val = row.<span class="met">getCell</span>(<span class="num">0</span>).<span class="met">getStringCellValue</span>();
+fis.<span class="met">close</span>(); wb.<span class="met">close</span>();
+
+<span class="cmt">// WRITE + Color to Excel</span>
+CellStyle style = wb.<span class="met">createCellStyle</span>();
+style.<span class="met">setFillPattern</span>(FillPatternType.SOLID_FOREGROUND);
+style.<span class="met">setFillForegroundColor</span>(IndexedColors.LIGHT_GREEN.<span class="met">getIndex</span>()); <span class="cmt">// PASS</span>
+<span class="cmt">// IndexedColors.ROSE for FAIL</span>
+cell.<span class="met">setCellStyle</span>(style);
+FileOutputStream fos = <span class="kw">new</span> <span class="cls">FileOutputStream</span>(<span class="str">"TestData.xlsx"</span>);
+wb.<span class="met">write</span>(fos); fos.<span class="met">close</span>();
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-indigo">ExtentReports</div>
+      <div class="flow">
+        <div class="flow-step">ExtentSparkReporter</div><div class="flow-arrow">→</div>
+        <div class="flow-step">ExtentReports</div><div class="flow-arrow">→</div>
+        <div class="flow-step">ExtentTest per @Test</div><div class="flow-arrow">→</div>
+        <div class="flow-step">log pass/fail/info</div><div class="flow-arrow">→</div>
+        <div class="flow-step">flush() → HTML</div>
+      </div>
+      <div class="callout callout-purple">
+        <div class="callout-icon">📊</div>
+        <div class="callout-text">Create in <strong>Listener's onTestStart/onTestFailure</strong>. <code>flush()</code> must be called in AfterSuite — writes everything to HTML file. Without flush, report is empty.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-indigo">Hybrid Framework Architecture</div>
+      <div class="code-block">
+src/
+├── main/java/
+│   ├── pages/        ← Page classes (LoginPage, HomePage)
+│   ├── base/         ← BaseTest, BasePage
+│   └── utils/        ← ConfigReader, ExcelUtils, LoggerUtils
+└── test/java/
+    └── tests/        ← @Test classes only
+resources/
+├── config.properties ← browser, url, credentials
+├── testng.xml        ← suite configuration
+└── testdata/         ← Excel files
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-indigo">Maven Lifecycle</div>
+      <div class="flow">
+        <div class="flow-step">validate</div><div class="flow-arrow">→</div>
+        <div class="flow-step">compile</div><div class="flow-arrow">→</div>
+        <div class="flow-step">test</div><div class="flow-arrow">→</div>
+        <div class="flow-step">package</div><div class="flow-arrow">→</div>
+        <div class="flow-step">install</div><div class="flow-arrow">→</div>
+        <div class="flow-step">deploy</div>
+      </div>
+      <div class="callout callout-orange">
+        <div class="callout-icon">⚡</div>
+        <div class="callout-text">Most used: <strong>mvn clean test</strong> — cleans old build then runs all tests. TestNG scope = <code>test</code> → only available in src/test/java, NOT src/main/java. That's why classes must be in test folder!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 8: SQL ADVANCED -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-pink">
+    <div class="chapter-icon ci-pink">🗄️</div>
+    <div>
+      <div class="chapter-title">Chapter 8 — SQL Advanced</div>
+      <div class="chapter-sub">Joins, aggregates, subqueries, rank function, string/date functions</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-pink">Joins Visual</div>
+      <table class="data-table">
+        <tr><th>Join Type</th><th>Returns</th><th>SQL</th></tr>
+        <tr><td><span class="badge badge-blue">INNER JOIN</span></td><td>Only matching rows in BOTH tables</td><td><code>e JOIN d ON e.dept_id = d.id</code></td></tr>
+        <tr><td><span class="badge badge-green">LEFT JOIN</span></td><td>ALL rows from LEFT + matching from right (NULL for no match)</td><td><code>e LEFT JOIN d ON ...</code></td></tr>
+        <tr><td><span class="badge badge-orange">RIGHT JOIN</span></td><td>ALL rows from RIGHT + matching from left</td><td><code>e RIGHT JOIN d ON ...</code></td></tr>
+        <tr><td><span class="badge badge-purple">FULL OUTER JOIN</span></td><td>ALL rows from both, NULL where no match</td><td>LEFT UNION RIGHT</td></tr>
+        <tr><td><span class="badge badge-teal">SELF JOIN</span></td><td>Table joined with itself (employee-manager)</td><td><code>e JOIN e m ON e.mgr_id = m.id</code></td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-pink">Aggregates + GROUP BY + HAVING</div>
+      <div class="code-block">
+<span class="cmt">-- Aggregate functions</span>
+<span class="kw">SELECT</span> COUNT(*), AVG(salary), SUM(salary), MAX(salary), MIN(salary) <span class="kw">FROM</span> employees;
+
+<span class="cmt">-- GROUP BY: count employees per department</span>
+<span class="kw">SELECT</span> dept_id, COUNT(*) <span class="kw">AS</span> emp_count <span class="kw">FROM</span> employees <span class="kw">GROUP BY</span> dept_id;
+
+<span class="cmt">-- HAVING: filter groups (not WHERE!)</span>
+<span class="kw">SELECT</span> dept_id, COUNT(*) <span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> dept_id <span class="kw">HAVING</span> COUNT(*) > <span class="num">2</span>;
+
+<span class="cmt">-- WHERE filters rows, HAVING filters groups</span>
+<span class="kw">SELECT</span> dept_id, AVG(salary) <span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> hire_date > <span class="str">'2019-01-01'</span>   <span class="cmt">-- filter rows first</span>
+<span class="kw">GROUP BY</span> dept_id
+<span class="kw">HAVING</span> AVG(salary) > <span class="num">60000</span>;          <span class="cmt">-- filter groups after</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-pink">RANK Functions — Window Functions</div>
+      <div class="code-block">
+<span class="cmt">-- RANK: same salary = same rank, SKIPS next (1,2,2,4)</span>
+<span class="kw">SELECT</span> name, salary, RANK() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rnk <span class="kw">FROM</span> employees;
+
+<span class="cmt">-- DENSE_RANK: same salary = same rank, NO skip (1,2,2,3)</span>
+<span class="kw">SELECT</span> name, salary, DENSE_RANK() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rnk <span class="kw">FROM</span> employees;
+
+<span class="cmt">-- ROW_NUMBER: unique, no ties (1,2,3,4 always)</span>
+<span class="kw">SELECT</span> name, salary, ROW_NUMBER() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rn <span class="kw">FROM</span> employees;
+
+<span class="cmt">-- Top earner per department</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> (
+  <span class="kw">SELECT</span> name, salary, dept_id,
+    ROW_NUMBER() <span class="kw">OVER</span> (PARTITION <span class="kw">BY</span> dept_id <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rn
+  <span class="kw">FROM</span> employees
+) t <span class="kw">WHERE</span> rn = <span class="num">1</span>;
+
+<span class="cmt">-- 2nd highest salary</span>
+<span class="kw">SELECT</span> MAX(salary) <span class="kw">FROM</span> employees <span class="kw">WHERE</span> salary < (<span class="kw">SELECT</span> MAX(salary) <span class="kw">FROM</span> employees);
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-pink">String + Date Functions</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-pink">String Functions</div>
+          <div class="concept-value">
+            <code>UPPER('hello')</code> → HELLO<br>
+            <code>LOWER('HELLO')</code> → hello<br>
+            <code>LENGTH('hello')</code> → 5<br>
+            <code>TRIM('  hi  ')</code> → 'hi'<br>
+            <code>SUBSTRING('hello',2,3)</code> → 'ell'<br>
+            <code>CONCAT('A',' ','B')</code> → 'A B'<br>
+            <code>REPLACE('hello','l','r')</code> → 'herro'
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-pink">Date Functions</div>
+          <div class="concept-value">
+            <code>NOW()</code> → current date+time<br>
+            <code>CURDATE()</code> → current date<br>
+            <code>YEAR('2024-06-15')</code> → 2024<br>
+            <code>MONTH(date)</code> → month number<br>
+            <code>DATEDIFF(d1, d2)</code> → days between<br>
+            <code>DATE_ADD(date, INTERVAL 30 DAY)</code><br>
+            <code>DATE_FORMAT(NOW(), '%d-%m-%Y')</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-pink">Normalization</div>
+      <div class="concept-grid cols-3">
+        <div class="concept-card">
+          <div class="concept-label st-pink">1NF</div>
+          <div class="concept-value">Atomic values. No repeating groups. Each row unique. No arrays in cells.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-pink">2NF</div>
+          <div class="concept-value">Must be 1NF. No partial dependency — non-key column depends on ENTIRE composite key.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-pink">3NF</div>
+          <div class="concept-value">Must be 2NF. No transitive dependency — non-key column must not depend on another non-key column.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 9: BDD CUCUMBER -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-green">
+    <div class="chapter-icon ci-green">🥒</div>
+    <div>
+      <div class="chapter-title">Chapter 9 — BDD Cucumber</div>
+      <div class="chapter-sub">Behavior Driven Development, Gherkin, Feature files, Step Definitions</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="callout callout-green">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text"><strong>What is BDD?</strong> Tests written in plain English that BUSINESS can read + understand. No technical jargon. Developer writes Java code behind each plain English step. Bridges gap between business and tech.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">Gherkin Syntax — Feature File</div>
+      <div class="code-block">
+<span class="cmt"># login.feature</span>
+<span class="ann">Feature:</span> User Login
+  <span class="kw">As a</span> registered user
+  <span class="kw">I want to</span> login to the application
+  <span class="kw">So that</span> I can access my account
+
+  <span class="ann">Scenario:</span> Valid Login
+    <span class="kw">Given</span> user is on the login page
+    <span class="kw">When</span> user enters username <span class="str">"tomsmith"</span> and password <span class="str">"SuperSecretPassword!"</span>
+    <span class="kw">And</span> user clicks the login button
+    <span class="kw">Then</span> user should see <span class="str">"You logged into a secure area!"</span>
+
+  <span class="ann">Scenario Outline:</span> Login with multiple users
+    <span class="kw">Given</span> user is on the login page
+    <span class="kw">When</span> user enters username <span class="str">"&lt;username&gt;"</span> and password <span class="str">"&lt;password&gt;"</span>
+    <span class="kw">Then</span> user should see <span class="str">"&lt;message&gt;"</span>
+
+    <span class="ann">Examples:</span>
+      | username  | password            | message         |
+      | tomsmith  | SuperSecretPassword!| secure area     |
+      | wronguser | wrongpass           | username invalid|
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">Step Definitions — Java Code</div>
+      <div class="code-block">
+<span class="cmt">// LoginSteps.java — maps Gherkin to Java</span>
+<span class="kw">public class</span> <span class="cls">LoginSteps</span> {
+    WebDriver driver;
+    LoginPage loginPage;
+
+    <span class="ann">@Given</span>(<span class="str">"user is on the login page"</span>)
+    <span class="kw">public void</span> <span class="met">userOnLoginPage</span>() {
+        driver = <span class="kw">new</span> <span class="cls">ChromeDriver</span>();
+        driver.<span class="met">get</span>(<span class="str">"https://the-internet.herokuapp.com/login"</span>);
+        loginPage = <span class="kw">new</span> <span class="cls">LoginPage</span>(driver);
+    }
+
+    <span class="ann">@When</span>(<span class="str">"user enters username {string} and password {string}"</span>)
+    <span class="kw">public void</span> <span class="met">enterCredentials</span>(String username, String password) {
+        loginPage.<span class="met">enterUsername</span>(username);
+        loginPage.<span class="met">enterPassword</span>(password);
+    }
+
+    <span class="ann">@Then</span>(<span class="str">"user should see {string}"</span>)
+    <span class="kw">public void</span> <span class="met">verifyMessage</span>(String expected) {
+        String actual = loginPage.<span class="met">getFlashMessage</span>();
+        Assert.<span class="met">assertTrue</span>(actual.<span class="met">contains</span>(expected));
+    }
+}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">Cucumber Keywords</div>
+      <table class="data-table">
+        <tr><th>Keyword</th><th>Purpose</th></tr>
+        <tr><td><span class="badge badge-green">Feature</span></td><td>Describes the feature being tested. High level.</td></tr>
+        <tr><td><span class="badge badge-green">Scenario</span></td><td>One specific test case with steps</td></tr>
+        <tr><td><span class="badge badge-green">Scenario Outline</span></td><td>Same scenario with multiple data sets (use Examples table)</td></tr>
+        <tr><td><span class="badge badge-blue">Given</span></td><td>Precondition / initial state</td></tr>
+        <tr><td><span class="badge badge-blue">When</span></td><td>Action performed by user</td></tr>
+        <tr><td><span class="badge badge-blue">Then</span></td><td>Expected outcome / assertion</td></tr>
+        <tr><td><span class="badge badge-blue">And / But</span></td><td>Continuation of previous step</td></tr>
+        <tr><td><span class="badge badge-orange">Examples</span></td><td>Data table for Scenario Outline</td></tr>
+        <tr><td><span class="badge badge-purple">@Tags</span></td><td>Tag scenarios for selective running (@smoke, @regression)</td></tr>
+        <tr><td><span class="badge badge-teal">Background</span></td><td>Steps common to ALL scenarios in a feature</td></tr>
+        <tr><td><span class="badge badge-red">Hooks</span></td><td>@Before, @After — run before/after each scenario</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-green">Runner Class</div>
+      <div class="code-block">
+<span class="ann">@RunWith</span>(Cucumber.<span class="kw">class</span>)
+<span class="ann">@CucumberOptions</span>(
+    features = <span class="str">"src/test/resources/features"</span>,
+    glue = <span class="str">"stepDefinitions"</span>,
+    tags = <span class="str">"@smoke"</span>,
+    plugin = {<span class="str">"pretty"</span>, <span class="str">"html:target/cucumber-reports"</span>}
+)
+<span class="kw">public class</span> <span class="cls">TestRunner</span> {}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 10: REST ASSURED + POSTMAN -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-orange">
+    <div class="chapter-icon ci-orange">🔌</div>
+    <div>
+      <div class="chapter-title">Chapter 10 — REST Assured + Postman</div>
+      <div class="chapter-sub">API testing fundamentals, HTTP methods, status codes, REST Assured syntax</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-orange">API Fundamentals</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-orange">HTTP Methods</div>
+          <div class="concept-value">
+            <span class="badge badge-green">GET</span> — retrieve data<br>
+            <span class="badge badge-blue">POST</span> — create new data<br>
+            <span class="badge badge-orange">PUT</span> — update entire resource<br>
+            <span class="badge badge-purple">PATCH</span> — update partial resource<br>
+            <span class="badge badge-red">DELETE</span> — remove resource
+          </div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-orange">Status Codes</div>
+          <div class="concept-value">
+            <span class="badge badge-green">200</span> OK — success<br>
+            <span class="badge badge-green">201</span> Created — POST success<br>
+            <span class="badge badge-orange">301</span> Moved Permanently<br>
+            <span class="badge badge-red">400</span> Bad Request<br>
+            <span class="badge badge-red">401</span> Unauthorized<br>
+            <span class="badge badge-red">404</span> Not Found<br>
+            <span class="badge badge-red">500</span> Internal Server Error
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-orange">REST Assured — Given/When/Then</div>
+      <div class="code-block">
+<span class="kw">import static</span> io.restassured.RestAssured.*;
+<span class="kw">import static</span> org.hamcrest.Matchers.*;
+
+<span class="cmt">// Basic GET request</span>
+<span class="met">given</span>()
+    .<span class="met">baseUri</span>(<span class="str">"https://api.example.com"</span>)
+    .<span class="met">header</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+.<span class="met">when</span>()
+    .<span class="met">get</span>(<span class="str">"/users/1"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">200</span>)
+    .<span class="met">body</span>(<span class="str">"name"</span>, <span class="met">equalTo</span>(<span class="str">"John"</span>))
+    .<span class="met">body</span>(<span class="str">"email"</span>, <span class="met">notNullValue</span>());
+
+<span class="cmt">// POST request with body</span>
+String body = <span class="str">"{\"name\":\"John\",\"email\":\"john@test.com\"}"</span>;
+Response res = <span class="met">given</span>()
+    .<span class="met">contentType</span>(<span class="str">"application/json"</span>)
+    .<span class="met">body</span>(body)
+.<span class="met">when</span>()
+    .<span class="met">post</span>(<span class="str">"/users"</span>)
+.<span class="met">then</span>()
+    .<span class="met">statusCode</span>(<span class="num">201</span>)
+    .<span class="met">extract</span>().<span class="met">response</span>();
+
+<span class="cmt">// Extract value</span>
+String id = res.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"id"</span>);
+
+<span class="cmt">// Query parameters</span>
+<span class="met">given</span>().<span class="met">queryParam</span>(<span class="str">"country"</span>, <span class="str">"India"</span>).<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/universities"</span>);
+<span class="cmt">// Path parameters</span>
+<span class="met">given</span>().<span class="met">pathParam</span>(<span class="str">"id"</span>, <span class="str">"5"</span>).<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/{id}"</span>);
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-orange">Postman Key Concepts</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-orange">Collections + Environments</div>
+          <div class="concept-value">Collection = group of related API requests. Environment = set of variables (base URL, tokens) that change per environment (dev/staging/prod).</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-orange">Tests in Postman</div>
+          <div class="concept-value">Write JavaScript in Tests tab:<br>
+          <code>pm.test("Status 200", () => pm.response.to.have.status(200));</code><br>
+          <code>pm.environment.set("id", pm.response.json().id);</code></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 11: DEVOPS -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-blue">
+    <div class="chapter-icon ci-blue">⚙️</div>
+    <div>
+      <div class="chapter-title">Chapter 11 — DevOps (Git + Maven + Jenkins)</div>
+      <div class="chapter-sub">Version control, build automation, CI/CD pipeline</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-blue">Git Essential Commands</div>
+      <div class="code-block">
+git init                     <span class="cmt"># initialize repo</span>
+git clone &lt;url&gt;              <span class="cmt"># copy remote repo locally</span>
+git status                   <span class="cmt"># what changed?</span>
+git add .                    <span class="cmt"># stage all changes</span>
+git commit -m "message"      <span class="cmt"># save snapshot locally</span>
+git push origin main         <span class="cmt"># send to remote</span>
+git pull origin main         <span class="cmt"># get latest from remote</span>
+git branch feature-login     <span class="cmt"># create branch</span>
+git checkout -b feature      <span class="cmt"># create + switch</span>
+git merge feature            <span class="cmt"># merge into current</span>
+git log                      <span class="cmt"># view history</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-blue">Jenkins — CI/CD Pipeline</div>
+      <div class="flow">
+        <div class="flow-step">Dev pushes to Git</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Jenkins detects</div><div class="flow-arrow">→</div>
+        <div class="flow-step">mvn clean test</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Tests run</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Report generated</div><div class="flow-arrow">→</div>
+        <div class="flow-step">Email to team</div>
+      </div>
+      <div class="callout callout-blue">
+        <div class="callout-icon">⚙️</div>
+        <div class="callout-text"><strong>Jenkins Job types:</strong> Freestyle (GUI based, simple) | Pipeline (Groovy script, complex). <strong>Triggers:</strong> SCM Poll, GitHub Webhook, Scheduled (cron), Manual.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 12: DOCKER + GENAI -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-teal">
+    <div class="chapter-icon ci-teal">🐳</div>
+    <div>
+      <div class="chapter-title">Chapter 12 — Docker + GenAI Basics</div>
+      <div class="chapter-sub">Containerization, Selenium Grid in Docker, AI concepts</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-teal">Docker — Key Concepts</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-teal">What is Docker?</div>
+          <div class="concept-value">Containerization platform. Packages app + dependencies into a container. Runs the same everywhere — dev, staging, production. "Works on my machine" problem solved.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Image vs Container</div>
+          <div class="concept-value"><strong>Image</strong> = blueprint/template (like a class). <strong>Container</strong> = running instance of image (like an object). Containers are isolated, lightweight.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Docker + Selenium Grid</div>
+          <div class="concept-value">Run Selenium Grid inside Docker containers. Each browser = separate container. Consistent, clean environment for every test run. No driver version conflicts.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Key Commands</div>
+          <div class="concept-value">
+            <code>docker pull selenium/hub</code><br>
+            <code>docker run -d -p 4444:4444 selenium/hub</code><br>
+            <code>docker ps</code> — list running containers<br>
+            <code>docker stop &lt;id&gt;</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-teal">GenAI + GitHub Copilot</div>
+      <div class="concept-grid cols-2">
+        <div class="concept-card">
+          <div class="concept-label st-teal">What is Generative AI?</div>
+          <div class="concept-value">AI that can CREATE new content — text, code, images. Based on Large Language Models (LLMs). Examples: ChatGPT, Gemini, Claude. In testing: generate test cases, locators, step definitions.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">GitHub Copilot</div>
+          <div class="concept-value">AI coding assistant that lives in your IDE. Suggests code as you type. Can generate: Selenium scripts, XPath locators, TestNG tests, step definitions. Powered by OpenAI Codex.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Prompt Engineering</div>
+          <div class="concept-value">Art of writing clear instructions to AI. Be specific, provide context, give examples. Good prompt → good code. Bad prompt → useless output.</div>
+        </div>
+        <div class="concept-card">
+          <div class="concept-label st-teal">Responsible AI</div>
+          <div class="concept-value">Use AI ethically. Don't feed sensitive customer data to AI tools. Verify AI-generated code before using. AI can make mistakes — always review output.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER 13: VIVA MASTER LIST -->
+<!-- ═══════════════════════════════════ -->
+<div class="chapter">
+  <div class="chapter-header ch-red">
+    <div class="chapter-icon ci-red">🎯</div>
+    <div>
+      <div class="chapter-title">Chapter 13 — Complete Viva Q&A Master List</div>
+      <div class="chapter-sub">Every question that can be asked — know these cold</div>
+    </div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title st-red">Testing Theory</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is Selenium?</div><div class="qa-a">Open source tool to automate web browser testing. Supports Java, Python, C#. Components: IDE, RC (deprecated), WebDriver, Grid.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Verification vs Validation?</div><div class="qa-a">Verification = building it RIGHT (process check, no execution). Validation = building the RIGHT thing (actual testing with execution).</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Smoke vs Sanity testing?</div><div class="qa-a">Smoke = broad shallow check if build is stable enough for testing. Sanity = narrow deep check of specific feature after bug fix.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Severity vs Priority?</div><div class="qa-a">Severity = technical impact of bug on system. Priority = business urgency to fix. Logo missing = low severity, high priority.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>QA vs QC?</div><div class="qa-a">QA = process oriented, prevent defects, proactive. QC = product oriented, find defects, reactive.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">Selenium Questions</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>close() vs quit()?</div><div class="qa-a">close() = closes CURRENT tab only. quit() = closes ENTIRE browser + kills WebDriver process. Always use quit() at end of test.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>findElement vs findElements?</div><div class="qa-a">findElement = single WebElement, throws NoSuchElementException if not found. findElements = List&lt;WebElement&gt;, returns empty list (no exception) if not found.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>CSS vs XPath?</div><div class="qa-a">CSS is faster but can only traverse DOWNWARD in HTML. XPath is slower but can go in ANY direction — up, down, sideways using axes.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Implicit vs Explicit wait?</div><div class="qa-a">Implicit = set once globally, applies to ALL findElements, waits up to X seconds. Explicit = for SPECIFIC element, waits for specific condition using ExpectedConditions. Don't use both together — can conflict.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is StaleElementReferenceException?</div><div class="qa-a">Element was found, then page refreshed/DOM changed, old reference is now invalid. Fix: find element again fresh.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is ElementClickInterceptedException?</div><div class="qa-a">Another element (overlay, cookie banner) is blocking the click on target element. Fix: close overlay, scroll to element, or use JavascriptExecutor click.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Why use JavascriptExecutor?</div><div class="qa-a">When native Selenium fails — hidden elements, overlays blocking clicks, need to scroll precisely, or get/set values JS way. Must cast WebDriver: (JavascriptExecutor) driver.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is headless browser?</div><div class="qa-a">Browser runs without visible window. Used in CI/CD servers with no display. Faster execution, lower memory. Set with ChromeOptions: --headless=new.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>get() vs navigate().to()?</div><div class="qa-a">Both open URL. navigate().to() maintains browser history so back/forward work. get() does not maintain history.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">Java Questions</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>JDK vs JRE vs JVM?</div><div class="qa-a">JVM = runs bytecode (engine). JRE = JVM + libraries to run Java programs. JDK = JRE + compiler + tools to develop Java. Developers need JDK.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>== vs .equals()?</div><div class="qa-a">== compares memory reference (same object?). .equals() compares content (same value?). Always use .equals() for Strings in assertions.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Method overloading vs overriding?</div><div class="qa-a">Overloading = same name, different parameters, same class — compile time polymorphism. Overriding = child redefines parent method — runtime polymorphism.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Why can't Java have multiple inheritance with classes?</div><div class="qa-a">Diamond problem — if B and C both have method show() and D extends both, which show() does D get? Ambiguous. Java solves this by allowing multiple interface implementation.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">POM + TestNG Questions</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is POM?</div><div class="qa-a">Page Object Model — design pattern where each web page has its own Java class with locators and action methods. Tests just call page methods, no findElement in test classes.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is PageFactory?</div><div class="qa-a">Enhanced POM using @FindBy annotations. PageFactory.initElements(driver, this) activates them. Lazy initialization — element searched only when actually used.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>@BeforeMethod vs @BeforeClass?</div><div class="qa-a">BeforeMethod = runs before EACH test, opens browser multiple times. BeforeClass = runs ONCE before all tests in class, all tests share one browser. BeforeClass is more efficient.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>Hard vs Soft Assert?</div><div class="qa-a">Hard Assert stops test immediately on first failure. Soft Assert continues test, collects all failures, reports all at end with soft.assertAll(). Use soft when checking multiple validations.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is TestNG Listener?</div><div class="qa-a">Class implementing ITestListener that automatically reacts to test events. Most important: onTestFailure — take screenshot automatically when test fails.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is dependsOnMethods?</div><div class="qa-a">If parent test fails, dependent tests are automatically skipped. Saves time and avoids misleading failures. TC02 skipped if TC01 fails.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">SQL Questions</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>WHERE vs HAVING?</div><div class="qa-a">WHERE filters individual ROWS before grouping. HAVING filters GROUPS after GROUP BY. WHERE cannot use aggregate functions, HAVING can.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>RANK vs DENSE_RANK vs ROW_NUMBER?</div><div class="qa-a">RANK skips after ties (1,2,2,4). DENSE_RANK no skipping (1,2,2,3). ROW_NUMBER always unique even for equal values (1,2,3,4).</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>TRUNCATE vs DELETE vs DROP?</div><div class="qa-a">TRUNCATE = all rows, DDL, no rollback, fast, resets auto-increment. DELETE = specific/all rows, DML, rollbackable, slow. DROP = removes entire table permanently.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is normalization?</div><div class="qa-a">Organizing tables to reduce data redundancy. 1NF = atomic values. 2NF = no partial dependency. 3NF = no transitive dependency.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">Framework + Tools</div>
+      <div class="qa-list">
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is WebDriverManager?</div><div class="qa-a">Library that auto-downloads matching browser driver at runtime. No manual chromedriver.exe setup. Detects Chrome version, downloads correct driver automatically.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is Apache POI?</div><div class="qa-a">Java library to read/write Microsoft Excel files. Used for data-driven testing — read test data from Excel, write results back. XSSFWorkbook for .xlsx files.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is ExtentReports?</div><div class="qa-a">Third-party library for beautiful HTML test reports with charts, screenshots, logs. Created in Listeners. flush() must be called to write everything to HTML file.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is BDD?</div><div class="qa-a">Behavior Driven Development. Tests written in plain English (Gherkin) that business can read. Given-When-Then format. Cucumber is the popular BDD framework for Java.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is ThreadLocal?</div><div class="qa-a">Gives each parallel thread its own private WebDriver instance. Without it, threads share one driver and interfere with each other causing random failures.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is Jenkins?</div><div class="qa-a">CI/CD tool that automatically runs tests on every code commit. Detects changes in Git, runs mvn test, generates reports, emails results to team.</div></div>
+        <div class="qa-item"><div class="qa-q"><span class="qa-q-badge">Q</span>What is Docker?</div><div class="qa-a">Containerization platform. Packages app + all dependencies into portable container. Solves "works on my machine" problem. Used with Selenium Grid for consistent test environments.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title st-red">⚡ Lightning Round — One Liners</div>
+      <table class="data-table">
+        <tr><th>Question</th><th>Answer</th></tr>
+        <tr><td>What is Fluent Wait?</td><td>Explicit wait with custom polling interval + exception ignoring</td></tr>
+        <tr><td>What is Scenario Outline?</td><td>Same BDD scenario with multiple data sets from Examples table</td></tr>
+        <tr><td>What is config.properties?</td><td>External file storing browser/URL/credentials outside Java code</td></tr>
+        <tr><td>What is Data Driven Testing?</td><td>Same test logic, data from Excel/CSV/JSON external source</td></tr>
+        <tr><td>What is @CacheLookup?</td><td>Cache PageFactory element after first find — faster but not for dynamic elements</td></tr>
+        <tr><td>What is BaseTest?</td><td>Parent class with driver setup/teardown — all test classes extend it (DRY principle)</td></tr>
+        <tr><td>What is a Hook in Cucumber?</td><td>@Before / @After — run before/after each scenario (like BeforeMethod/AfterMethod)</td></tr>
+        <tr><td>What is git clone vs pull?</td><td>clone = first time copy entire repo; pull = get latest into existing repo</td></tr>
+        <tr><td>What is ACID?</td><td>Atomicity, Consistency, Isolation, Durability — database transaction properties</td></tr>
+        <tr><td>What is REST?</td><td>Representational State Transfer — architectural style for APIs using HTTP</td></tr>
+        <tr><td>What is status code 401?</td><td>Unauthorized — authentication required or failed</td></tr>
+        <tr><td>What does given/when/then do in REST Assured?</td><td>given = setup (headers/body), when = HTTP call, then = assertions</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding: 40px; color: #475569; font-size: 13px;">
+  <div style="font-size: 24px; margin-bottom: 8px;">🚀</div>
+  <div style="font-weight: 700; color: #94a3b8; margin-bottom: 4px;">QEA Complete Study Guide</div>
+  <div>Cognizant GenC · Quality Engineer with Selenium Automation · Final Evaluation Edition</div>
+  <div style="margin-top: 16px; color: #ef4444; font-weight: 600;">You've got this! 🔥</div>
+</div>
+
+</div>
+</body>
+</html>

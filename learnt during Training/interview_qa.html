@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Q&A Bank</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0f1e;color:#e2e8f0;line-height:1.7}
+
+/* COVER */
+.cover{min-height:55vh;background:linear-gradient(135deg,#0a0f1e 0%,#1a0533 40%,#0a1628 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(239,68,68,.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 30%,rgba(139,92,246,.12) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(59,130,246,.1) 0%,transparent 50%)}
+.cover-badge{background:linear-gradient(135deg,#ef4444,#f59e0b);color:#fff;padding:6px 20px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;position:relative;z-index:1;display:inline-block}
+.cover h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;background:linear-gradient(135deg,#f87171,#fb923c,#fbbf24,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1;margin-bottom:12px;line-height:1.2}
+.cover p{color:#94a3b8;font-size:.95rem;position:relative;z-index:1;max-width:650px;margin-bottom:28px}
+.stats{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 22px;text-align:center}
+.stat-num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#f87171,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* NAV */
+nav{background:#111827;padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #1f2937;position:sticky;top:0;z-index:100;justify-content:center}
+.nb{border:1px solid #374151;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;color:#6b7280;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nb:hover,.nb.active{color:#fff}
+.nb.r{border-color:rgba(239,68,68,.4);color:#f87171}.nb.r:hover{background:rgba(239,68,68,.1)}
+.nb.o{border-color:rgba(245,158,11,.4);color:#fbbf24}.nb.o:hover{background:rgba(245,158,11,.1)}
+.nb.g{border-color:rgba(16,185,129,.4);color:#34d399}.nb.g:hover{background:rgba(16,185,129,.1)}
+.nb.b{border-color:rgba(59,130,246,.4);color:#60a5fa}.nb.b:hover{background:rgba(59,130,246,.1)}
+.nb.p{border-color:rgba(139,92,246,.4);color:#a78bfa}.nb.p:hover{background:rgba(139,92,246,.1)}
+.nb.t{border-color:rgba(20,184,166,.4);color:#2dd4bf}.nb.t:hover{background:rgba(20,184,166,.1)}
+
+/* MAIN */
+.main{max-width:1000px;margin:0 auto;padding:36px 20px}
+
+/* SECTION HEADER */
+.sec-header{border-radius:16px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;gap:16px;margin-top:48px}
+.sec-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.sec-title{font-size:1.25rem;font-weight:800;color:#fff}
+.sec-sub{font-size:12px;opacity:.7;margin-top:3px}
+.sec-count{margin-left:auto;background:rgba(0,0,0,.3);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* Q CARDS */
+.q-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.q-card{background:#111827;border-radius:12px;border:1px solid #1f2937;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.q-card:hover{border-color:#374151}
+.q-head{padding:14px 18px;display:flex;align-items:flex-start;gap:12px}
+.q-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+.q-text{font-size:13.5px;font-weight:600;color:#e2e8f0;flex:1;line-height:1.5}
+.q-arrow{color:#374151;font-size:14px;flex-shrink:0;margin-top:3px;transition:transform .3s}
+.q-card.open .q-arrow{transform:rotate(180deg)}
+.q-ans{display:none;padding:0 18px 16px 56px;font-size:13px;color:#94a3b8;line-height:1.7;border-top:1px solid #1f2937;padding-top:12px}
+.q-ans.show{display:block}
+.q-ans strong{color:#e2e8f0}
+.q-ans code{background:#1f2937;padding:1px 6px;border-radius:4px;font-family:'Fira Code',monospace;font-size:11.5px;color:#c3e88d}
+.q-ans .note{background:#1f2937;border-left:2px solid currentColor;border-radius:4px;padding:8px 12px;margin-top:8px;font-size:12px}
+
+/* PRIORITY LABELS */
+.prio{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-left:8px;vertical-align:middle}
+.p-hot{background:rgba(239,68,68,.2);color:#f87171}
+.p-med{background:rgba(245,158,11,.2);color:#fbbf24}
+.p-new{background:rgba(139,92,246,.2);color:#a78bfa}
+
+/* DIVIDER */
+.divider{height:1px;background:#1f2937;margin:8px 0}
+
+/* COLOR THEMES */
+.th-r .sec-header{background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(239,68,68,.05));border:1px solid rgba(239,68,68,.2)}
+.th-r .sec-icon{background:rgba(239,68,68,.15)}
+.th-r .q-num{background:rgba(239,68,68,.15);color:#f87171}
+.th-r .q-card:hover{border-color:rgba(239,68,68,.3)}
+
+.th-o .sec-header{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.05));border:1px solid rgba(245,158,11,.2)}
+.th-o .sec-icon{background:rgba(245,158,11,.15)}
+.th-o .q-num{background:rgba(245,158,11,.15);color:#fbbf24}
+.th-o .q-card:hover{border-color:rgba(245,158,11,.3)}
+
+.th-b .sec-header{background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(59,130,246,.05));border:1px solid rgba(59,130,246,.2)}
+.th-b .sec-icon{background:rgba(59,130,246,.15)}
+.th-b .q-num{background:rgba(59,130,246,.15);color:#60a5fa}
+.th-b .q-card:hover{border-color:rgba(59,130,246,.3)}
+
+.th-g .sec-header{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(16,185,129,.05));border:1px solid rgba(16,185,129,.2)}
+.th-g .sec-icon{background:rgba(16,185,129,.15)}
+.th-g .q-num{background:rgba(16,185,129,.15);color:#34d399}
+.th-g .q-card:hover{border-color:rgba(16,185,129,.3)}
+
+.th-p .sec-header{background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(139,92,246,.05));border:1px solid rgba(139,92,246,.2)}
+.th-p .sec-icon{background:rgba(139,92,246,.15)}
+.th-p .q-num{background:rgba(139,92,246,.15);color:#a78bfa}
+.th-p .q-card:hover{border-color:rgba(139,92,246,.3)}
+
+.th-t .sec-header{background:linear-gradient(135deg,rgba(20,184,166,.15),rgba(20,184,166,.05));border:1px solid rgba(20,184,166,.2)}
+.th-t .sec-icon{background:rgba(20,184,166,.15)}
+.th-t .q-num{background:rgba(20,184,166,.15);color:#2dd4bf}
+.th-t .q-card:hover{border-color:rgba(20,184,166,.3)}
+
+.th-pk .sec-header{background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(236,72,153,.05));border:1px solid rgba(236,72,153,.2)}
+.th-pk .sec-icon{background:rgba(236,72,153,.15)}
+.th-pk .q-num{background:rgba(236,72,153,.15);color:#f472b6}
+.th-pk .q-card:hover{border-color:rgba(236,72,153,.3)}
+
+/* TIPS BOX */
+.tip-box{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#94a3b8}
+.tip-box strong{color:#e2e8f0}
+
+@media(max-width:600px){.stats{gap:12px}.stat{padding:10px 16px}.q-ans{padding-left:18px}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">🔥 Final Evaluation Prep</div>
+  <h1>150+ Interview Questions<br>Complete QEA Viva Bank</h1>
+  <p>Every question that can be asked — Selenium, Testing, Java, SQL, BDD, REST Assured, DevOps, Docker, GenAI. Click any question to reveal the answer.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Selenium Q&A</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Java OOP</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Testing Theory</div></div>
+    <div class="stat"><div class="stat-num">15+</div><div class="stat-label">BDD + REST</div></div>
+    <div class="stat"><div class="stat-num">15+</div><div class="stat-label">DevOps + Docker</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">SQL</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nb r" href="#selenium">🌐 Selenium</a>
+  <a class="nb r" href="#waits">⏳ Waits</a>
+  <a class="nb r" href="#locators">🎯 Locators</a>
+  <a class="nb r" href="#advanced">🔧 Adv Selenium</a>
+  <a class="nb o" href="#testing">🧪 Testing Theory</a>
+  <a class="nb b" href="#java">☕ Java</a>
+  <a class="nb g" href="#pom">📐 POM+TestNG</a>
+  <a class="nb g" href="#poi">📊 POI+Framework</a>
+  <a class="nb t" href="#bdd">🥒 BDD</a>
+  <a class="nb t" href="#rest">🔌 REST Assured</a>
+  <a class="nb p" href="#devops">⚙️ DevOps</a>
+  <a class="nb p" href="#docker">🐳 Docker+GenAI</a>
+  <a class="nb o" href="#sql">🗄️ SQL</a>
+</nav>
+
+<div class="main">
+
+<div class="tip-box">💡 <strong>How to use:</strong> Click any question to expand the answer. Cover the answer first, answer in your head, then check. Repeat until you can answer all <span style="color:#f87171;font-weight:700">🔥 HOT</span> questions without looking. <span style="color:#a78bfa;font-weight:700">🆕 NEW</span> = topics added recently to syllabus.</div>
+
+<!-- ══════════════════════════════ SELENIUM BASICS ══ -->
+<div class="th-r" id="selenium">
+<div class="sec-header">
+  <div class="sec-icon">🌐</div>
+  <div><div class="sec-title">Selenium WebDriver — Basics</div><div class="sec-sub">Architecture · Browser control · WebElement interactions · Exceptions</div></div>
+  <div class="sec-count">Q1–Q20</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">1</div><div class="q-text">What is Selenium WebDriver? How is it different from Selenium RC?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Selenium WebDriver is a browser automation library that directly controls the browser through browser-specific drivers (ChromeDriver, GeckoDriver) using the W3C protocol. Unlike Selenium RC, WebDriver does NOT require a separate server — it communicates directly with the browser. RC was slow (needed a Java server as proxy), WebDriver is fast and supports all modern browsers. RC is now deprecated; WebDriver is the standard.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">2</div><div class="q-text">Explain the Selenium WebDriver architecture.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Flow:</strong> Your Java code → Selenium WebDriver API → Browser Driver (ChromeDriver/GeckoDriver) → Actual Browser.<br><br>WebDriver is an <em>interface</em>. ChromeDriver is the class that implements it. The driver receives JSON Wire Protocol/W3C commands from your test and translates them into native browser actions. Selenium 4 uses W3C WebDriver standard — all browsers follow the same protocol, making behavior consistent.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">3</div><div class="q-text">What is the difference between <code>driver.close()</code> and <code>driver.quit()</code>?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>close()</code> closes only the <strong>current active tab/window</strong>. If you have 3 windows open, it closes only the focused one.<br><code>quit()</code> closes <strong>ALL windows and tabs</strong> and completely kills the WebDriver session and browser process.<br><br>Always use <code>quit()</code> in <code>@AfterMethod</code>/<code>@AfterClass</code>. Using <code>close()</code> without switching windows first may leave orphan ChromeDriver processes running in background.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">4</div><div class="q-text">What is the difference between <code>driver.get()</code> and <code>driver.navigate().to()</code>?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Both open a URL in the browser. The difference:<br>• <code>driver.get(url)</code> — opens URL, waits for page load, does NOT maintain browser history<br>• <code>driver.navigate().to(url)</code> — opens URL AND maintains browser history<br><br><strong>Practical impact:</strong> <code>navigate().back()</code> and <code>navigate().forward()</code> work correctly only when you used <code>navigate().to()</code>. If you used <code>get()</code>, back/forward may not work as expected.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">5</div><div class="q-text">What is <code>findElement()</code> vs <code>findElements()</code>?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>findElement(By locator)</code> — Returns a single <strong>WebElement</strong>. Throws <code>NoSuchElementException</code> if no element matches.<br><code>findElements(By locator)</code> — Returns a <strong>List&lt;WebElement&gt;</strong>. Returns <em>empty list</em> (no exception) if no elements match.<br><br>Use <code>findElements()</code> when: checking if element exists without try-catch, getting all links on page, counting rows in a table. Check <code>list.size() == 0</code> to verify absence.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">6</div><div class="q-text">What is <code>StaleElementReferenceException</code>? How do you fix it?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Thrown when a WebElement reference becomes <strong>stale</strong> — the element was found, then the page DOM changed (page refresh, AJAX update, navigation), and the old reference no longer points to a valid element.<br><br><strong>Fixes:</strong><br>1. Find the element again fresh: re-call <code>driver.findElement()</code><br>2. Use explicit wait for element to reappear: <code>wait.until(ExpectedConditions.stalenessOf(el))</code> then find again<br>3. Avoid storing element references if page refreshes between uses</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">7</div><div class="q-text">What is <code>ElementClickInterceptedException</code>? How do you resolve it?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Thrown when Selenium tries to click an element but another element is <strong>on top of it</strong>, intercepting the click. Common causes: cookie banners, modals, loading overlays, sticky headers.<br><br><strong>3 Fixes:</strong><br>1. Close the blocking element first: <code>driver.findElement(By.id("overlay")).click()</code><br>2. Scroll element into view: <code>js.executeScript("arguments[0].scrollIntoView(true);", element)</code><br>3. JavaScript click (bypasses DOM completely): <code>js.executeScript("arguments[0].click();", element)</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">8</div><div class="q-text">What is <code>NoSuchElementException</code> and when does it occur?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Thrown when Selenium cannot find any element matching the given locator in the current DOM. Causes: wrong locator (typo in id/xpath), element inside an iframe (forgot to switch), element not yet loaded (need a wait), element is inside a Shadow DOM, page has not navigated yet. Fix: verify locator in DevTools, add explicit wait, switch to correct frame first.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">9</div><div class="q-text">What is <code>WebDriverWait</code> and how does it differ from <code>Thread.sleep()</code>?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>Thread.sleep(3000)</code> suspends the thread for exactly 3 seconds — even if element becomes available in 500ms, it still waits the full 3 seconds. Wastes time, makes tests slow.<br><br><code>WebDriverWait</code> polls every 500ms and proceeds AS SOON AS the condition is met. Max wait = whatever you set (e.g., 10 seconds). If element ready in 1 second, it moves on in 1 second. Intelligent, efficient, industry standard.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">10</div><div class="q-text">How do you handle alerts/popups in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Switch to the alert first using <code>driver.switchTo().alert()</code>, then interact:<br>• <code>alert.getText()</code> — get message text<br>• <code>alert.accept()</code> — click OK<br>• <code>alert.dismiss()</code> — click Cancel<br>• <code>alert.sendKeys("text")</code> — type into prompt dialog<br><br>Types: Simple alert (info, just OK), Confirm (OK + Cancel), Prompt (text input). Always handle alert before interacting with page elements, otherwise you'll get <code>UnhandledAlertException</code>.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">11</div><div class="q-text">How do you handle multiple browser windows/tabs?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. Save parent window: <code>String parent = driver.getWindowHandle()</code><br>2. Get all windows: <code>Set&lt;String&gt; all = driver.getWindowHandles()</code><br>3. Loop to find the new window: <code>for(String w : all) { if(!w.equals(parent)) driver.switchTo().window(w); }</code><br>4. Do work in child window<br>5. Close child: <code>driver.close()</code><br>6. Switch back: <code>driver.switchTo().window(parent)</code><br><br><strong>Key point:</strong> <code>getWindowHandle()</code> = current window (String). <code>getWindowHandles()</code> = all windows (Set).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">12</div><div class="q-text">How do you switch to a frame/iframe and back?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Switch INTO frame: <br>• <code>driver.switchTo().frame("frameId")</code> — by id or name<br>• <code>driver.switchTo().frame(0)</code> — by index (0-based)<br>• <code>driver.switchTo().frame(webElement)</code> — by WebElement reference<br><br>After switching, all <code>findElement()</code> calls look inside the frame only.<br><br>Switch BACK:<br>• <code>driver.switchTo().defaultContent()</code> — back to main page (out of all frames)<br>• <code>driver.switchTo().parentFrame()</code> — up one level (for nested frames)</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">13</div><div class="q-text">What is JavascriptExecutor? When do you use it?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">JavascriptExecutor is an interface that allows running JavaScript code in the browser from Selenium. Must cast WebDriver: <code>JavascriptExecutor js = (JavascriptExecutor) driver</code><br><br><strong>Use when:</strong><br>• Element click intercepted by overlay → <code>js.executeScript("arguments[0].click();", el)</code><br>• Scroll to element → <code>js.executeScript("arguments[0].scrollIntoView(true);", el)</code><br>• Scroll page → <code>js.executeScript("window.scrollBy(0,500);")</code><br>• Get/set hidden values → <code>js.executeScript("return arguments[0].value;", el)</code><br>• Highlight element for debugging → set border via JS</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">14</div><div class="q-text">What is the Actions class and what can it do?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Actions class simulates complex user interactions that go beyond basic click/type — real mouse and keyboard behavior.<br><br>• <code>moveToElement(el)</code> — mouse hover (reveals dropdown menus)<br>• <code>contextClick(el)</code> — right-click<br>• <code>doubleClick(el)</code> — double click<br>• <code>dragAndDrop(source, target)</code> — drag and drop<br>• <code>sendKeys(Keys.CONTROL, "a")</code> — keyboard combos<br>• <code>keyDown(Keys.SHIFT).sendKeys("text").keyUp(Keys.SHIFT)</code><br><br>Always call <code>.perform()</code> at end to execute the built action chain.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">15</div><div class="q-text">How do you take a screenshot in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>TakesScreenshot ts = (TakesScreenshot) driver</code> — cast WebDriver to TakesScreenshot interface.<br><code>File src = ts.getScreenshotAs(OutputType.FILE)</code> — capture screenshot.<br><code>FileUtils.copyFile(src, new File("screenshots/test.png"))</code> — save to disk.<br><br>In Selenium 4: <code>element.getScreenshotAs(OutputType.FILE)</code> — element-level screenshot.<br><br><strong>Best practice:</strong> Take screenshot in <code>onTestFailure()</code> listener method. Name file with test name + timestamp so files don't overwrite each other.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">16</div><div class="q-text">What is a headless browser? Why use it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A headless browser runs without a visible graphical window — the browser executes entirely in memory.<br><br><strong>How:</strong> <code>ChromeOptions options = new ChromeOptions(); options.addArguments("--headless=new"); driver = new ChromeDriver(options);</code><br><br><strong>Why use it:</strong><br>• CI/CD servers (Jenkins/Docker) have no display<br>• Faster execution (no rendering overhead)<br>• Lower memory usage<br>• Run many parallel instances simultaneously<br><br><strong>When NOT to use:</strong> Debugging (can't see what's happening), testing visual UI appearance.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">17</div><div class="q-text">What is WebDriverManager and why is it needed?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">WebDriverManager is a library by Boni García that <strong>automatically downloads and configures</strong> the correct browser driver at runtime.<br><br><strong>Without it:</strong> Manually download chromedriver.exe, match Chrome version, set system property path. When Chrome auto-updates, driver breaks.<br><br><strong>With it:</strong> Just one line: <code>WebDriverManager.chromedriver().setup()</code> — detects your Chrome version, downloads matching driver, sets everything up.<br><br>Supports: Chrome, Firefox, Edge, Safari, Opera. Essential for CI/CD environments.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">18</div><div class="q-text">What is Shadow DOM? How does Selenium 4 handle it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Shadow DOM is an encapsulation feature in modern web components. Elements inside Shadow DOM are hidden from regular DOM queries — normal <code>findElement()</code> cannot see them.<br><br><strong>Selenium 4 solution:</strong><br><code>WebElement host = driver.findElement(By.id("shadowHost"));</code><br><code>SearchContext shadow = host.getShadowRoot();</code><br><code>WebElement el = shadow.findElement(By.cssSelector("input"));</code><br><br>Only CSS selectors work inside Shadow DOM — XPath does NOT work.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">19</div><div class="q-text">How do you handle dropdowns in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">For <code>&lt;select&gt;</code> HTML dropdowns use the <code>Select</code> class:<br><code>Select sel = new Select(driver.findElement(By.id("dropdown")));</code><br><br>3 selection methods:<br>• <code>sel.selectByVisibleText("Option 1")</code> — by displayed text<br>• <code>sel.selectByValue("opt1")</code> — by value attribute<br>• <code>sel.selectByIndex(0)</code> — by position (0 = first)<br><br>Other methods: <code>sel.getOptions()</code>, <code>sel.getFirstSelectedOption()</code>, <code>sel.getAllSelectedOptions()</code>, <code>sel.isMultiple()</code><br><br>For custom dropdowns (not &lt;select&gt;): click to open, then click options using regular locators.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">20</div><div class="q-text">What does <code>driver.manage().window().maximize()</code> do and when should you call it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Maximizes the browser window to the full screen size. Should be called <strong>immediately after creating the driver</strong>, before navigating to any URL.<br><br><strong>Why important:</strong> Many elements are only visible at full screen (responsive design hides them on small screens). Screenshots capture full page. Element coordinates for Actions class are screen-based. Not maximizing can cause <code>ElementNotInteractableException</code> for elements outside viewport.<br><br>Alternative: <code>driver.manage().window().setSize(new Dimension(1920, 1080))</code> for specific size.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ WAITS ══ -->
+<div class="th-r" id="waits">
+<div class="sec-header">
+  <div class="sec-icon">⏳</div>
+  <div><div class="sec-title">Waits — Synchronization</div><div class="sec-sub">Implicit · Explicit · Fluent · ExpectedConditions</div></div>
+  <div class="sec-count">Q21–Q30</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">21</div><div class="q-text">Explain all types of waits in Selenium. Which is best?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Thread.sleep(ms)</strong> — Fixed pause. Program stops completely. Even if element ready in 1s, waits full time. ❌ Never use in production.<br><br><strong>Implicit Wait</strong> — Set once globally, applies to ALL <code>findElement()</code> calls. Waits UP TO X seconds for element to appear. <code>driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10))</code><br><br><strong>Explicit Wait</strong> — For SPECIFIC element + specific condition. <code>WebDriverWait + ExpectedConditions</code>. Most precise. ✅ Industry standard.<br><br><strong>Fluent Wait</strong> — Extended explicit wait. Custom polling interval + exception ignoring. Most flexible.<br><br><strong>Best practice:</strong> Use Implicit for baseline + Explicit for dynamic elements. Never mix Implicit + Explicit on same element (can cause double-wait).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">22</div><div class="q-text">What is Fluent Wait and how is it different from Explicit Wait?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Both are condition-based waits. Differences:<br><br><strong>Explicit Wait:</strong> Default polling every 500ms. Throws exception immediately when <code>NoSuchElementException</code> occurs.<br><br><strong>Fluent Wait:</strong> You control polling interval (e.g., every 2s). You specify which exceptions to IGNORE during polling (e.g., ignore <code>NoSuchElementException</code> so it keeps retrying).<br><br><code>FluentWait&lt;WebDriver&gt; wait = new FluentWait&lt;&gt;(driver).withTimeout(Duration.ofSeconds(30)).pollingEvery(Duration.ofSeconds(2)).ignoring(NoSuchElementException.class);</code><br><br>Use Fluent Wait for elements that appear intermittently or take long to load.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">23</div><div class="q-text">Can you use Implicit and Explicit waits together?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Not recommended.</strong> When used together they can conflict and cause unexpected behavior. Example: Implicit wait = 10s, Explicit wait = 5s. The explicit wait may wait up to 10s (implicit) + 5s (explicit) = 15s instead of 5s.<br><br>Best practice: Set implicit wait for general stability, and use explicit only for specific complex elements. Avoid both on the same element. Many teams use <strong>only explicit waits</strong> for full control.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">24</div><div class="q-text">Name 5 important ExpectedConditions with use cases.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. <code>visibilityOfElementLocated(By)</code> — element is in DOM AND visible on page. Use for elements that appear after AJAX.<br>2. <code>elementToBeClickable(By)</code> — element is visible AND enabled. Use before clicking buttons/links.<br>3. <code>invisibilityOfElementLocated(By)</code> — element disappears. Use to wait for loading spinner to go away.<br>4. <code>alertIsPresent()</code> — JavaScript alert has appeared. Use before switching to alert.<br>5. <code>frameToBeAvailableAndSwitchToIt(By)</code> — frame loaded AND switches to it. Use before interacting with frame content.<br>6. <code>numberOfElementsToBe(By, count)</code> — wait until X elements exist. Use for table rows loaded.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">25</div><div class="q-text">Why should you never use <code>Thread.sleep()</code> in Selenium tests?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. <strong>Wastes time</strong> — always waits the full duration even if element is ready in 100ms<br>2. <strong>Unreliable</strong> — if network is slow, even 3 seconds may not be enough, test fails<br>3. <strong>Slows CI/CD</strong> — 100 tests × 3s sleep = 5+ minutes wasted just sleeping<br>4. <strong>Brittle</strong> — works today, fails tomorrow when server is busy<br>5. <strong>Not maintainable</strong> — magic numbers scattered in code<br><br>Always use WebDriverWait with ExpectedConditions — it exits as soon as condition is met and fails fast with clear error if timeout exceeded.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">26</div><div class="q-text">What is <code>presenceOfElementLocated</code> vs <code>visibilityOfElementLocated</code>?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>presenceOfElementLocated</code> — element is present in the DOM (HTML source) but may be <strong>hidden</strong> (display:none, visibility:hidden, opacity:0)<br><br><code>visibilityOfElementLocated</code> — element is present in DOM AND <strong>visible</strong> on screen (non-zero dimensions, not hidden)<br><br>Use <code>presence</code> when you just need the element to exist (e.g., to get its attribute).<br>Use <code>visibility</code> when you need to interact with it (click, type).<br><br>Trying to click a present-but-hidden element throws <code>ElementNotInteractableException</code>.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ LOCATORS ══ -->
+<div class="th-r" id="locators">
+<div class="sec-header">
+  <div class="sec-icon">🎯</div>
+  <div><div class="sec-title">Locators — XPath & CSS Deep Dive</div><div class="sec-sub">All 8 locators · XPath axes · Dynamic XPath · CSS selectors</div></div>
+  <div class="sec-count">Q27–Q38</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">27</div><div class="q-text">What are the 8 locators in Selenium? Which is most reliable?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. <code>By.id</code> — ⭐ Most reliable, fastest. Always first choice.<br>2. <code>By.name</code> — when id not available<br>3. <code>By.className</code> — when unique class exists<br>4. <code>By.tagName</code> — for getting all elements of a type<br>5. <code>By.linkText</code> — exact text of &lt;a&gt; tag<br>6. <code>By.partialLinkText</code> — partial text of &lt;a&gt; tag<br>7. <code>By.cssSelector</code> — ⭐ Fast, flexible, goes downward only<br>8. <code>By.xpath</code> — ⭐ Most powerful, any direction, slowest<br><br><strong>Priority order:</strong> id &gt; name &gt; cssSelector &gt; xpath. Avoid tagName/className when multiple elements share them.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">28</div><div class="q-text">What is the difference between CSS Selector and XPath?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>CSS Selector:</strong> Can only traverse HTML tree downward (parent → child). Faster. Supported by all browsers natively. Syntax: <code>tagName#id</code>, <code>.className</code>, <code>[attribute='value']</code>, <code>tr:nth-child(2)</code><br><br><strong>XPath:</strong> Can traverse in ANY direction — up, down, sideways using axes. Slower. Can locate by text content: <code>text()='Login'</code>. Supports functions: <code>contains()</code>, <code>starts-with()</code>, <code>last()</code><br><br><strong>When to use XPath:</strong> When CSS can't locate element (need to go up to parent, need to find by text, complex sibling navigation).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">29</div><div class="q-text">What is absolute XPath vs relative XPath?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Absolute XPath:</strong> Starts from root <code>/html/body/div/table/tr/td/input</code>. Uses single slash. Brittle — breaks if ANY element in the path changes. Never use in real projects.<br><br><strong>Relative XPath:</strong> Starts from anywhere with double slash <code>//input[@id='username']</code>. Searches entire DOM. More stable, maintainable. Always preferred.<br><br>Additional: <code>//input[@type='text'][1]</code> — first matching. <code>(//input[@type='text'])[2]</code> — second in collection.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">30</div><div class="q-text">Explain XPath <code>contains()</code>, <code>starts-with()</code>, and <code>text()</code> functions.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>contains(@attribute, 'value')</code> — matches if attribute CONTAINS the value. Useful for dynamic IDs: <code>//input[contains(@id,'username')]</code> matches id="username123"<br><br><code>starts-with(@attribute, 'value')</code> — matches if attribute STARTS WITH value. For IDs like "field_12345": <code>//input[starts-with(@id,'field_')]</code><br><br><code>text()='Login'</code> — matches by exact visible text content: <code>//button[text()='Login']</code><br><code>contains(text(),'Login')</code> — partial text match: <code>//button[contains(text(),'Log')]</code><br><br>These 3 are critical for dynamic web apps where IDs/classes change.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">31</div><div class="q-text">What are XPath axes? Give a real example.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">XPath axes navigate relative to a reference node. Critical when no id/class on target element.<br><br><strong>Real scenario:</strong> Table with rows. Find "Edit" button in the row for "John":<br><code>//td[text()='John']/following-sibling::td/button</code><br><br><strong>Key axes:</strong><br>• <code>parent::</code> — go UP one level<br>• <code>ancestor::</code> — any level up<br>• <code>child::</code> — direct children<br>• <code>descendant::</code> — all levels down<br>• <code>following-sibling::</code> — siblings AFTER current node (same parent)<br>• <code>preceding-sibling::</code> — siblings BEFORE current node</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">32</div><div class="q-text">Write XPath to find the 3rd row of a table.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Several ways:<br>1. <code>(//table//tr)[3]</code> — 3rd tr anywhere<br>2. <code>//table//tr[3]</code> — 3rd tr inside table<br>3. <code>//table/tbody/tr[3]</code> — 3rd tr inside tbody<br>4. CSS equivalent: <code>table tr:nth-child(3)</code><br><br>Note: If there's a header row (thead), data row 1 = tr[2]. Always inspect HTML to check if table has thead/tbody separation.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">33</div><div class="q-text">What are dynamic XPaths and why are they needed?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Dynamic XPath is needed when element attributes change on every page load (e.g., <code>id="user_1234567"</code> where number is session-based).<br><br><strong>Techniques:</strong><br>1. <code>contains()</code>: <code>//input[contains(@id,'user_')]</code><br>2. <code>starts-with()</code>: <code>//input[starts-with(@id,'user')]</code><br>3. Text: <code>//button[text()='Submit']</code><br>4. Axes: Navigate from a stable parent element<br>5. Position: <code>(//input[@type='text'])[2]</code><br>6. Multiple attributes: <code>//input[@type='text' and @placeholder='Email']</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">34</div><div class="q-text">Write CSS selectors for: id, class, attribute, nth-child, child combinator.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">• ID: <code>#username</code> or <code>input#username</code><br>• Class: <code>.form-control</code> or <code>input.form-control</code><br>• Attribute: <code>input[type='text']</code>, <code>input[name='email']</code><br>• Direct child only: <code>div > input</code> (input must be immediate child of div)<br>• Any descendant: <code>div input</code> (input anywhere inside div)<br>• nth-child: <code>tr:nth-child(3)</code>, <code>tr:nth-child(odd)</code>, <code>tr:first-child</code>, <code>tr:last-child</code><br>• Multiple: <code>input[type='text'][name='user']</code><br>• Contains class: <code>[class*='input']</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">35</div><div class="q-text">What are Relative Locators in Selenium 4?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">New in Selenium 4. Find elements relative to other elements — how humans describe things naturally.<br><br><code>RelativeLocator.with(By.tagName("input")).above(passwordField)</code> — input above password<br><code>RelativeLocator.with(By.tagName("label")).toLeftOf(usernameField)</code> — label left of username<br><code>RelativeLocator.with(By.tagName("button")).toRightOf(cancelBtn)</code> — button right of cancel<br><code>RelativeLocator.with(By.tagName("label")).near(emailField)</code> — within 50px<br><code>RelativeLocator.with(By.tagName("input")).below(usernameField)</code><br><br>Useful when traditional locators fail and layout positioning is consistent.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">36</div><div class="q-text">How do you verify if a checkbox is selected?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>WebElement checkbox = driver.findElement(By.id("agree"));</code><br><code>boolean isChecked = checkbox.isSelected();</code> — returns true if checked<br><br>To check: <code>if(!checkbox.isSelected()) checkbox.click();</code> — only click if not already checked<br>To uncheck: <code>if(checkbox.isSelected()) checkbox.click();</code><br><br>Same applies to radio buttons. Use <code>isSelected()</code> to verify state, not <code>getAttribute("checked")</code> which can be null even when checked.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">37</div><div class="q-text">What is chained locators in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Finding an element within a specific parent element, making searches more precise. Instead of searching entire page, first find the container, then find element within it.<br><br><code>WebElement form = driver.findElement(By.id("loginForm"));</code><br><code>WebElement username = form.findElement(By.name("user"));</code><br><br>This is safer when same locator exists in multiple places (e.g., multiple forms on one page). The second <code>findElement()</code> is called on the WebElement, not on driver — so it searches only within that element's DOM tree.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">38</div><div class="q-text">How do you find all broken links on a page using Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. Get all anchor tags: <code>List&lt;WebElement&gt; links = driver.findElements(By.tagName("a"));</code><br>2. For each link, get href: <code>String url = link.getAttribute("href");</code><br>3. Send HTTP request to each URL using HttpURLConnection<br>4. Check response code: 200 = OK, 404 = broken, 500 = server error<br><br>A link with no href or empty href is also broken. This is a common interview coding exercise in Selenium.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ ADVANCED SELENIUM ══ -->
+<div class="th-r" id="advanced">
+<div class="sec-header">
+  <div class="sec-icon">🔧</div>
+  <div><div class="sec-title">Selenium Advanced — Grid, Parallel, Options</div><div class="sec-sub">Selenium Grid · Parallel execution · ChromeOptions · Cookies</div></div>
+  <div class="sec-count">Q39–Q46</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">39</div><div class="q-text">What is Selenium Grid? Explain Hub and Node.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Selenium Grid allows running tests on <strong>multiple machines and browsers simultaneously</strong>.<br><br><strong>Hub:</strong> Central server (runs on port 4444). Receives test requests. Routes tests to appropriate Nodes based on capability requested (browser type, version, OS). Only one Hub.<br><br><strong>Node:</strong> Worker machine with actual browser installed. Registers with Hub on startup. Waits for tests. Executes when assigned. Can have multiple browsers. Multiple Nodes possible.<br><br><strong>Selenium 4 Grid:</strong> Simplified setup. Standalone mode (Hub + Node together). Docker support built-in. Web UI at localhost:4444 to monitor.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">40</div><div class="q-text">How do you run tests in parallel using TestNG?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">In testng.xml: <code>&lt;suite name="Suite" parallel="tests" thread-count="3"&gt;</code><br><br>Parallel options:<br>• <code>parallel="tests"</code> — each &lt;test&gt; block in parallel<br>• <code>parallel="classes"</code> — each class in parallel<br>• <code>parallel="methods"</code> — each @Test method in parallel<br>• <code>parallel="instances"</code> — each instance in parallel<br><br><strong>Critical:</strong> When parallel, each thread needs its OWN driver. Use <code>ThreadLocal&lt;WebDriver&gt;</code> — gives each thread private driver. Without ThreadLocal, threads share one driver → race conditions → random failures.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">41</div><div class="q-text">What is ThreadLocal? Why is it used in Selenium parallel testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>ThreadLocal&lt;T&gt;</code> is a Java class that provides each thread with its own private instance of a variable. Think of it as a locker room — each person (thread) has their own locker (WebDriver).<br><br><code>private static ThreadLocal&lt;WebDriver&gt; driver = new ThreadLocal&lt;&gt;();</code><br><code>driver.set(new ChromeDriver()); // each thread sets its own</code><br><code>driver.get(); // each thread gets its own</code><br><code>driver.remove(); // cleanup after test</code><br><br>Without it: Thread-1 and Thread-2 share same driver object → Thread-1 navigates to login, Thread-2 navigates to checkout simultaneously → chaos.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">42</div><div class="q-text">What ChromeOptions do you know? Give 5 with use cases.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. <code>--headless=new</code> — run without visible window (CI/CD servers)<br>2. <code>--incognito</code> — private mode, no cookies/history<br>3. <code>--disable-notifications</code> — block "Allow notifications?" popup<br>4. <code>--start-maximized</code> — open full screen<br>5. <code>--ignore-certificate-errors</code> — skip SSL certificate warnings (http test sites)<br>6. <code>download.default_directory</code> — set download folder via prefs<br>7. <code>--disable-popup-blocking</code> — allow popups<br>8. <code>--no-sandbox</code> — required for Docker/Linux environments<br>9. <code>--disable-dev-shm-usage</code> — prevent crashes in Docker (small /dev/shm)</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">43</div><div class="q-text">How do you handle cookies in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Cookies store session info, preferences, login state.<br><br><code>driver.manage().addCookie(new Cookie("name", "value"))</code> — add cookie<br><code>driver.manage().getCookies()</code> — get all cookies (Set&lt;Cookie&gt;)<br><code>driver.manage().getCookieNamed("sessionId")</code> — get specific<br><code>driver.manage().deleteAllCookies()</code> — delete all<br><code>driver.manage().deleteCookie(cookie)</code> — delete specific<br><br><strong>Use case:</strong> Skip login by adding session cookie → navigate directly to dashboard without going through login page. Saves test time. Login once, add cookie, all subsequent tests start logged in.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">44</div><div class="q-text">What is <code>getPageSource()</code> and when do you use it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>driver.getPageSource()</code> returns the complete HTML source of the current page as a String.<br><br><strong>Use cases:</strong><br>1. Check if text exists without using findElement (no exception risk): <code>driver.getPageSource().contains("Welcome")</code><br>2. Scraping page content<br>3. Debugging — see exactly what DOM contains<br>4. Verify elements that may be dynamically generated<br><br>Note: Returns HTML at time of call, not initial page load. Dynamic content loaded via JS IS included if already executed.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">45</div><div class="q-text">What is the difference between <code>isDisplayed()</code>, <code>isEnabled()</code>, and <code>isSelected()</code>?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>isDisplayed()</code> — Is element visible on screen? Returns false if hidden (CSS display:none, visibility:hidden). True if visible with non-zero dimensions.<br><br><code>isEnabled()</code> — Is element enabled/interactive? Returns false if disabled (grayed out button, disabled input field). True if element can be interacted with.<br><br><code>isSelected()</code> — Is element checked/selected? Only for checkboxes, radio buttons, option tags. Returns true if checkbox is checked or radio button is selected.<br><br>All return boolean. Throw NoSuchElementException if element doesn't exist (unlike findElements).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">46</div><div class="q-text">What is RemoteWebDriver and when is it used?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>RemoteWebDriver</code> is a class that extends WebDriver to run tests on a <strong>remote machine or cloud</strong> instead of local machine.<br><br><code>URL hubUrl = new URL("http://localhost:4444");</code><br><code>ChromeOptions options = new ChromeOptions();</code><br><code>WebDriver driver = new RemoteWebDriver(hubUrl, options);</code><br><br><strong>Used for:</strong> Selenium Grid (run tests on Hub/Node setup), Cloud testing (BrowserStack, SauceLabs — just change URL to their cloud hub), Docker Grid. The test code is identical — only the driver creation changes.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ TESTING THEORY ══ -->
+<div class="th-o" id="testing">
+<div class="sec-header">
+  <div class="sec-icon">🧪</div>
+  <div><div class="sec-title">Software Testing Theory</div><div class="sec-sub">SDLC · STLC · Testing types · Defect lifecycle · Agile/JIRA</div></div>
+  <div class="sec-count">Q47–Q66</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">47</div><div class="q-text">What is the difference between Verification and Validation?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Verification</strong> = "Are we building the product RIGHT?" — Checks the process and documents. No software execution. Methods: reviews, walkthroughs, inspections. Done early (requirements, design phase).<br><br><strong>Validation</strong> = "Are we building the RIGHT product?" — Checks if final product meets customer needs. Involves actual software execution. Methods: functional testing, UAT. Done later.<br><br>Simple: Verification checks PROCESS. Validation checks PRODUCT.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">48</div><div class="q-text">What is the difference between Severity and Priority?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Severity</strong> = Technical impact of the bug on the system. Set by QA engineer.<br><strong>Priority</strong> = Business urgency of fixing the bug. Set by Product Manager/Business.<br><br><strong>Classic examples:</strong><br>• Company logo missing on homepage → Low Severity (doesn't break functionality) + High Priority (brand image — fix ASAP)<br>• Data corruption in rarely used admin feature → High Severity + Low Priority (critical but nobody uses it daily)<br>• Login broken → High Severity + High Priority (nobody can use the app)</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">49</div><div class="q-text">Explain the complete Defect/Bug Life Cycle.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>New</strong> → Bug raised by QA tester<br><strong>Assigned</strong> → Given to developer by lead<br><strong>Open</strong> → Developer starts working on it<br><strong>Fixed</strong> → Developer says it's fixed, build deployed<br><strong>Retest</strong> → QA verifies the fix<br><strong>Closed</strong> → QA confirms fix works<br><br>Alternative paths:<br>→ <strong>Rejected</strong> — Developer says it's not a bug (working as designed)<br>→ <strong>Duplicate</strong> — Same bug already reported<br>→ <strong>Deferred</strong> — Valid bug, fix pushed to next release<br>→ <strong>Reopen</strong> — Fix didn't work, back to developer</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">50</div><div class="q-text">What is STLC? Explain all phases.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Software Testing Life Cycle — phases of testing process:<br><br>1. <strong>Requirement Analysis</strong> — QA reads requirements, identifies testable items, raises queries for unclear points<br>2. <strong>Test Planning</strong> — Test Manager defines scope, resources, timeline, risk assessment. Creates Test Plan document<br>3. <strong>Test Case Design</strong> — Write test cases, prepare test data<br>4. <strong>Environment Setup</strong> — Configure servers, browsers, Selenium setup<br>5. <strong>Test Execution</strong> — Run test cases, log defects for failures<br>6. <strong>Test Closure</strong> — Test summary report, lessons learned, metrics</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">51</div><div class="q-text">What is the difference between Smoke and Sanity testing?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Smoke Testing:</strong> Broad, shallow testing to check if a new build is stable enough for detailed testing. Tests basic, critical functionalities. If smoke tests fail, build is rejected — no point testing further. Also called "Build Verification Testing."<br><br><strong>Sanity Testing:</strong> Narrow, focused testing of specific functionality after a bug fix or small change. Verifies that the fix works and didn't break related areas. A subset of regression.<br><br>Memory trick: Smoke = Is the machine on fire? (broad check). Sanity = Is THIS specific thing sane? (focused check).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">52</div><div class="q-text">What is Regression Testing and why is automation critical for it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Regression testing = re-running existing test cases after code changes (bug fixes, new features) to ensure previously working functionality still works.<br><br><strong>Why automation is critical:</strong> In Agile, code changes happen daily. Manually running 500 regression test cases after every commit takes 2-3 days. With Selenium automation, same 500 tests run in 2-3 hours automatically. This is the #1 use case for Selenium in real companies — automated regression suite that runs on every code commit via Jenkins.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">53</div><div class="q-text">What is the difference between Retesting and Regression Testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Retesting:</strong> Testing the SPECIFIC bug that was fixed to verify the fix works. Also called "confirmation testing." Only tests the defect that was reported.<br><br><strong>Regression Testing:</strong> Testing all RELATED areas to ensure the fix didn't break anything else. Broader scope.<br><br>Example: Bug — login button not working. Retesting = verify login button now works. Regression = verify login, logout, session management, remember me, forgot password still work after the fix.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">54</div><div class="q-text">What is QA vs QC vs QE?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>QA (Quality Assurance):</strong> Process-oriented. Prevent defects from occurring. Focuses on processes, standards, procedures. Proactive. Example: Creating test plans, defining testing standards.<br><br><strong>QC (Quality Control):</strong> Product-oriented. Find defects in the product. Focuses on actual testing. Reactive. Example: Executing test cases, reporting bugs.<br><br><strong>QE (Quality Engineering):</strong> Broader than both. Applies engineering practices to quality — automation frameworks, CI/CD integration, performance testing, observability. Your role in Cognizant!</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">55</div><div class="q-text">What is V-Model in software testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">V-Model (Validation and Verification Model) — an SDLC model where testing activities are planned in parallel with development phases:<br><br>Left side (development): Requirements → System Design → Architecture → Module Design → Coding<br>Right side (testing): Acceptance Testing ← System Testing ← Integration Testing ← Unit Testing<br><br>Each development phase has a corresponding testing phase. Testing starts at requirements stage. Defects found earlier = cheaper to fix. QA is involved from day 1, not just at the end.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">56</div><div class="q-text">What is Exploratory Testing vs Scripted Testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Scripted Testing:</strong> Predefined test cases with specific steps and expected results. Executed as written. Repeatable, consistent. Can be automated.<br><br><strong>Exploratory Testing:</strong> Simultaneous test design and execution. Tester explores app using experience and intuition. No predefined scripts. Good for finding unexpected bugs, usability issues. Cannot be automated — requires human creativity.<br><br>Real projects use both: scripted for regression, exploratory for new features and edge cases.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">57</div><div class="q-text">What is a Test Plan? What does it contain?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A Test Plan is a document describing the complete testing strategy for a project. Created by Test Manager/Lead.<br><br>Contains: Scope (what will/won't be tested), Test approach/strategy, Resources and roles, Timeline and milestones, Entry and Exit criteria, Risk identification and mitigation, Test environment details, Dependencies, Bug tracking approach, Deliverables.<br><br>Entry criteria = conditions before testing starts (requirements signed off, environment ready). Exit criteria = conditions before testing ends (all tests executed, no critical bugs open).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">58</div><div class="q-text">What is a User Story in Agile? What is the format?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A User Story is a requirement written from the <strong>end user's perspective</strong> in simple, non-technical language that business stakeholders can understand.<br><br><strong>Format:</strong> "As a [type of user], I want [some goal] so that [some reason/benefit]"<br><br>Example: "As a registered user, I want to login to the application so that I can access my account dashboard."<br><br>Each story should be: Independent, Negotiable, Valuable, Estimable, Small (INVEST). Stories have acceptance criteria defining when story is "Done."</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">59</div><div class="q-text">What is Definition of Done (DoD) vs Definition of Ready (DoR)?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Definition of Done (DoD):</strong> Agreed checklist of criteria that must be met for a User Story/task to be considered COMPLETE. Example: Code written, unit tests passed, code reviewed, integration tests passed, documentation updated, deployed to staging.<br><br><strong>Definition of Ready (DoR):</strong> Checklist of criteria that must be met BEFORE a User Story is picked up for a Sprint. Example: Story is written, acceptance criteria defined, story is sized, dependencies identified, UI mockups available.<br><br>DoR = story is ready TO START. DoD = story is ready TO SHIP.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">60</div><div class="q-text">What is JIRA and how is it used in testing?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">JIRA is a project management and bug tracking tool by Atlassian, widely used in Agile development.<br><br><strong>In testing:</strong> Bug reporting (create defects with steps, screenshots, severity, priority), Test case management (with Zephyr plugin), Sprint management (backlog, sprint board), Traceability (link test cases to requirements/stories).<br><br><strong>Hierarchy:</strong> Epic → User Story → Task → Bug/Sub-task<br><br><strong>Workflow:</strong> To Do → In Progress → Code Review → Testing → Done<br><br>Bug states in JIRA: Open → In Progress → Resolved → Closed/Reopen</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">61</div><div class="q-text">What is RTM (Requirement Traceability Matrix)?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">RTM is a document that maps every requirement to its corresponding test cases. Ensures no requirement is left untested and no test case exists without a valid requirement.<br><br>Columns: Requirement ID | Requirement Description | Test Case IDs | Test Status<br><br>Benefits: Ensures full test coverage, helps identify gaps, proves to client that all requirements were tested, helps prioritize testing when time is limited, used in audits.<br><br>In Agile: Maps User Stories to Test Cases. Can be maintained in JIRA using story-to-test linking.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">62</div><div class="q-text">What are Test Metrics? Give examples.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Test Metrics = quantitative measurements used to evaluate testing quality and progress.<br><br><strong>Process metrics:</strong><br>• Test Case Execution % = (Executed / Total) × 100<br>• Pass % = (Passed / Executed) × 100<br>• Defect Density = Defects / Module size<br><br><strong>Product metrics:</strong><br>• Defect Removal Efficiency = (Defects in testing / Total defects) × 100<br>• Customer Defects = bugs found after production release<br>• Mean Time to Failure (MTTF)<br><br>Metrics help management make decisions: Is quality good enough to release? Are we testing efficiently?</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">63</div><div class="q-text">What is the Test Pyramid?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A concept by Mike Cohn describing the ideal distribution of automated tests:<br><br>Bottom (most): Unit Tests — fast, cheap, test individual methods. Run in seconds. Thousands of them.<br>Middle: Integration Tests — test components working together. Run in minutes.<br>Top (fewest): E2E/UI Tests (Selenium) — test full user flows. Slow, expensive, brittle.<br><br><strong>Why pyramid shape?</strong> Many unit tests give fast feedback. Few E2E tests cover critical paths only. Inverted pyramid (more E2E than unit) = "ice cream cone" — slow, expensive, breaks often. Don't build that!</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">64</div><div class="q-text">What makes a good bug report?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A good bug report must contain:<br>1. <strong>Title</strong> — clear, concise, specific (not "Button not working")<br>2. <strong>Environment</strong> — browser, OS, URL, version<br>3. <strong>Steps to reproduce</strong> — numbered, exact steps<br>4. <strong>Expected result</strong> — what SHOULD happen<br>5. <strong>Actual result</strong> — what ACTUALLY happened<br>6. <strong>Severity & Priority</strong><br>7. <strong>Screenshots/Video</strong> — visual proof<br>8. <strong>Logs</strong> — console errors, network response<br>9. <strong>Test data used</strong> — credentials, inputs<br><br>Best bug reports can be reproduced without asking the reporter any questions.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">65</div><div class="q-text">What is End-to-End testing? How does it differ from Integration testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Integration Testing:</strong> Tests how 2-3 components/modules work TOGETHER. Example: Does Login module correctly communicate with Database module? Focuses on interfaces between components.<br><br><strong>End-to-End Testing:</strong> Tests the COMPLETE user journey from start to finish — the way a real user would use the system. Example: User registers → verifies email → logs in → adds item to cart → checks out → receives order confirmation. Uses real browsers, real databases, real integrations.<br><br>Selenium = tool for E2E testing. Integration testing often done at API level.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">66</div><div class="q-text">What is GUI Testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Graphical User Interface testing — verifying the visual and functional aspects of the application's interface that users interact with.<br><br>Covers: Alignment and layout, font size and color, button placement, error messages, responsive design (mobile vs desktop), navigation flow, keyboard accessibility, form validations, loading states.<br><br>Selenium is the primary tool for automated GUI testing. Not everything in GUI testing can be automated — visual appearance (pixel-perfect) needs tools like Applitools or Percy.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ JAVA ══ -->
+<div class="th-b" id="java">
+<div class="sec-header">
+  <div class="sec-icon">☕</div>
+  <div><div class="sec-title">Core Java OOP + Collections</div><div class="sec-sub">4 pillars · Interface · Static · Exceptions · Collections</div></div>
+  <div class="sec-count">Q67–Q86</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">67</div><div class="q-text">What are the 4 pillars of OOP? Give Selenium examples for each.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Encapsulation:</strong> Private <code>driver</code> in page class, exposed via constructor. Hides implementation from test class.<br><br><strong>Inheritance:</strong> <code>LoginTest extends BaseTest</code> — gets driver setup/teardown for free. DRY principle.<br><br><strong>Polymorphism:</strong> <code>WebDriver driver = new ChromeDriver()</code> — WebDriver reference holds ChromeDriver object. Tomorrow swap to <code>new FirefoxDriver()</code> without changing tests.<br><br><strong>Abstraction:</strong> WebDriver interface — you call <code>driver.click()</code> without knowing HOW ChromeDriver clicks. Implementation hidden.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">68</div><div class="q-text">What is the difference between Interface and Abstract Class?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Interface: Only abstract method declarations (before Java 8). No constructor. No instance variables. A class can implement MULTIPLE interfaces. Keyword: <code>implements</code>. WebDriver is an interface.<br><br>Abstract Class: Can have both abstract AND concrete methods. Has constructor. Can have instance variables. A class can only extend ONE abstract class. Keyword: <code>extends</code>. BaseTest can be abstract class.<br><br><strong>Why no multiple class inheritance?</strong> Diamond problem — if B and C both have <code>method()</code> and D extends both, ambiguous which to call. Interfaces solve this since Java forces you to implement/override.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">69</div><div class="q-text">What is method overloading vs method overriding?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Overloading (compile-time polymorphism):</strong> Same method name, different parameters (different count or types) in the SAME class. Resolved at compile time by compiler.<br><code>void click() { }</code> and <code>void click(int x, int y) { }</code><br><br><strong>Overriding (runtime polymorphism):</strong> Child class provides its OWN implementation of a parent class method. Same name, same signature. Resolved at RUNTIME.<br><code>ChromeDriver overrides WebDriver.get(url)</code><br><br><strong>Key rule:</strong> You can overload static methods but cannot override them. You cannot override final methods.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">70</div><div class="q-text">What is <code>==</code> vs <code>.equals()</code> in Java?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>==</code> compares <strong>references</strong> — are both variables pointing to the SAME object in memory?<br><code>.equals()</code> compares <strong>content</strong> — do the objects have the same VALUE?<br><br>Example:<br><code>String a = "hello"; String b = "hello";</code> → <code>a == b</code> may be true (string pool) but unreliable<br><code>String a = new String("hello"); String b = new String("hello");</code> → <code>a == b</code> is FALSE (different objects), <code>a.equals(b)</code> is TRUE<br><br><strong>In Selenium:</strong> Always use <code>Assert.assertEquals(actual, expected)</code> which internally uses <code>.equals()</code>. Never use <code>==</code> for String comparison.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">71</div><div class="q-text">What is String immutability? What's the difference between String, StringBuilder, StringBuffer?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>String immutability:</strong> Once a String object is created, it cannot be changed. <code>str = str + "world"</code> creates a NEW String object, doesn't modify the original. The old object becomes eligible for GC.<br><br><strong>StringBuilder:</strong> Mutable String — changes happen in the same object. Not thread-safe. Fast. Use for single-threaded string building (dynamic XPath building).<br><br><strong>StringBuffer:</strong> Mutable + Thread-safe (synchronized methods). Slower. Use in multi-threaded environments.<br><br>Performance: String &lt; StringBuffer &lt; StringBuilder (for heavy string manipulation)</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">72</div><div class="q-text">What is <code>final</code>, <code>finally</code>, <code>finalize</code>?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>final</code>: keyword with 3 uses: <br>• final variable = constant (cannot reassign)<br>• final method = cannot override in subclass<br>• final class = cannot extend (String is final)<br><br><code>finally</code>: block that <strong>always executes</strong> after try-catch, regardless of exception or not. Perfect place for <code>driver.quit()</code> — ensures browser closes even if test fails.<br><br><code>finalize()</code>: method called by Garbage Collector before destroying an object. Deprecated in Java 9+, avoided in practice. Not reliable for cleanup.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">73</div><div class="q-text">What are checked vs unchecked exceptions? Give Selenium examples.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Checked Exceptions:</strong> Must be handled at compile time — compiler forces you to try-catch or declare throws. Example: <code>IOException</code> (file operations in POI), <code>MalformedURLException</code> (RemoteWebDriver URL).<br><br><strong>Unchecked Exceptions (RuntimeException):</strong> Happen at runtime, no forced handling. Example Selenium exceptions:<br>• <code>NoSuchElementException</code> — element not found<br>• <code>StaleElementReferenceException</code> — stale element<br>• <code>TimeoutException</code> — wait timeout<br>• <code>ElementClickInterceptedException</code> — blocked click<br>• <code>NoAlertPresentException</code> — alert not found</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">74</div><div class="q-text">What is <code>static</code> keyword? How is it used in Selenium frameworks?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>static</code> means belonging to the CLASS, not to any particular object. One copy shared by all instances.<br><br>Static variable: <code>static WebDriver driver</code> in BaseTest — all test classes share one driver reference.<br>Static method: called without object: <code>Config.getBrowser()</code><br>Static block: runs once when class loads — used to load config.<br><br><strong>In Selenium frameworks:</strong><br>• <code>static WebDriver driver</code> — shared driver in BaseTest<br>• <code>static ExtentReports extent</code> — single report instance<br>• <code>static Properties props</code> — config loaded once<br><br>Warning: Don't use static driver in parallel tests — causes threading issues. Use ThreadLocal instead.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">75</div><div class="q-text">What is JDK vs JRE vs JVM?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>JVM (Java Virtual Machine)</strong> — Runs the bytecode (.class files). Converts bytecode to machine code. Makes Java platform-independent. Different JVM for each OS but same bytecode runs everywhere.<br><br><strong>JRE (Java Runtime Environment)</strong> — JVM + standard libraries needed to RUN Java programs. If you only need to run Java (not develop), install JRE.<br><br><strong>JDK (Java Development Kit)</strong> — JRE + compiler (javac) + debugger + other dev tools. Needed to WRITE and COMPILE Java code. Selenium automation testers need JDK.<br><br>Analogy: JVM = engine, JRE = car, JDK = car factory.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">76</div><div class="q-text">Explain Java Collections — List vs Set vs Map. Which ones does Selenium use?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>List</strong>: Ordered, allows duplicates. <code>ArrayList</code> — dynamic array. <code>LinkedList</code> — doubly linked. <br>Selenium: <code>List&lt;WebElement&gt; elements = driver.findElements(By.tagName("a"))</code><br><br><strong>Set</strong>: Unordered, NO duplicates. <code>HashSet</code>, <code>TreeSet</code>.<br>Selenium: <code>Set&lt;String&gt; handles = driver.getWindowHandles()</code> — each handle unique<br><br><strong>Map</strong>: Key-value pairs. <code>HashMap</code> — unordered, allows null keys.<br>Selenium: <code>Map&lt;String, Object&gt; prefs = new HashMap&lt;&gt;()</code> for ChromeOptions preferences<br><br><strong>Iterator</strong>: Used to traverse Set of window handles in for-each loop.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">77</div><div class="q-text">What is the <code>this</code> keyword? What is <code>super</code>?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>this</code> refers to the CURRENT instance of the class.<br>• Differentiate instance variable from parameter: <code>this.driver = driver</code><br>• Call another constructor: <code>this()</code><br><br><code>super</code> refers to the PARENT class.<br>• Access parent method: <code>super.setUp()</code><br>• Call parent constructor: <code>super(driver)</code><br><br><strong>In Selenium POM:</strong><br><code>class LoginPage extends BasePage {</code><br><code>  LoginPage(WebDriver driver) { super(driver); } // calls BasePage constructor</code><br><code>}</code><br><code>class BasePage { WebDriver driver; BasePage(WebDriver d) { this.driver = d; } }</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">78</div><div class="q-text">What are Lambda expressions in Java 8? How are they used in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Lambda = short anonymous function: <code>(parameters) -> expression</code><br><br><strong>In Selenium:</strong><br>Fluent Wait: <code>wait.until(driver -> driver.findElement(By.id("x")));</code><br>Instead of verbose anonymous class:<br><code>wait.until(new Function&lt;WebDriver, WebElement&gt;() { public WebElement apply(WebDriver d) { return d.findElement(By.id("x")); } });</code><br><br>Stream operations on element lists:<br><code>elements.stream().filter(e -> e.isDisplayed()).collect(Collectors.toList())</code><br><br>Lambda requires a @FunctionalInterface (interface with exactly one abstract method).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">79</div><div class="q-text">What is type casting? When do you use it in Selenium?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Type casting = converting one type to another.<br><br><strong>In Selenium — 3 key casts:</strong><br><br>1. JavascriptExecutor: <code>JavascriptExecutor js = (JavascriptExecutor) driver;</code><br>Because WebDriver doesn't expose JS execution — need to cast to JavascriptExecutor interface first.<br><br>2. TakesScreenshot: <code>TakesScreenshot ts = (TakesScreenshot) driver;</code><br>For screenshots — same reason.<br><br>3. HasCapabilities: <code>Capabilities caps = ((HasCapabilities) driver).getCapabilities();</code><br>For getting browser info like version, browser name.<br><br>This is <strong>downcasting</strong> — casting parent (WebDriver) to child/interface type.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">80</div><div class="q-text">What is Encapsulation? Why is it important in POM?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Encapsulation = bundling data (locators) and methods (actions) together and restricting direct access to internal state.<br><br><strong>In POM:</strong><br>• WebElements declared <code>private</code> — test class cannot directly access locators<br>• Actions exposed as <code>public</code> methods — test class calls <code>loginPage.login(user, pass)</code><br>• If locator changes, test class code UNCHANGED — only page class updated<br><br>This is the CORE benefit of POM: test class doesn't know HOW actions are performed, just WHAT actions are available. Low coupling, high cohesion.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">81</div><div class="q-text">What is a Constructor? Can constructors be overloaded?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A constructor is a special method that runs when an object is created (<code>new ClassName()</code>). Same name as class, no return type.<br><br>Yes, constructors CAN be overloaded — same name, different parameters.<br><br><strong>In Selenium POM:</strong><br><code>LoginPage(WebDriver driver) { PageFactory.initElements(driver, this); this.driver = driver; }</code><br><br>Default constructor: <code>LoginPage() { }</code> — no params (if no constructor defined, Java provides this)<br>Parameterized: receives driver from test class. This is why you do <code>new LoginPage(driver)</code> in your @BeforeMethod.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">82</div><div class="q-text">What are access modifiers? Which should WebElement locators use in POM?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>private</strong> — only within same class. Most restrictive.<br><strong>default</strong> (no modifier) — same package only.<br><strong>protected</strong> — same package + subclasses.<br><strong>public</strong> — everywhere.<br><br><strong>In POM:</strong><br>• WebElement variables should be <strong>private</strong> — encapsulation. Test class shouldn't directly access locators.<br>• Action methods should be <strong>public</strong> — test class needs to call them.<br>• BaseTest/BasePage driver could be <strong>protected</strong> — child classes (test/page classes) need access.<br><br><code>@FindBy(id="username") private WebElement usernameField; // private</code><br><code>public void enterUsername(String u) { usernameField.sendKeys(u); } // public</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">83</div><div class="q-text">What is JDBC? How would you use it in test automation?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">JDBC (Java Database Connectivity) is a Java API for connecting to and executing queries on databases (MySQL, Oracle, PostgreSQL etc.) from Java code.<br><br><strong>Steps:</strong> Load driver → Create Connection → Create Statement → Execute Query → Process ResultSet → Close<br><br><code>Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/db", "user", "pass");</code><br><code>Statement stmt = conn.createStatement();</code><br><code>ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE id=1");</code><br><code>while(rs.next()) { String name = rs.getString("name"); }</code><br><br><strong>In testing:</strong> Verify data was saved correctly after form submit. Verify DB state before/after test. Fetch test data from DB.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">84</div><div class="q-text">What is Design Patterns? Name patterns used in test automation.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Design Patterns</strong> = proven, reusable solutions to common software design problems.<br><br><strong>Patterns in test automation:</strong><br><br><strong>Singleton</strong> — Only ONE instance exists. Used for WebDriver — one driver per test session. <code>if(driver == null) driver = new ChromeDriver();</code><br><br><strong>Factory</strong> — Creates objects without specifying exact class. Used in DriverFactory for cross-browser: based on "chrome"/"firefox" string, creates appropriate driver.<br><br><strong>Page Object Model</strong> — Design pattern for test organization (pages are objects).<br><br><strong>Facade</strong> — BasePage hides complex waits behind simple methods.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">85</div><div class="q-text">What is Java FileInputStream and FileOutputStream? How are they used in POI?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>FileInputStream</code> reads bytes FROM a file into your Java program.<br><code>FileOutputStream</code> writes bytes FROM your Java program TO a file.<br><br><strong>In Apache POI:</strong><br>Reading Excel: <code>FileInputStream fis = new FileInputStream("test.xlsx");</code> → load into Workbook<br>Writing Excel: After modifying, <code>FileOutputStream fos = new FileOutputStream("test.xlsx");</code> → save Workbook to file<br><br><strong>Why two separate streams?</strong> Cannot read and write simultaneously. FIS reads into memory. You modify in memory. FOS writes modified data back. Always close both streams — file remains locked if not closed.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">86</div><div class="q-text">What are Java Threads? What is Thread lifecycle?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A Thread is an independent path of execution within a program. Multiple threads run concurrently (parallel execution).<br><br><strong>Thread Lifecycle:</strong> New → Runnable → Running → Waiting/Sleeping → Terminated<br><br><strong>Create thread:</strong> Extend Thread class or implement Runnable interface.<br><br><strong>Key methods:</strong> <code>start()</code> — start thread, <code>run()</code> — thread's task, <code>sleep(ms)</code> — pause, <code>join()</code> — wait for thread to finish, <code>interrupt()</code> — interrupt thread<br><br><strong>In Selenium:</strong> Parallel test execution runs each test on separate thread. ThreadLocal ensures each thread has its own driver instance.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ POM + TESTNG ══ -->
+<div class="th-g" id="pom">
+<div class="sec-header">
+  <div class="sec-icon">📐</div>
+  <div><div class="sec-title">POM + TestNG + Assertions</div><div class="sec-sub">PageFactory · BaseTest · Annotations · DataProvider · Listeners</div></div>
+  <div class="sec-count">Q87–Q100</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">87</div><div class="q-text">What is Page Object Model? Why is it used?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">POM is a design pattern where each web page in the application has a corresponding Java class. That class contains: all WebElement locators for that page, all action methods (what you can do on that page).<br><br>Test classes only call page methods — no <code>findElement()</code> in tests.<br><br><strong>Benefits:</strong> If locator changes → update ONE page class, not all tests. Tests are readable (loginPage.login()). Code reuse — same page class used in multiple tests. Separation of concerns — what page HAS vs what tests DO.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">88</div><div class="q-text">What is PageFactory? What is lazy initialization?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">PageFactory is Selenium's built-in support for POM. Instead of <code>By.id("x")</code> + <code>findElement()</code>, use <code>@FindBy(id="x") WebElement el;</code><br><br><code>PageFactory.initElements(driver, this)</code> in constructor activates all @FindBy annotations.<br><br><strong>Lazy initialization:</strong> Elements are NOT searched in DOM when page class is created. They are found ONLY when you actually use them (<code>el.click()</code>). This is smart because the element might not exist yet at construction time — only when you interact with it is it looked up.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">89</div><div class="q-text">What is <code>@CacheLookup</code>? When should you NOT use it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>@CacheLookup</code> caches the WebElement after first find — subsequent uses don't search DOM again. Makes tests faster.<br><br><strong>Use for:</strong> Static elements that never change after page load (nav menu, logo, static headers).<br><br><strong>Do NOT use for:</strong><br>• Dynamic elements (appear/disappear via AJAX)<br>• Elements inside tables that refresh<br>• Elements loaded lazily<br>• After page navigation<br><br>If you use <code>@CacheLookup</code> on a dynamic element and the DOM changes, you'll get <code>StaleElementReferenceException</code> because the cached reference is no longer valid.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">90</div><div class="q-text">What is the order of TestNG annotation execution?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Full execution order:<br><strong>@BeforeSuite</strong> — once before ALL tests in the suite<br><strong>@BeforeTest</strong> — once before each &lt;test&gt; tag in testng.xml<br><strong>@BeforeClass</strong> — once before first @Test in the class<br><strong>@BeforeMethod</strong> — before EACH @Test method<br><strong>@Test</strong> — the actual test<br><strong>@AfterMethod</strong> — after EACH @Test method<br><strong>@AfterClass</strong> — once after last @Test in the class<br><strong>@AfterTest</strong> — once after each &lt;test&gt; tag<br><strong>@AfterSuite</strong> — once after ALL tests<br><br>Memory trick: Suite → Test → Class → Method → Test Method → Method → Class → Test → Suite</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">91</div><div class="q-text">Why use <code>@BeforeClass</code> instead of <code>@BeforeMethod</code> for browser setup?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>@BeforeMethod</code> runs before EACH @Test method. If you have 10 tests, browser opens 10 times and closes 10 times. Slow, resource-intensive.<br><br><code>@BeforeClass</code> runs ONCE before ALL tests in the class. Browser opens once. All 10 tests share the same browser session. Browser closes once at end.<br><br><strong>When to use @BeforeMethod:</strong> When tests are truly independent and cannot share state (e.g., login/logout tests where each needs fresh session).<br><br><strong>When to use @BeforeClass:</strong> When tests share a common starting state and can share browser (e.g., tests on same page, sequential user flows).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">92</div><div class="q-text">What is Hard Assert vs Soft Assert?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Hard Assert (TestNG Assert class):</strong> Test STOPS immediately when assertion fails. Remaining steps in that test don't execute. Use when failure of one assertion means rest of test is meaningless.<br><code>Assert.assertEquals(actual, expected); // if this fails, test stops</code><br><br><strong>Soft Assert (SoftAssert class):</strong> Test CONTINUES even after assertion fails. All assertions evaluated. <code>assertAll()</code> at end reports all failures.<br><code>SoftAssert soft = new SoftAssert();</code><br><code>soft.assertEquals(a, b); // fails but continues</code><br><code>soft.assertTrue(condition); // also checked</code><br><code>soft.assertAll(); // now report everything</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">93</div><div class="q-text">What is <code>dependsOnMethods</code> in TestNG?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Makes a test dependent on another test. If the dependency fails, the dependent test is automatically SKIPPED (not failed — skipped, which is different).<br><br><code>@Test(dependsOnMethods = "testLogin")</code><br><code>public void testViewDashboard() { ... }</code><br><br>If <code>testLogin</code> fails, <code>testViewDashboard</code> is skipped with status SKIP.<br><br><strong>Why useful:</strong> In your Rediff project — if TC01 (homepage load) fails, TC02 (click Create Account) should skip because there's nothing to click. Saves execution time and avoids misleading failures.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">94</div><div class="q-text">What is a TestNG Listener? How do you implement one for screenshots?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A Listener monitors TestNG events and lets you perform actions when they occur. Implement <code>ITestListener</code> interface.<br><br><code>public class Listeners implements ITestListener {</code><br><code>  public void onTestFailure(ITestResult result) {</code><br><code>    // Take screenshot</code><br><code>    TakesScreenshot ts = (TakesScreenshot) driver;</code><br><code>    File ss = ts.getScreenshotAs(OutputType.FILE);</code><br><code>    FileUtils.copyFile(ss, new File("screenshots/"+result.getName()+".png"));</code><br><code>  }</code><br><code>}</code><br><br>Register in testng.xml: <code>&lt;listeners&gt;&lt;listener class-name="utils.Listeners"/&gt;&lt;/listeners&gt;</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">95</div><div class="q-text">What is @DataProvider and how does it work?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">@DataProvider supplies multiple data sets to a single @Test method. Method returns <code>Object[][]</code> — each inner array = one test run.<br><br><code>@DataProvider(name="loginData")</code><br><code>public Object[][] data() {</code><br><code>  return new Object[][] { {"user1","pass1",true}, {"user2","wrong",false} };</code><br><code>}</code><br><br><code>@Test(dataProvider="loginData")</code><br><code>public void testLogin(String u, String p, boolean expected) { ... }</code><br><br>TestNG runs this test TWICE — once with each data row. Reports each run separately. Alternative to reading from Excel for simple cases.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">96</div><div class="q-text">What is TestNG XML and what can you configure in it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">testng.xml is the TestNG suite configuration file. Controls what runs and how.<br><br><strong>Configurations:</strong><br>• Which classes/methods to run or exclude<br>• Parallel execution: <code>parallel="tests" thread-count="3"</code><br>• Groups to include/exclude: <code>&lt;groups&gt;&lt;run&gt;&lt;include name="smoke"/&gt;</code><br>• Parameters: <code>&lt;parameter name="browser" value="chrome"/&gt;</code><br>• Listeners registration<br>• Multiple &lt;test&gt; blocks for different configurations<br><br>Run from command line: <code>mvn test -DsuiteXmlFile=testng.xml</code><br>Or in Jenkins: Surefire plugin points to testng.xml</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">97</div><div class="q-text">What is <code>singleThreaded=true</code> in TestNG @Test?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>@Test(singleThreaded=true)</code> applied at class level ensures all test methods in that class run on the SAME thread sequentially, even when the suite is configured for parallel execution.<br><br><strong>Why needed:</strong> In your Rediff project — 5 tests share ONE browser instance (opened in @BeforeClass). If different threads ran different tests, they'd all try to control same driver simultaneously → race condition → tests fail randomly.<br><br>singleThreaded = all tests in class run sequentially on one thread → safe to share driver.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">98</div><div class="q-text">What is ExtentReports? How do you set it up?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">ExtentReports generates professional HTML reports with charts, timeline, logs, screenshots embedded.<br><br><strong>Setup:</strong><br>1. <code>ExtentSparkReporter spark = new ExtentSparkReporter("report.html");</code> — define output<br>2. <code>ExtentReports extent = new ExtentReports(); extent.attachReporter(spark);</code><br>3. In @BeforeSuite: create extent object<br>4. In Listener's onTestStart: <code>test = extent.createTest(result.getName());</code><br>5. In onTestSuccess: <code>test.pass("Test passed");</code><br>6. In onTestFailure: <code>test.fail(result.getThrowable());</code> + attach screenshot<br>7. In @AfterSuite: <code>extent.flush();</code> — writes to HTML file</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">99</div><div class="q-text">What is config.properties? Why use it instead of hardcoding?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">config.properties is a key-value text file storing configurable values outside Java code:<br><code>browser=chrome</code>, <code>url=https://example.com</code>, <code>username=admin</code><br><br><strong>Why use it:</strong><br>1. Change browser/environment without touching code<br>2. Different environments (dev/staging/prod) can use different config files<br>3. Non-technical people can update configurations<br>4. Sensitive data (passwords) can be externalized<br>5. CI/CD can pass different configs per environment<br><br>Read with: <code>Properties props = new Properties(); props.load(new FileInputStream("config.properties")); String browser = props.getProperty("browser");</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">100</div><div class="q-text">What is Apache POI? How do you write test results back with color?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Apache POI = Java library for reading/writing Excel files. XSSFWorkbook for .xlsx.<br><br>Read: FileInputStream → XSSFWorkbook → Sheet → Row → Cell → getStringCellValue()<br>Write: Load with FIS → modify cells → save with FileOutputStream<br><br><strong>Color coding:</strong><br><code>CellStyle style = workbook.createCellStyle();</code><br><code>style.setFillPattern(FillPatternType.SOLID_FOREGROUND);</code><br><code>style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex()); // PASS</code><br><code>// IndexedColors.ROSE for FAIL</code><br><code>cell.setCellStyle(style);</code><br>Then write with FileOutputStream and close both streams.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ BDD ══ -->
+<div class="th-t" id="bdd">
+<div class="sec-header">
+  <div class="sec-icon">🥒</div>
+  <div><div class="sec-title">BDD Cucumber<span class="prio p-new">🆕 NEW</span></div><div class="sec-sub">Gherkin · Feature files · Step definitions · Hooks · Runner</div></div>
+  <div class="sec-count">Q101–Q110</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">101</div><div class="q-text">What is BDD? How is it different from TDD?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>BDD (Behavior Driven Development):</strong> Tests written in plain English (Gherkin) readable by ALL stakeholders — business, dev, QA. Focuses on BEHAVIOR from user perspective. Tests are living documentation.<br><br><strong>TDD (Test Driven Development):</strong> Developer writes failing unit test FIRST, then writes code to make it pass, then refactors. Tests in code, not readable by business. Focuses on code correctness.<br><br><strong>Key difference:</strong> BDD = business-readable acceptance tests. TDD = code-level unit tests for developers. BDD uses Cucumber/Gherkin. TDD uses JUnit/TestNG.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">102</div><div class="q-text">What is the difference between Scenario and Scenario Outline?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Scenario:</strong> A single test case with fixed, hardcoded values. Runs exactly once.<br><br><strong>Scenario Outline:</strong> Same scenario template that runs MULTIPLE TIMES with different data from an Examples table. Each row in Examples = one test run. Like @DataProvider in TestNG.<br><br>Feature file uses <code>&lt;placeholder&gt;</code> in steps, Examples table has columns matching placeholders. Example with 3 rows in Examples = 3 separate test runs, reported individually in results.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">103</div><div class="q-text">What is Background in Cucumber? How is it different from hooks?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Background:</strong> Steps written in Gherkin that run before EACH scenario in a feature file. Visible in feature file — part of documentation. Used for common preconditions (navigating to page, logging in).<br><br><strong>Hooks (@Before/@After):</strong> Java code that runs before/after each scenario. Not visible in feature file. Used for technical setup/teardown (browser launch, screenshot, driver.quit).<br><br>Rule: If it's a business precondition a business person should see → Background. If it's technical setup → Hooks.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">104</div><div class="q-text">What is the purpose of the Runner class in Cucumber?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">The Runner class is the entry point for Cucumber execution. Configured with @CucumberOptions:<br><br>• <code>features</code> — where .feature files are<br>• <code>glue</code> — package containing step definitions and hooks<br>• <code>tags</code> — filter which scenarios to run (@smoke, "not @skip")<br>• <code>plugin</code> — report formats (html, json, pretty)<br>• <code>dryRun</code> — if true, check step mappings without running browser<br>• <code>monochrome</code> — cleaner console output<br><br>Extend <code>AbstractTestNGCucumberTests</code> for TestNG integration. Right-click Runner → Run to execute.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">105</div><div class="q-text">What is dryRun in Cucumber? When do you use it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>dryRun = true</code> in @CucumberOptions makes Cucumber check if all feature file steps have corresponding step definitions — WITHOUT actually opening the browser or executing any code.<br><br><strong>Use when:</strong><br>• You wrote a new feature file and want to check if all step definitions exist<br>• You want auto-generated step definition snippets (Cucumber shows missing steps)<br>• Quick validation before running full suite<br><br><strong>dryRun = false</strong> (default) — actually runs everything. In CI/CD pipelines, always use false.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">106</div><div class="q-text">What are Cucumber Tags and how are they used?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Tags are labels prefixed with @ applied to Scenarios or Features to organize and selectively run tests.<br><br><code>@smoke</code>, <code>@regression</code>, <code>@critical</code>, <code>@skip</code><br><br>In Runner: <code>tags = "@smoke"</code> — run only smoke scenarios<br>Tag expressions:<br>• <code>"@smoke and @regression"</code> — must have both tags<br>• <code>"@smoke or @regression"</code> — has either tag<br>• <code>"not @skip"</code> — everything except @skip tagged<br><br>Same as TestNG Groups. In Jenkins: pass tags as Maven property: <code>-Dcucumber.filter.tags="@smoke"</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">107</div><div class="q-text">How do you pass parameters from feature file to step definitions?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Two ways:<br><br><strong>1. Cucumber Expressions (preferred):</strong><br>Feature: <code>When user enters "tomsmith"</code><br>Step def: <code>@When("user enters {string}") public void enter(String text) { ... }</code><br>Types: <code>{string}</code>, <code>{int}</code>, <code>{double}</code>, <code>{word}</code><br><br><strong>2. Regex:</strong><br>Feature: <code>When user enters "tomsmith"</code><br>Step def: <code>@When("user enters \"(.*)\"") public void enter(String text) { ... }</code><br><br>Values in double quotes in feature file are captured by {string}. Integer values captured by {int}.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">108</div><div class="q-text">How do you take a screenshot on failure in Cucumber?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">In the @After hook, check if scenario failed and attach screenshot:<br><br><code>@After public void tearDown(Scenario scenario) {</code><br><code>  if(scenario.isFailed()) {</code><br><code>    byte[] ss = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);</code><br><code>    scenario.attach(ss, "image/png", scenario.getName());</code><br><code>  }</code><br><code>  driver.quit();</code><br><code>}</code><br><br><code>scenario.attach()</code> embeds the screenshot directly in the Cucumber HTML report — you can see exactly what the browser looked like when it failed.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">109</div><div class="q-text">What is a Data Table in Cucumber? How is it different from Scenario Outline?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Data Table:</strong> Inline table within a step for passing structured data to ONE step. Accessed via <code>DataTable</code> parameter.<br>Use: When one step needs multiple field-value pairs (form filling, config data).<br><br><strong>Scenario Outline + Examples:</strong> Runs the ENTIRE scenario multiple times with different data. Each row = complete separate test run.<br>Use: Same user journey with different input combinations.<br><br>Example Data Table: <code>| Field | Value |</code><br><code>| Name | John |</code><br><code>| Email | john@test.com |</code><br>Step receives: <code>Map&lt;String,String&gt; data = dataTable.asMap(String.class, String.class);</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">110</div><div class="q-text">What are the advantages of BDD over traditional test automation?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">1. <strong>Business readable</strong> — product owners, clients can read and verify test scenarios<br>2. <strong>Living documentation</strong> — feature files ARE the requirements, always up to date<br>3. <strong>Collaboration</strong> — developers, testers, business all work from same spec<br>4. <strong>Reusability</strong> — step definitions reusable across multiple feature files<br>5. <strong>Better coverage</strong> — business writes scenarios catching edge cases dev/QA might miss<br>6. <strong>Early defect detection</strong> — scenarios written during requirement phase, not after dev<br>7. <strong>Reports are readable</strong> — Cucumber HTML reports show business scenarios passed/failed</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ REST ASSURED ══ -->
+<div class="th-t" id="rest">
+<div class="sec-header">
+  <div class="sec-icon">🔌</div>
+  <div><div class="sec-title">REST Assured + Postman + API<span class="prio p-new">🆕 NEW</span></div><div class="sec-sub">HTTP methods · Status codes · Auth · Schema validation</div></div>
+  <div class="sec-count">Q111–Q120</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">111</div><div class="q-text">What is REST? What are its constraints?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">REST (Representational State Transfer) = architectural style for web APIs using HTTP protocol.<br><br><strong>REST constraints:</strong><br>1. <strong>Stateless</strong> — each request is independent, server doesn't store client state<br>2. <strong>Client-Server</strong> — separate client and server concerns<br>3. <strong>Uniform Interface</strong> — standard HTTP methods (GET/POST/PUT/DELETE)<br>4. <strong>Cacheable</strong> — responses can be cached<br>5. <strong>Layered System</strong> — client doesn't know if connecting directly to server<br><br>REST uses JSON or XML for data exchange. URLs are called endpoints/resources.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">112</div><div class="q-text">What is the difference between PUT and PATCH?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>PUT</strong> = Replace the ENTIRE resource. If you send only <code>{"name":"John"}</code> in a PUT for user with id=1, all other fields (email, phone, age) become null/empty. Full replacement.<br><br><strong>PATCH</strong> = Update PARTIAL resource. If you send only <code>{"name":"John"}</code> in PATCH, only name changes — email, phone, age remain unchanged. Partial update.<br><br>PUT is idempotent — calling it multiple times with same data has same effect. PATCH may or may not be idempotent depending on implementation.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">113</div><div class="q-text">What are path parameters vs query parameters?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Path Parameter:</strong> Part of the URL path itself. Identifies a specific resource.<br>URL: <code>/users/{id}</code> → <code>/users/5</code><br>REST Assured: <code>given().pathParam("id", 5).when().get("/users/{id}")</code><br><br><strong>Query Parameter:</strong> Appended to URL after <code>?</code>. Used for filtering, sorting, pagination.<br>URL: <code>/universities?country=India&limit=10</code><br>REST Assured: <code>given().queryParam("country","India").queryParam("limit","10").when().get("/universities")</code><br><br>Rule: Path params = "which resource?". Query params = "which subset/format of that resource?"</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">114</div><div class="q-text">What is JSON Schema validation in REST Assured?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">JSON Schema validation verifies the STRUCTURE of JSON response — data types, required fields, field names — not just values. Ensures API contract is maintained.<br><br>1. Create schema file (e.g., userSchema.json) with structure definition: required fields, data types<br>2. In test: <code>.body(matchesJsonSchemaInClasspath("userSchema.json"))</code><br><br>This catches breaking changes: if API adds a required field, removes a field, or changes a field from string to integer — schema validation fails immediately. Critical for contract testing between frontend and backend teams.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">115</div><div class="q-text">How do you chain API requests (use response value in next request)?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Extract ID from POST response and use in GET request:<br><br><code>// Step 1: Create user, get ID</code><br><code>Response createResp = given().body(userJson).when().post("/users").then().statusCode(201).extract().response();</code><br><code>String userId = createResp.jsonPath().getString("id");</code><br><br><code>// Step 2: Use ID to get user</code><br><code>given().pathParam("id", userId).when().get("/users/{id}").then().statusCode(200);</code><br><br>In Postman: use Tests tab to set environment variable: <code>pm.environment.set("userId", pm.response.json().id)</code>, then next request uses <code>{{userId}}</code>.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">116</div><div class="q-text">What is Bearer Token authentication? How do you implement in REST Assured?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Bearer Token is the most common authentication for modern REST APIs. Client gets a token (usually JWT) by logging in, then sends token in Authorization header with every subsequent request.<br><br><code>given()</code><br><code>  .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...")</code><br><code>.when()</code><br><code>  .get("/profile")</code><br><code>.then()</code><br><code>  .statusCode(200);</code><br><br>In real frameworks: Login once in @BeforeSuite, extract token, store in static variable or config, reuse in all tests. Avoids logging in before every test.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">117</div><div class="q-text">What is RequestSpecification in REST Assured?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">RequestSpecification stores reusable request settings — base URI, headers, auth, content-type — so you don't repeat them in every test.<br><br><code>RequestSpecification reqSpec = new RequestSpecBuilder()</code><br><code>  .setBaseUri("https://api.example.com")</code><br><code>  .setContentType("application/json")</code><br><code>  .addHeader("Authorization", "Bearer "+token)</code><br><code>  .build();</code><br><br>Usage: <code>given().spec(reqSpec).when().get("/users")</code><br><br>Similarly, ResponseSpecification stores common validations. Set up in @BeforeSuite for reuse across entire test suite.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">118</div><div class="q-text">What is Postman Collection Runner? How do you use CSV for data parameterization?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Collection Runner runs all requests in a Postman Collection automatically, in sequence. Can iterate multiple times with data from CSV/JSON file.<br><br><strong>CSV setup:</strong><br>1. Create CSV: first row = column headers (username, password), subsequent rows = data<br>2. In request body/URL use <code>{{username}}</code>, <code>{{password}}</code><br>3. Open Collection Runner<br>4. Upload CSV as data file<br>5. Runner automatically runs the request once per CSV row<br>6. Each iteration gets different data from CSV row<br>7. Tests tab can verify expected outcomes per iteration</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">119</div><div class="q-text">What is SOAP vs REST?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>REST:</strong> Architectural style. Uses HTTP. Data in JSON or XML. Lightweight. Stateless. Different methods (GET/POST/PUT/DELETE). Easier to implement. Used in modern APIs.<br><br><strong>SOAP:</strong> Protocol with strict standards. Uses HTTP/SMTP/TCP. Data ONLY in XML. Heavier, more complex. Built-in WS-Security. Built-in error handling (SOAP faults). Used in enterprise/financial/healthcare.<br><br>In Postman: REST APIs tested normally. SOAP tested by sending XML body as POST request to WSDL endpoint. Your syllabus mentions testing SOAP with Postman.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">120</div><div class="q-text">How do you run REST Assured tests in parallel?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">In testng.xml: <code>&lt;suite parallel="methods" thread-count="3"&gt;</code><br><br>Since REST Assured doesn't use WebDriver, no ThreadLocal needed for driver. But watch out for:<br>• Shared static variables (test data, tokens) — make them ThreadLocal or method-local<br>• Test ordering dependencies — parallel execution changes order<br>• Test data conflicts — two tests creating same user simultaneously<br><br>In REST Assured framework, thread-safety is simpler than Selenium because no browser instance to manage — HTTP calls are stateless by nature.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ DEVOPS ══ -->
+<div class="th-p" id="devops">
+<div class="sec-header">
+  <div class="sec-icon">⚙️</div>
+  <div><div class="sec-title">DevOps — Git, Maven, Jenkins, Grid<span class="prio p-new">🆕 NEW</span></div><div class="sec-sub">Commands · Lifecycle · CI/CD pipeline · Grid setup</div></div>
+  <div class="sec-count">Q121–Q132</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">121</div><div class="q-text">What is Git? What is the difference between git clone and git pull?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Git</strong> = distributed version control system. Tracks every change to code, when it was made, and who made it. Multiple developers can work on same project without overwriting each other.<br><br><strong>git clone URL</strong> — First-time copy of entire remote repository to your local machine. Gets all code, all branches, full history. Done once per project.<br><br><strong>git pull</strong> — Get the LATEST changes from remote into your already-existing local repository. Done regularly to stay up to date with team's changes. Equivalent to git fetch + git merge.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">122</div><div class="q-text">What is a Git branch? What is the workflow?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A branch is an independent line of development. Main/master = stable production code. Feature branches = work in progress for new features/bug fixes.<br><br><strong>Typical workflow:</strong><br>1. <code>git checkout -b feature/login-tests</code> — create feature branch<br>2. Write test code, commit regularly: <code>git add . && git commit -m "add login test"</code><br>3. <code>git push origin feature/login-tests</code> — push to remote<br>4. Create Pull Request on GitHub → team reviews<br>5. After approval: <code>git merge feature/login-tests</code> into main<br>6. Delete feature branch after merge</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">123</div><div class="q-text">What is a merge conflict? How do you resolve it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Merge conflict occurs when two branches modified the SAME line of code differently, and Git can't automatically decide which version to keep.<br><br>Git marks the file with conflict markers:<br><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> (your code)<br><code>=======</code><br><code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</code> (their code)<br><br><strong>Resolution:</strong><br>1. Open conflicted file<br>2. Manually edit — keep the correct code, remove conflict markers<br>3. <code>git add conflicted-file.java</code><br>4. <code>git commit -m "resolve merge conflict"</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">124</div><div class="q-text">What is Maven? What are its two main purposes?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Maven</strong> = build automation and dependency management tool for Java projects.<br><br><strong>1. Dependency Management:</strong> Declare libraries in pom.xml — Maven automatically downloads from Maven Central. <code>&lt;dependency&gt;&lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;...&lt;/dependency&gt;</code>. No manual JAR downloads. Handles transitive dependencies (dependencies of dependencies).<br><br><strong>2. Build Automation:</strong> Standard lifecycle — compile, test, package with single command: <code>mvn clean test</code>. Jenkins uses this to run tests automatically. Standardizes how projects are built regardless of developer's IDE or OS.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">125</div><div class="q-text">What is Maven dependency scope? Why is TestNG scope=test?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Scope controls when a dependency is available:<br>• <code>compile</code> (default) — available always, included in final JAR<br>• <code>test</code> — only available during testing phase, NOT in production code<br>• <code>provided</code> — available at compile, not packaged (provided by server)<br>• <code>runtime</code> — not needed at compile, only at runtime<br><br><strong>Why TestNG scope=test:</strong> TestNG is a testing library — you don't need it in production code. <code>scope=test</code> means TestNG classes are visible ONLY in <code>src/test/java</code>. That's why your test files MUST be in <code>src/test/java</code> — <code>src/main/java</code> cannot see TestNG annotations.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">126</div><div class="q-text">What is the Maven build lifecycle? List phases in order.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Maven lifecycle phases (in order):<br><br>1. <strong>validate</strong> — validate project structure is correct<br>2. <strong>compile</strong> — compile source code (src/main/java)<br>3. <strong>test-compile</strong> — compile test code (src/test/java)<br>4. <strong>test</strong> — run unit/TestNG tests<br>5. <strong>package</strong> — package into JAR/WAR<br>6. <strong>verify</strong> — run integration tests<br>7. <strong>install</strong> — install JAR to local .m2 repository<br>8. <strong>deploy</strong> — deploy to remote server<br><br>Each phase runs all previous phases. <code>mvn test</code> = validates + compiles + test-compiles + runs tests. <code>mvn clean</code> deletes target/ folder (old build artifacts).</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">127</div><div class="q-text">What is Jenkins? What is CI/CD?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>CI (Continuous Integration):</strong> Practice of merging code changes frequently. Each commit triggers automatic build + test. Catches integration issues early.<br><br><strong>CD (Continuous Delivery/Deployment):</strong> Automatically deploying verified changes to environments.<br><br><strong>Jenkins</strong> = open source automation server implementing CI/CD. Watches Git repository for changes, automatically: pulls code → builds with Maven → runs Selenium tests → publishes reports → emails team on failure.<br><br>Benefits: No manual test execution, immediate feedback on code quality, regression tested automatically, failures caught before reaching production.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">128</div><div class="q-text">What are different types of Jenkins jobs?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Freestyle Project:</strong> GUI-based configuration. Click-through setup. Good for simple builds: set Source Code (Git URL), Build (mvn clean test), Post-build (publish reports). Easiest to set up.<br><br><strong>Pipeline Job:</strong> Code-based using Groovy script (Jenkinsfile). Stored in repository alongside test code. Supports complex workflows with stages. More powerful.<br><br><strong>Multibranch Pipeline:</strong> Automatically creates Pipeline job for each branch in repository. Each branch gets its own CI/CD pipeline.<br><br>For Selenium testing in your syllabus: Freestyle Project with Maven build is the primary focus.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">129</div><div class="q-text">What are Jenkins build triggers?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Triggers control WHEN Jenkins runs a build:<br><br>1. <strong>Manual (Build Now)</strong> — only when someone clicks the button<br>2. <strong>SCM Poll</strong> — Jenkins checks Git every X minutes, runs if new commits<br>3. <strong>GitHub Webhook</strong> — GitHub notifies Jenkins INSTANTLY on push. Most responsive. Real CI.<br>4. <strong>Scheduled (Cron)</strong> — time-based: <code>0 22 * * *</code> = 10pm daily. Used for nightly regression runs.<br>5. <strong>Upstream trigger</strong> — runs after another Jenkins job completes. For job chaining.<br><br>For your Selenium project: Webhook (on every commit) + Scheduled (nightly full regression)</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">130</div><div class="q-text">What is Groovy in Jenkins context?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Groovy is the scripting language used to write Jenkins Pipelines (Jenkinsfile). It's a JVM-based language, similar to Java.<br><br>Jenkinsfile structure:<br><code>pipeline { agent any</code><br><code>  stages {</code><br><code>    stage('Test') { steps { sh 'mvn clean test' } }</code><br><code>  }</code><br><code>  post { failure { mail to: 'team@co.com', subject: 'FAIL' } }</code><br><code>}</code><br><br>You don't need to master Groovy — just understand the basic Jenkinsfile structure for Pipeline jobs. Freestyle jobs don't need Groovy at all.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">131</div><div class="q-text">How do you integrate Selenium tests with Jenkins?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Steps:</strong><br>1. Push Selenium project to GitHub<br>2. In Jenkins: New Freestyle job<br>3. Source Code: Git → Enter repo URL<br>4. Build Triggers: GitHub webhook or poll SCM<br>5. Build: Add build step → Invoke Maven → Goals: <code>clean test</code><br>6. Post-build: Publish TestNG/HTML reports, publish JUnit results<br>7. E-mail notification on failure<br><br><strong>For headless:</strong> Jenkins usually runs on server with no display → add <code>--headless=new</code> to ChromeOptions or use Xvfb (virtual display) for Linux servers.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">132</div><div class="q-text">How do you set up Selenium Grid and run tests on it?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Setup Grid 4:</strong><br>Terminal 1: <code>java -jar selenium-server.jar hub</code><br>Terminal 2: <code>java -jar selenium-server.jar node --hub http://localhost:4444</code><br><br><strong>Test code:</strong><br><code>ChromeOptions options = new ChromeOptions();</code><br><code>URL hubUrl = new URL("http://localhost:4444");</code><br><code>WebDriver driver = new RemoteWebDriver(hubUrl, options);</code><br><br>Tests run exactly the same — only driver creation changes to RemoteWebDriver.<br><br><strong>In testng.xml:</strong> Configure parallel="tests" with multiple &lt;test&gt; blocks, each specifying different browser. Grid routes each to appropriate Node.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ DOCKER + GENAI ══ -->
+<div class="th-p" id="docker">
+<div class="sec-header">
+  <div class="sec-icon">🐳</div>
+  <div><div class="sec-title">Docker + GenAI + GitHub Copilot<span class="prio p-new">🆕 NEW</span></div><div class="sec-sub">Containers · Images · Compose · GenAI in testing · Prompt engineering</div></div>
+  <div class="sec-count">Q133–Q142</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">133</div><div class="q-text">What is Docker? What problem does it solve?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Docker is a containerization platform that packages applications with ALL their dependencies (runtime, libraries, config) into a portable container that runs identically everywhere.<br><br><strong>Problem solved:</strong> "Works on my machine but not on the server" — caused by different OS versions, different Java versions, different Chrome versions, different environment configs.<br><br>Docker container = same environment on dev laptop, test server, production server. Eliminates environment-specific failures. Critical for Selenium testing — ensures Chrome version, ChromeDriver version, Java version are all consistent across team and CI/CD.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">134</div><div class="q-text">What is the difference between Docker Image and Container?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Docker Image:</strong> Read-only blueprint/template. Built from Dockerfile. Contains OS, dependencies, app code. Stored in Docker Hub registry. Like a class in Java — the definition.<br><br><strong>Docker Container:</strong> Running instance of an image. Created from image, adds writable layer on top. Can start, stop, restart, delete. Multiple containers from same image run simultaneously. Like an object created from a class.<br><br>Analogy: Image = cookie cutter (template). Container = actual cookie (instance). Same cutter → many identical cookies. Delete a cookie → cutter unchanged.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">135</div><div class="q-text">What is Docker Compose? How is it used with Selenium Grid?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Docker Compose is a tool for defining and running multi-container Docker applications using a YAML file (docker-compose.yml). One command starts all containers: <code>docker-compose up -d</code><br><br><strong>For Selenium Grid:</strong><br>Define Hub container + Chrome Node container + Firefox Node container in docker-compose.yml. All start together. Hub and Nodes automatically networked. Scale Nodes: <code>docker-compose up --scale chrome=5</code> — 5 Chrome browsers running in parallel.<br><br>Benefits: Clean environment every run, no driver version conflicts, easy to add browsers, consistent across all machines.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">136</div><div class="q-text">Docker VM vs Container — key differences?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Virtual Machine:</strong> Runs a FULL separate OS (kernel, OS stack). Heavy — GBs. Slow to start (minutes). High memory usage. Strong isolation. Hypervisor needed.<br><br><strong>Docker Container:</strong> Shares HOST OS kernel. Lightweight — MBs. Starts in seconds. Low memory. Good isolation via namespaces/cgroups. Docker Engine needed.<br><br>For testing: 10 VMs running browsers = heavy infrastructure. 10 Docker containers running browsers = lightweight, starts fast, can run on same machine that runs fewer VMs. Docker is preferred for CI/CD testing infrastructure.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">137</div><div class="q-text">What is a Dockerfile?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">A Dockerfile is a text script with instructions to build a Docker Image layer by layer.<br><br>Key instructions:<br>• <code>FROM openjdk:17-slim</code> — start from base image<br>• <code>WORKDIR /app</code> — set working directory<br>• <code>COPY pom.xml .</code> — copy files into image<br>• <code>RUN mvn dependency:resolve</code> — run command during build<br>• <code>CMD ["mvn", "clean", "test"]</code> — default command when container starts<br>• <code>EXPOSE 8080</code> — document which port the app uses<br><br><code>docker build -t my-selenium-tests .</code> — builds image from Dockerfile in current directory.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">138</div><div class="q-text">What is Generative AI? How does it help in QA?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Generative AI = AI that creates new content (text, code, images) by learning patterns from massive training data. Powered by LLMs (Large Language Models). Examples: ChatGPT, Gemini, Claude.<br><br><strong>How it helps QA:</strong><br>• Generate test cases from requirements/user stories<br>• Create XPath/CSS locators from HTML<br>• Write Gherkin feature files from user stories<br>• Generate test data with realistic values<br>• Suggest edge cases humans might miss<br>• Explain bugs and suggest fixes<br>• Write boilerplate automation code faster<br>• Generate API test scripts from Swagger docs</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">139</div><div class="q-text">What is Prompt Engineering?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Prompt engineering is the skill of writing clear, specific, and contextual instructions to AI models to get high-quality, accurate outputs.<br><br><strong>Bad prompt:</strong> "Write Selenium test" → generic, incomplete code<br><br><strong>Good prompt:</strong> "Write a Selenium Java TestNG test for login page at [URL] using POM and @FindBy. Test valid login with username 'admin' and password 'admin123'. Assert that title becomes 'Dashboard' after login. Use WebDriverManager."<br><br>Tips: Be specific about language/framework, give context, mention constraints, specify expected output format, provide examples when helpful.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">140</div><div class="q-text">What is GitHub Copilot? How is it used in automation testing?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">GitHub Copilot is an AI coding assistant that lives inside your IDE (IntelliJ, VS Code). Powered by OpenAI Codex. Trained on billions of lines of public code. Suggests code completions in real-time as you type.<br><br><strong>In automation testing:</strong><br>• Write comment → Copilot generates step definition code<br>• Type @FindBy → Copilot suggests XPath based on context<br>• Start writing test method → Copilot suggests assertions<br>• Generate data-driven test structure<br><br><strong>Critical:</strong> Always REVIEW Copilot suggestions before accepting. AI can generate plausible but incorrect locators or wrong assertions. Never blindly accept.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">141</div><div class="q-text">What is Responsible AI? What should you avoid?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Responsible AI</strong> = using AI ethically, transparently, and without causing harm.<br><br><strong>Never do:</strong><br>• Paste customer PII (names, emails, credit cards) into AI tools — data privacy violation<br>• Share company confidential code/IP in public AI tools<br>• Blindly trust AI output without reviewing<br>• Use AI for decisions with ethical implications without human oversight<br><br><strong>Good practices:</strong><br>• Review all AI-generated code before using<br>• Understand what the code does — don't just copy-paste<br>• Use company-approved AI tools only<br>• Cite AI assistance when required by company policy</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">142</div><div class="q-text">What is a token in LLM context? What is context window?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Token:</strong> Basic unit of text that an LLM processes. Approximately 1 word or part of a word (~4 characters). "Hello world" = 2 tokens. Code has more tokens per line than natural text.<br><br><strong>Context Window:</strong> Maximum number of tokens an LLM can process in one conversation/request. GPT-4 = 128k tokens (~100k words). Claude = 200k tokens. Longer context = model can "remember" more of your conversation/code.<br><br><strong>In testing:</strong> When giving AI a large codebase, be aware of token limits. Paste only relevant files. Large test suites may exceed context window — break into smaller chunks.</div>
+</div>
+
+</div>
+</div>
+
+<!-- ══ SQL ══ -->
+<div class="th-pk" id="sql">
+<div class="sec-header">
+  <div class="sec-icon">🗄️</div>
+  <div><div class="sec-title">SQL — Joins, Aggregates, Advanced</div><div class="sec-sub">DDL/DML · Joins · Subqueries · Window functions · Normalization</div></div>
+  <div class="sec-count">Q143–Q160</div>
+</div>
+<div class="q-list">
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">143</div><div class="q-text">What is the difference between WHERE and HAVING?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>WHERE:</strong> Filters individual ROWS before grouping. Cannot use aggregate functions (COUNT, SUM, AVG). Applied before GROUP BY.<br><br><strong>HAVING:</strong> Filters GROUPS after GROUP BY. CAN use aggregate functions. Applied after GROUP BY.<br><br>Example: Departments with more than 2 employees hired after 2019:<br><code>SELECT dept_id, COUNT(*) FROM employees</code><br><code>WHERE hire_date > '2019-01-01'</code> — filter rows first<br><code>GROUP BY dept_id</code><br><code>HAVING COUNT(*) > 2;</code> — filter groups after<br><br>WHERE = row filter. HAVING = group filter.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">144</div><div class="q-text">Explain all types of SQL JOINs with examples.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>INNER JOIN:</strong> Returns ONLY matching rows from both tables. Most common.<br><code>SELECT e.name, d.dept_name FROM employees e INNER JOIN departments d ON e.dept_id = d.id</code><br><br><strong>LEFT JOIN:</strong> ALL rows from left table + matching from right. Non-matching right = NULL. Good for "employees with OR without departments."<br><br><strong>RIGHT JOIN:</strong> ALL rows from right + matching from left. Non-matching left = NULL.<br><br><strong>FULL OUTER JOIN:</strong> ALL rows from both. NULL where no match either side. MySQL: LEFT JOIN UNION RIGHT JOIN.<br><br><strong>SELF JOIN:</strong> Table joined with itself. Employee-manager: <code>e LEFT JOIN e m ON e.manager_id = m.emp_id</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">145</div><div class="q-text">Write SQL to find the 2nd highest salary.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Method 1 — Subquery:<br><code>SELECT MAX(salary) FROM employees WHERE salary &lt; (SELECT MAX(salary) FROM employees);</code><br><br>Method 2 — LIMIT/OFFSET:<br><code>SELECT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 1;</code><br>(OFFSET 0=1st, OFFSET 1=2nd, OFFSET N-1=Nth)<br><br>Method 3 — DENSE_RANK:<br><code>SELECT salary FROM (SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk FROM employees) t WHERE rnk = 2;</code><br><br>All 3 are valid — DENSE_RANK is most flexible for Nth highest.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">146</div><div class="q-text">What is the difference between RANK, DENSE_RANK, ROW_NUMBER?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">All are window functions, all require OVER clause.<br><br><strong>RANK():</strong> Same values get same rank, next rank SKIPS numbers. Ties: 1, 2, 2, 4 (skips 3)<br><br><strong>DENSE_RANK():</strong> Same values get same rank, NO skipping. Ties: 1, 2, 2, 3<br><br><strong>ROW_NUMBER():</strong> Unique sequential number regardless of ties. Always: 1, 2, 3, 4 (even if salaries are equal)<br><br>Use DENSE_RANK for "Nth highest" problems. Use ROW_NUMBER for deduplication (keep one row per group). Use RANK when you want "tied position" visibility.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">147</div><div class="q-text">What is TRUNCATE vs DELETE vs DROP?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><table style="font-size:12px;width:100%;border-collapse:collapse"><tr><td style="padding:4px 8px;border-bottom:1px solid #374151"><strong>TRUNCATE</strong></td><td style="padding:4px 8px;border-bottom:1px solid #374151">Removes ALL rows, keeps structure. DDL. Cannot rollback. Resets AUTO_INCREMENT. Very fast. No WHERE clause.</td></tr><tr><td style="padding:4px 8px;border-bottom:1px solid #374151"><strong>DELETE</strong></td><td style="padding:4px 8px;border-bottom:1px solid #374151">Removes specific or all rows. DML. CAN rollback. Does NOT reset AUTO_INCREMENT. Slow (logs each row). WHERE clause available.</td></tr><tr><td style="padding:4px 8px"><strong>DROP</strong></td><td style="padding:4px 8px">Removes ENTIRE table (structure + data). DDL. Cannot rollback. No WHERE clause. Table gone completely.</td></tr></table></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">148</div><div class="q-text">What is normalization? Explain 1NF, 2NF, 3NF.<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Normalization</strong> = organizing database tables to reduce redundancy and improve data integrity.<br><br><strong>1NF:</strong> Each column has atomic (indivisible) values. No repeating groups. No arrays in cells. Each row is unique. Violation: storing "phone1, phone2" in one column.<br><br><strong>2NF:</strong> Must be 1NF + no partial dependency. Every non-key column depends on the ENTIRE primary key (not just part of composite key).<br><br><strong>3NF:</strong> Must be 2NF + no transitive dependency. Non-key column should depend ONLY on primary key, not on another non-key column. Violation: storing city based on zip_code in orders table.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">149</div><div class="q-text">What are ACID properties?<span class="prio p-hot">🔥 HOT</span></div><div class="q-arrow">▼</div></div>
+<div class="q-ans">ACID = properties that guarantee reliable database transactions:<br><br><strong>A — Atomicity:</strong> All or nothing. Bank transfer: debit AND credit both happen, or neither. Can't have partial transaction.<br><br><strong>C — Consistency:</strong> Database moves from one valid state to another. Rules/constraints always maintained. Can't violate foreign key constraints.<br><br><strong>I — Isolation:</strong> Concurrent transactions don't interfere with each other. Each sees consistent snapshot. Prevents dirty reads.<br><br><strong>D — Durability:</strong> Once committed, data is permanently saved even if system crashes. Data persists.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">150</div><div class="q-text">How do you find duplicate records and delete keeping one?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Find duplicates:</strong><br><code>SELECT name, COUNT(*) as cnt FROM employees GROUP BY name HAVING COUNT(*) > 1;</code><br><br><strong>Delete duplicates, keep one (lowest id):</strong><br><code>DELETE FROM employees WHERE emp_id NOT IN (SELECT MIN(emp_id) FROM employees GROUP BY name);</code><br><br>Or using ROW_NUMBER:<br><code>DELETE FROM employees WHERE emp_id IN (</code><br><code>  SELECT emp_id FROM (</code><br><code>    SELECT emp_id, ROW_NUMBER() OVER(PARTITION BY name ORDER BY emp_id) rn FROM employees</code><br><code>  ) t WHERE rn > 1</code><br><code>);</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">151</div><div class="q-text">What is a subquery? What is a correlated subquery?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Subquery:</strong> Query nested inside another query. Inner executes first, result used by outer.<br><code>SELECT name FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);</code><br><br><strong>Correlated Subquery:</strong> Inner query references a column from the OUTER query. Executes once per row of outer query — slower but powerful.<br><br><code>SELECT name FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id);</code><br><br>— finds employees earning above their OWN department average. The inner query uses <code>e.dept_id</code> from the outer query, so it runs fresh for each row.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">152</div><div class="q-text">What is the difference between UNION and UNION ALL?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>UNION:</strong> Combines results of two SELECT statements and REMOVES duplicate rows. Slower (requires sorting/deduplication).<br><br><strong>UNION ALL:</strong> Combines results and KEEPS all rows including duplicates. Faster (no dedup step).<br><br>Both require: same number of columns, compatible data types, columns in same order.<br><br>Use UNION when you need unique results (e.g., all customers who ordered in Jan OR Feb — don't want same customer twice). Use UNION ALL when duplicates are acceptable/expected or for performance.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">153</div><div class="q-text">What is EXISTS vs IN? Which is faster?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>IN:</strong> Checks if value is in a predefined list or subquery result set.<br><code>WHERE dept_id IN (SELECT id FROM departments WHERE location='Chennai')</code><br><br><strong>EXISTS:</strong> Checks if a subquery returns any rows. Returns TRUE on first match and stops.<br><code>WHERE EXISTS (SELECT 1 FROM departments WHERE id=e.dept_id AND location='Chennai')</code><br><br><strong>Performance:</strong> EXISTS is generally faster for large datasets because it stops at first match. IN loads all subquery results into memory then checks. EXISTS is better when checking existence only, IN is better for small static lists.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">154</div><div class="q-text">What is a CTE? How is it better than a subquery?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>CTE (Common Table Expression)</strong> = temporary named result set defined with WITH clause, usable within one query.<br><br><code>WITH dept_avg AS (SELECT dept_id, AVG(salary) avg_sal FROM employees GROUP BY dept_id)</code><br><code>SELECT e.name FROM employees e JOIN dept_avg d ON e.dept_id = d.dept_id WHERE e.salary > d.avg_sal;</code><br><br><strong>Better than subquery:</strong><br>• More readable — named and separated<br>• Reusable within same query (reference CTE multiple times)<br>• Recursive CTEs possible (org charts, hierarchies)<br>• Easier to debug step by step<br>• Self-documenting</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">155</div><div class="q-text">What are string functions in SQL? Give 5 examples.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>UPPER('hello')</code> → 'HELLO' — convert to uppercase<br><code>LOWER('HELLO')</code> → 'hello' — convert to lowercase<br><code>LENGTH('hello')</code> → 5 — string length<br><code>TRIM('  hi  ')</code> → 'hi' — remove leading/trailing spaces<br><code>SUBSTRING('hello', 2, 3)</code> → 'ell' — extract substring (start pos, length)<br><code>CONCAT('A', ' ', 'B')</code> → 'A B' — join strings<br><code>REPLACE('hello','l','r')</code> → 'herro' — replace occurrences<br><code>INSTR('hello','l')</code> → 3 — position of first 'l'<br><code>LPAD('5', 3, '0')</code> → '005' — left pad</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">156</div><div class="q-text">What are date functions? Write a query for employees hired in last 5 years.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Common date functions:<br><code>NOW()</code> — current datetime<br><code>CURDATE()</code> — current date<br><code>YEAR(date)</code> — extract year<br><code>MONTH(date)</code> — extract month<br><code>DATEDIFF(d1, d2)</code> — days between dates<br><code>DATE_ADD(date, INTERVAL 30 DAY)</code> — add period<br><code>DATE_FORMAT(date, '%d-%m-%Y')</code> — format date<br><br><strong>Employees hired in last 5 years:</strong><br><code>SELECT name, hire_date FROM employees</code><br><code>WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 5 YEAR);</code></div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">157</div><div class="q-text">What is a Primary Key vs Unique Key vs Foreign Key?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Primary Key:</strong> Uniquely identifies each row. Cannot be NULL. Cannot have duplicates. Only ONE per table. Creates clustered index automatically. Example: emp_id, student_id.<br><br><strong>Unique Key:</strong> All values must be unique. CAN have ONE NULL. Multiple per table. Creates non-clustered index. Example: email column — each person has unique email.<br><br><strong>Foreign Key:</strong> Column referencing the Primary Key of another table. Enforces referential integrity — can't insert FK value that doesn't exist in parent PK. CAN be NULL. CAN have duplicates. Example: dept_id in employees referencing id in departments.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">158</div><div class="q-text">What is indexing? When should you create an index?</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><strong>Index</strong> = separate data structure that speeds up SELECT queries at cost of storage and slower INSERT/UPDATE/DELETE.<br><br>Like book index — instead of reading all pages, jump directly to right page.<br><br><strong>Create index when:</strong><br>• Column used frequently in WHERE clause<br>• Column used in JOIN conditions<br>• Column used in ORDER BY<br>• Large tables with frequent reads<br><br><strong>Don't create index when:</strong><br>• Small tables (full scan faster)<br>• Columns with many NULLs<br>• Tables with frequent inserts (index slows inserts)<br>• Columns rarely used in queries<br><br>Primary key auto-creates clustered index.</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">159</div><div class="q-text">What is a transaction? Explain COMMIT, ROLLBACK, SAVEPOINT.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans">Transaction = group of SQL operations treated as ONE unit — all succeed or all fail (atomicity).<br><br><code>START TRANSACTION;</code><br><code>UPDATE accounts SET balance = balance - 1000 WHERE id = 1; -- debit</code><br><code>UPDATE accounts SET balance = balance + 1000 WHERE id = 2; -- credit</code><br><code>COMMIT; -- make permanent</code><br><code>-- OR ROLLBACK; -- undo both changes</code><br><br><strong>SAVEPOINT:</strong> Intermediate checkpoint within a transaction. Can rollback to savepoint without undoing entire transaction. Like a save point in a game.<br><code>SAVEPOINT sp1;</code> → <code>ROLLBACK TO sp1;</code> — undo only after savepoint</div>
+</div>
+
+<div class="q-card" onclick="toggle(this)">
+<div class="q-head"><div class="q-num">160</div><div class="q-text">Write SQL: top 3 earners per department using window functions.</div><div class="q-arrow">▼</div></div>
+<div class="q-ans"><code>SELECT name, salary, dept_id FROM (</code><br><code>  SELECT name, salary, dept_id,</code><br><code>    DENSE_RANK() OVER (</code><br><code>      PARTITION BY dept_id</code><br><code>      ORDER BY salary DESC</code><br><code>    ) AS rnk</code><br><code>  FROM employees</code><br><code>) ranked</code><br><code>WHERE rnk &lt;= 3;</code><br><br>PARTITION BY dept_id = rank within each department separately. ORDER BY salary DESC = highest salary = rank 1. WHERE rnk &lt;= 3 = keep only top 3 per department. Using DENSE_RANK so tied salaries get same rank.</div>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:60px 20px;color:#374151">
+  <div style="font-size:40px;margin-bottom:16px">🏆</div>
+  <div style="font-weight:800;color:#6b7280;font-size:20px;margin-bottom:8px">160 Questions Complete</div>
+  <div style="color:#4b5563;margin-bottom:24px">Selenium · Testing · Java · POM · TestNG · BDD · REST Assured · DevOps · Docker · GenAI · SQL</div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+    <span style="background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600">🔥 HOT = Most asked</span>
+    <span style="background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3);padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600">🆕 NEW = Latest syllabus topics</span>
+  </div>
+  <div style="color:#ef4444;font-weight:800;font-size:18px">You are READY. Go get that GREEN! 🚀</div>
+</div>
+
+</div>
+
+<script>
+function toggle(card) {
+  const ans = card.querySelector('.q-ans');
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (isOpen) {
+    ans.classList.remove('show');
+  } else {
+    ans.classList.add('show');
+  }
+}
+</script>
+</body>
+</html>

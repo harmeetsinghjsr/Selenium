@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario Questions</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#080d1a;color:#e2e8f0;line-height:1.7}
+
+.cover{min-height:50vh;background:linear-gradient(135deg,#080d1a,#130a2e,#0a1628);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(251,146,60,.1) 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(139,92,246,.12) 0%,transparent 50%)}
+.cover-badge{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:7px 22px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;position:relative;z-index:1;display:inline-block}
+.cover h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;background:linear-gradient(135deg,#fb923c,#f472b6,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1;margin-bottom:12px;line-height:1.2}
+.cover p{color:#94a3b8;font-size:.9rem;position:relative;z-index:1;max-width:640px;margin-bottom:28px}
+.cover-pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.pill{padding:7px 18px;border-radius:50px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+
+nav{background:#0f172a;padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:100;justify-content:center}
+.nb{border:1px solid #334155;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:600;color:#64748b;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nb:hover{background:rgba(255,255,255,.05);color:#e2e8f0}
+.nb.r{border-color:rgba(239,68,68,.3);color:#f87171}
+.nb.o{border-color:rgba(251,146,60,.3);color:#fb923c}
+.nb.g{border-color:rgba(16,185,129,.3);color:#34d399}
+.nb.b{border-color:rgba(59,130,246,.3);color:#60a5fa}
+.nb.p{border-color:rgba(139,92,246,.3);color:#a78bfa}
+.nb.t{border-color:rgba(20,184,166,.3);color:#2dd4bf}
+.nb.pk{border-color:rgba(236,72,153,.3);color:#f472b6}
+
+.main{max-width:960px;margin:0 auto;padding:36px 20px}
+
+.intro-box{background:linear-gradient(135deg,rgba(251,146,60,.08),rgba(139,92,246,.08));border:1px solid rgba(251,146,60,.2);border-radius:14px;padding:20px 24px;margin-bottom:36px}
+.intro-box h3{color:#fb923c;font-size:15px;font-weight:700;margin-bottom:8px}
+.intro-box p{font-size:13px;color:#94a3b8;line-height:1.7}
+.intro-box ul{list-style:none;margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.intro-box li{font-size:12.5px;color:#cbd5e1;padding:4px 0;display:flex;align-items:flex-start;gap:6px}
+.intro-box li::before{content:"→";color:#fb923c;flex-shrink:0;margin-top:1px}
+
+.sec-hdr{border-radius:14px;padding:20px 26px;margin:44px 0 20px;display:flex;align-items:center;gap:14px}
+.sec-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.sec-title{font-size:1.15rem;font-weight:800;color:#fff}
+.sec-sub{font-size:12px;opacity:.65;margin-top:2px}
+.sec-count{margin-left:auto;font-size:12px;font-weight:700;padding:5px 12px;border-radius:8px;background:rgba(0,0,0,.3);flex-shrink:0}
+
+.q-list{display:flex;flex-direction:column;gap:12px}
+
+.scenario-card{background:#0f172a;border-radius:14px;border:1px solid #1e293b;overflow:hidden;transition:border-color .2s}
+.scenario-card:hover{border-color:#334155}
+
+.sc-head{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px}
+.sc-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px}
+.sc-content{flex:1}
+.sc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;opacity:.7}
+.sc-q{font-size:13.5px;font-weight:600;color:#e2e8f0;line-height:1.5}
+.sc-arrow{color:#374151;font-size:13px;flex-shrink:0;margin-top:5px;transition:transform .3s}
+.scenario-card.open .sc-arrow{transform:rotate(180deg)}
+
+.sc-body{display:none;border-top:1px solid #1e293b}
+.sc-body.show{display:block}
+
+.sc-situation{background:#080d1a;padding:16px 20px;border-bottom:1px solid #1e293b}
+.sc-situation h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:8px}
+.sc-situation p{font-size:13px;color:#94a3b8;line-height:1.6}
+
+.sc-answer{padding:18px 20px}
+.sc-answer h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;margin-bottom:12px}
+
+.step-block{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.step-row{display:flex;gap:12px;align-items:flex-start}
+.step-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+.step-text{flex:1;font-size:13px;color:#cbd5e1;line-height:1.6}
+.step-text strong{color:#f1f5f9}
+.step-text code{background:#1e293b;padding:1px 6px;border-radius:4px;font-family:'Fira Code',monospace;font-size:11.5px;color:#c3e88d}
+
+.code-mini{background:#080d1a;border:1px solid #1e293b;border-radius:8px;padding:12px 16px;font-family:'Fira Code',monospace;font-size:11.5px;color:#e2e8f0;overflow-x:auto;margin:10px 0;line-height:1.8}
+.kw{color:#c792ea}.cls{color:#82aaff}.str{color:#c3e88d}.cmt{color:#546e7a}.ann{color:#ffcb6b}.met{color:#89ddff}.num{color:#f78c6c}
+
+.tldr{background:rgba(16,185,129,.08);border-left:3px solid #10b981;border-radius:6px;padding:10px 14px;margin-top:12px;font-size:12.5px;color:#86efac;line-height:1.6}
+.tldr strong{color:#4ade80}
+
+.warn-box{background:rgba(239,68,68,.08);border-left:3px solid #ef4444;border-radius:6px;padding:10px 14px;margin:10px 0;font-size:12.5px;color:#fca5a5}
+.info-box{background:rgba(59,130,246,.08);border-left:3px solid #3b82f6;border-radius:6px;padding:10px 14px;margin:10px 0;font-size:12.5px;color:#93c5fd}
+
+/* color themes */
+.th-r .sec-hdr{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.04));border:1px solid rgba(239,68,68,.2)}
+.th-r .sec-icon{background:rgba(239,68,68,.12)}
+.th-r .sc-num{background:rgba(239,68,68,.15);color:#f87171}
+.th-r .sc-label{color:#f87171}
+
+.th-o .sec-hdr{background:linear-gradient(135deg,rgba(251,146,60,.12),rgba(251,146,60,.04));border:1px solid rgba(251,146,60,.2)}
+.th-o .sec-icon{background:rgba(251,146,60,.12)}
+.th-o .sc-num{background:rgba(251,146,60,.15);color:#fb923c}
+.th-o .sc-label{color:#fb923c}
+
+.th-b .sec-hdr{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.04));border:1px solid rgba(59,130,246,.2)}
+.th-b .sec-icon{background:rgba(59,130,246,.12)}
+.th-b .sc-num{background:rgba(59,130,246,.15);color:#60a5fa}
+.th-b .sc-label{color:#60a5fa}
+
+.th-g .sec-hdr{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.04));border:1px solid rgba(16,185,129,.2)}
+.th-g .sec-icon{background:rgba(16,185,129,.12)}
+.th-g .sc-num{background:rgba(16,185,129,.15);color:#34d399}
+.th-g .sc-label{color:#34d399}
+
+.th-p .sec-hdr{background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.04));border:1px solid rgba(139,92,246,.2)}
+.th-p .sec-icon{background:rgba(139,92,246,.12)}
+.th-p .sc-num{background:rgba(139,92,246,.15);color:#a78bfa}
+.th-p .sc-label{color:#a78bfa}
+
+.th-t .sec-hdr{background:linear-gradient(135deg,rgba(20,184,166,.12),rgba(20,184,166,.04));border:1px solid rgba(20,184,166,.2)}
+.th-t .sec-icon{background:rgba(20,184,166,.12)}
+.th-t .sc-num{background:rgba(20,184,166,.15);color:#2dd4bf}
+.th-t .sc-label{color:#2dd4bf}
+
+.th-pk .sec-hdr{background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(236,72,153,.04));border:1px solid rgba(236,72,153,.2)}
+.th-pk .sec-icon{background:rgba(236,72,153,.12)}
+.th-pk .sc-num{background:rgba(236,72,153,.15);color:#f472b6}
+.th-pk .sc-label{color:#f472b6}
+
+.divider{height:1px;background:#1e293b;margin:6px 0}
+
+@media(max-width:600px){.sc-body{padding:0}.intro-box ul{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-badge">🎭 Scenario Based</div>
+  <h1>Real Interview Scenarios<br>How Would You Handle This?</h1>
+  <p>Interviewers don't just ask definitions — they give you real-world problems and watch HOW you think. Every answer here follows the STAR approach: Situation → Thinking → Action → Result.</p>
+  <div class="cover-pills">
+    <div class="pill">🌐 Selenium Problems</div>
+    <div class="pill">🏗️ Framework Design</div>
+    <div class="pill">🐛 Debugging</div>
+    <div class="pill">⚙️ CI/CD</div>
+    <div class="pill">🥒 BDD</div>
+    <div class="pill">🔌 API Testing</div>
+    <div class="pill">☕ Java OOP</div>
+    <div class="pill">🗄️ SQL</div>
+  </div>
+</div>
+
+<nav>
+  <a class="nb r" href="#selenium-sc">🌐 Selenium</a>
+  <a class="nb r" href="#debug-sc">🐛 Debugging</a>
+  <a class="nb o" href="#framework-sc">🏗️ Framework</a>
+  <a class="nb g" href="#testng-sc">🧪 TestNG/POM</a>
+  <a class="nb b" href="#java-sc">☕ Java</a>
+  <a class="nb t" href="#bdd-sc">🥒 BDD</a>
+  <a class="nb t" href="#api-sc">🔌 API</a>
+  <a class="nb p" href="#devops-sc">⚙️ DevOps</a>
+  <a class="nb pk" href="#sql-sc">🗄️ SQL</a>
+</nav>
+
+<div class="main">
+
+<div class="intro-box">
+  <h3>🎯 How Interviewers Ask Scenario Questions</h3>
+  <p>They describe a real-world situation and ask what YOU would do. They're testing your <strong>problem-solving thinking</strong>, not just memorized definitions. Common patterns:</p>
+  <ul>
+    <li>"Your test is failing intermittently — what would you do?"</li>
+    <li>"How would you design the framework for this project?"</li>
+    <li>"You join a project with no automation — where do you start?"</li>
+    <li>"Your Selenium test can't find the element — debug it"</li>
+    <li>"How would you test this specific feature?"</li>
+    <li>"The build is breaking in Jenkins but works locally — why?"</li>
+    <li>"How do you handle login across 50 test cases?"</li>
+    <li>"A test passes locally but fails on Grid — what now?"</li>
+  </ul>
+</div>
+
+<!-- ═══════════════ SELENIUM SCENARIOS ═══════════════ -->
+<div class="th-r" id="selenium-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🌐</div>
+  <div><div class="sec-title">Selenium — Real World Scenarios</div><div class="sec-sub">Element handling · Dynamic content · Sync issues · Cross-browser</div></div>
+  <div class="sec-count">S1–S10</div>
+</div>
+
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S1</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Most Common</div>
+    <div class="sc-q">"Your Selenium test is failing intermittently — it passes 7 out of 10 times. What would you do to investigate and fix it?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>Intermittent failures are one of the biggest real-world challenges in automation. They want to see if you understand synchronization, stability, and systematic debugging.</p></div>
+<div class="sc-answer">
+<h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>First — check for timing/wait issues.</strong> Intermittent = usually a synchronization problem. The page loads slowly sometimes. I'd look at every <code>findElement()</code> call and ensure there's an explicit wait before each critical interaction: <code>wait.until(ExpectedConditions.elementToBeClickable(...))</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Remove all Thread.sleep().</strong> These are fixed waits — if the page takes 4 seconds but sleep is 3s, it fails. Replace every sleep with WebDriverWait.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Check for StaleElementReferenceException</strong> in logs. If AJAX refreshes the DOM, cached element references go stale. Fix: find the element fresh inside a retry loop or after each navigation.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>Take screenshot on failure</strong> (if not already). The screenshot shows exactly what the browser looked like at the moment of failure — is a popup blocking? Is the page still loading? Did the element shift position?</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">5</div><div class="step-text"><strong>Add more detailed logging</strong> — log each action with timestamp. Compare logs from pass run vs fail run to spot where timing differs.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">6</div><div class="step-text"><strong>Check test independence</strong> — is this test relying on state left by a previous test? Tests should be independent. If test A leaves browser in unexpected state, test B intermittently fails.</div></div>
+</div>
+<div class="tldr"><strong>One-line answer:</strong> Intermittent failures = almost always a wait/synchronization issue. Replace Thread.sleep with WebDriverWait, check for StaleElement, take screenshots on failure, and ensure tests are independent.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S2</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Very Common</div>
+    <div class="sc-q">"Your Selenium test cannot find the element. <code>NoSuchElementException</code> is thrown. Walk me through how you debug this."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>This happens daily in real projects. They want to see your systematic debugging approach.</p></div>
+<div class="sc-answer"><h4>How I would answer — my debugging checklist</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Verify the locator in browser DevTools first.</strong> Open the page manually, press F12, go to Console tab, and test: <code>document.getElementById('username')</code> or <code>$x("//input[@id='username']")</code>. If it returns null, the locator is wrong.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Is the element inside an iFrame?</strong> If yes, I forgot to switch: <code>driver.switchTo().frame("frameId")</code> before finding the element.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Is the element dynamically loaded?</strong> Page may have loaded but element not yet appeared (AJAX). Add: <code>wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")))</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>Is the element inside Shadow DOM?</strong> Normal locators can't see inside Shadow DOM. Use: <code>host.getShadowRoot().findElement(By.cssSelector("input"))</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">5</div><div class="step-text"><strong>Did the page navigate correctly?</strong> Print <code>driver.getCurrentUrl()</code> and <code>driver.getTitle()</code> before the failing line to confirm you're on the right page.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">6</div><div class="step-text"><strong>Is the element in a different window/tab?</strong> A popup may have opened. Check <code>driver.getWindowHandles().size()</code> and switch if needed.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> I first verify the locator in DevTools console. Then check: is element in iframe? Not yet loaded (need wait)? In Shadow DOM? Wrong page? Wrong window? Systematic elimination.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S3</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you automate a scenario where you need to login once and run 20 different test cases without logging in again for each test?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>Tests that login before every test case are slow. Real projects optimize this. They want to see if you know @BeforeClass, cookie handling, and test design.</p></div>
+<div class="sc-answer"><h4>How I would answer — 3 approaches</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Approach 1 — @BeforeClass (simplest).</strong> Login once in @BeforeClass. All 20 @Test methods share the same browser session. @AfterClass logs out and closes browser. Works when tests don't log out or need fresh login.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Approach 2 — Cookie-based login (fastest).</strong> Login once, capture the session cookie: <code>Cookie sessionCookie = driver.manage().getCookieNamed("sessionId")</code>. Store it. For next test: navigate to base URL, add the cookie, refresh — you're logged in instantly without going through login page.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Approach 3 — API login (fastest + most reliable).</strong> Instead of UI login, send a POST request to login API endpoint using REST Assured, get the auth token, add it to browser cookies or local storage. Zero UI interaction for login.</div></div>
+</div>
+<div class="code-mini"><span class="cmt">// @BeforeClass approach</span>
+<span class="ann">@BeforeClass</span>
+<span class="kw">public void</span> <span class="met">loginOnce</span>() {
+    driver = <span class="kw">new</span> <span class="cls">ChromeDriver</span>();
+    driver.<span class="met">get</span>(<span class="str">"https://app.com/login"</span>);
+    <span class="kw">new</span> <span class="cls">LoginPage</span>(driver).<span class="met">login</span>(<span class="str">"admin"</span>, <span class="str">"pass"</span>);
+    <span class="cmt">// All 20 @Test methods share this session</span>
+}</div>
+<div class="tldr"><strong>Answer:</strong> Use @BeforeClass to login once before all tests. For even faster approach, save session cookie after login and reuse it — skipping login UI entirely for subsequent tests.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S4</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Common</div>
+    <div class="sc-q">"You click a button and get <code>ElementClickInterceptedException</code>. The element exists and is visible. What happened and how do you fix it?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>This is extremely common on modern websites with overlays, cookie banners, and modals. Tests fail unexpectedly.</p></div>
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>What happened:</strong> Another element is physically on top of the target element — intercepting the click. Common culprits: cookie consent banner, "Accept all cookies" popup, loading spinner overlay, sticky header, modal dialog, GDPR notice.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Fix 1 — Dismiss the overlay first:</strong> Wait for and close the cookie banner/popup before clicking the target: <code>wait.until(ExpectedConditions.elementToBeClickable(By.id("acceptCookies"))).click()</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Fix 2 — Scroll element into view first:</strong> <code>((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element)</code> then click normally.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>Fix 3 — JavaScript click (last resort):</strong> <code>((JavascriptExecutor) driver).executeScript("arguments[0].click();", element)</code> — fires click directly on DOM, bypasses any overlay. Used in my Rediff project for Terms link.</div></div>
+</div>
+<div class="warn-box">⚠️ Always try Fix 1 or Fix 2 first. JS click bypasses real user behavior and may hide genuine UI issues. Use it only when other approaches don't work.</div>
+<div class="tldr"><strong>Answer:</strong> An overlay is covering the element. I first try to close the overlay, then scroll element into view. If still failing, use JavascriptExecutor to click — which fires directly on the DOM element bypassing any intercepting layer.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S5</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you automate testing of a date picker calendar widget? It uses a JavaScript calendar popup."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>Date pickers are notoriously tricky to automate. They want to see if you know multiple approaches.</p></div>
+<div class="sc-answer"><h4>How I would answer — 3 approaches</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Approach 1 — Direct input (if allowed):</strong> If the date field is a text input, just use <code>sendKeys("12/25/2024")</code>. Fastest. Check input type — if it's <code>type="date"</code> use format "2024-12-25".</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Approach 2 — Interact with calendar UI:</strong> Click the calendar icon → wait for calendar popup → click next/prev arrows to navigate to correct month → click the date cell. Uses Actions class for complex navigation.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Approach 3 — JavaScript to set value directly:</strong> <code>js.executeScript("document.getElementById('dateField').value='2024-12-25';")</code> — bypasses the calendar UI entirely. Fastest but doesn't test the calendar UI itself.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>For the calendar UI approach,</strong> I'd use Actions class: <code>actions.moveToElement(nextBtn).click()</code> to navigate months. For each date cell, build XPath: <code>//td[@data-date='25']</code> and click.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> I prefer sendKeys directly to the date input field — it's fast and reliable. If the field is read-only, I use JavaScript to set the value. Only use calendar UI interaction if specifically testing the calendar widget itself.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S6</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your test passes locally on Chrome but fails on the CI server (Jenkins/Linux). What are the possible reasons and how would you fix it?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-situation"><h4>Why they ask this</h4><p>CI/CD is used in every company. This scenario tests your knowledge of headless browsers, environment differences, and CI setup.</p></div>
+<div class="sc-answer"><h4>How I would answer — common causes</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>No display on Linux server.</strong> Jenkins server has no GUI. Chrome can't open a visible window. Fix: run headless — <code>options.addArguments("--headless=new")</code>. Or use Xvfb (virtual framebuffer) on Linux.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Chrome version mismatch.</strong> Your local Chrome = v124, server Chrome = v118. ChromeDriver for v124 doesn't work with v118. Fix: use WebDriverManager — it auto-detects version and downloads correct driver.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Different screen resolution.</strong> Local = 1920×1080, server = 1024×768. Elements not visible or positioned differently at smaller resolution. Fix: <code>options.addArguments("--window-size=1920,1080")</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>File path issues.</strong> Your test uses absolute Windows paths (C:\testdata\). Server is Linux (no C:\). Fix: use relative paths or <code>System.getProperty("user.dir")</code> for project root.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">5</div><div class="step-text"><strong>Shared memory (Docker).</strong> If running in Docker, <code>--no-sandbox</code> and <code>--disable-dev-shm-usage</code> flags needed to prevent Chrome crashes.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Most likely cause is no display on server — run headless. Also check Chrome version, screen resolution, file paths, and if in Docker add --no-sandbox flag. WebDriverManager handles driver version automatically.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S7</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"There's a table on the page with 100 rows of employee data. How would you verify that a specific employee 'John Smith' exists and get his salary?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Approach 1 — Direct XPath (most efficient):</strong> Use text-based XPath to find the row containing "John Smith" then get sibling cell for salary: <code>//td[text()='John Smith']/following-sibling::td[@class='salary']</code>. No looping needed.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Approach 2 — Loop through rows:</strong> <code>List&lt;WebElement&gt; rows = driver.findElements(By.cssSelector("table tbody tr"))</code>. For each row, get cells, check if first cell contains "John Smith", then get salary cell.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Verify existence:</strong> Use <code>findElements()</code> (returns empty list instead of exception if not found): <code>Assert.assertTrue(driver.findElements(By.xpath("//td[text()='John Smith']")).size() > 0, "Employee not found")</code></div></div>
+</div>
+<div class="code-mini"><span class="cmt">// Most elegant — direct XPath</span>
+String salary = driver.<span class="met">findElement</span>(
+    By.<span class="met">xpath</span>(<span class="str">"//td[text()='John Smith']/following-sibling::td[2]"</span>)
+).<span class="met">getText</span>();
+Assert.<span class="met">assertEquals</span>(salary, <span class="str">"50000"</span>);</div>
+<div class="tldr"><strong>Answer:</strong> I use XPath with text() to directly locate the row containing "John Smith", then use following-sibling:: axis to get the salary column — no looping needed, efficient for any table size.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S8</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you handle a scenario where you need to test the same user flow on Chrome, Firefox, and Edge?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — Cross Browser Testing</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>DriverFactory pattern:</strong> Create a factory class that takes a browser name string and returns the appropriate driver. Test code never creates a driver directly — calls <code>DriverFactory.getDriver("chrome")</code>.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>testng.xml parameterization:</strong> Create 3 &lt;test&gt; blocks each passing different browser parameter. Run with <code>parallel="tests"</code> to run all 3 simultaneously. <code>@Parameters({"browser"})</code> in @BeforeClass receives it.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Selenium Grid for true parallel:</strong> Hub + Chrome Node + Firefox Node + Edge Node. Each browser test sent to appropriate node. Saves time — runs all 3 browsers simultaneously.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>config.properties approach:</strong> Read browser from config file. Change one line in config → all tests switch browser. Jenkins can pass browser as parameter: <code>mvn test -Dbrowser=firefox</code></div></div>
+</div>
+<div class="code-mini"><span class="cmt">// DriverFactory</span>
+<span class="kw">public static</span> WebDriver <span class="met">getDriver</span>(String browser) {
+    <span class="kw">switch</span>(browser.toLowerCase()) {
+        <span class="kw">case</span> <span class="str">"chrome"</span>: WebDriverManager.<span class="met">chromedriver</span>().<span class="met">setup</span>(); <span class="kw">return new</span> <span class="cls">ChromeDriver</span>();
+        <span class="kw">case</span> <span class="str">"firefox"</span>: WebDriverManager.<span class="met">firefoxdriver</span>().<span class="met">setup</span>(); <span class="kw">return new</span> <span class="cls">FirefoxDriver</span>();
+        <span class="kw">case</span> <span class="str">"edge"</span>: WebDriverManager.<span class="met">edgedriver</span>().<span class="met">setup</span>(); <span class="kw">return new</span> <span class="cls">EdgeDriver</span>();
+        <span class="kw">default</span>: <span class="kw">throw new</span> <span class="cls">IllegalArgumentException</span>(<span class="str">"Browser not supported: "</span> + browser);
+    }
+}</div>
+<div class="tldr"><strong>Answer:</strong> DriverFactory pattern with switch-case + testng.xml parameterization for browser name + Selenium Grid for parallel execution across browsers. Read browser from config.properties so CI/CD can override easily.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S9</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your test needs to verify that an email was sent to a user after registration. How would you automate this?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Approach 1 — Use a test mail service (Mailtrap/Mailosaur):</strong> Best approach. These services provide API access to emails sent to test addresses. Register with a Mailtrap address, then use their REST API to check if email arrived: <code>given().when().get("/api/emails/latest")</code>. Verify subject, body, links.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Approach 2 — Check the database:</strong> After registration, query DB to verify email_sent flag is set to true and email_content is correct. Faster than actual email check.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Approach 3 — API call to check email service:</strong> If using SendGrid/AWS SES, use their API to verify the email was queued/delivered.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>Important note:</strong> Never use real email in testing — this pollutes real inboxes and is unreliable (email may be delayed). Always use dedicated test email services.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> I'd use a test email service like Mailtrap — it provides an API to read emails programmatically. Register with a Mailtrap test address, complete registration on the app, then call Mailtrap API via REST Assured to verify the welcome email was received with correct content.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S10</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you handle file upload in Selenium? What if the file upload dialog is a native OS window that Selenium can't control?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">1</div><div class="step-text"><strong>Approach 1 — sendKeys on file input (most common):</strong> If it's an HTML <code>&lt;input type="file"&gt;</code>, just use sendKeys with the full file path — no need to click! <code>driver.findElement(By.id("fileInput")).sendKeys("C:/files/test.pdf")</code>. Selenium bypasses the dialog entirely.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">2</div><div class="step-text"><strong>Approach 2 — Robot class (for native OS dialogs):</strong> If clicking a button opens a Windows/Mac file dialog (native OS popup Selenium can't handle), use Java's Robot class to type the file path and press Enter: <code>robot.keyPress(KeyEvent.VK_ENTER)</code>. Works on local machine, unreliable on headless.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">3</div><div class="step-text"><strong>Approach 3 — AutoIT (Windows only):</strong> AutoIT is a scripting tool that can handle native Windows dialogs. Compile a script that enters the file path and call it from Java using <code>Runtime.getRuntime().exec()</code>.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(239,68,68,.2);color:#f87171">4</div><div class="step-text"><strong>Best practice:</strong> Design ChromeOptions to auto-set the download/upload directory: <code>prefs.put("download.default_directory", "/path/to/files")</code> so file dialogs auto-populate.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> For HTML file inputs, sendKeys with the file path is all I need — Selenium sets the value directly without opening any dialog. For native OS dialogs, I use Robot class or AutoIT to interact with the OS-level window.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ FRAMEWORK DESIGN ═══════════════ -->
+<div class="th-o" id="framework-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🏗️</div>
+  <div><div class="sec-title">Framework Design Scenarios</div><div class="sec-sub">Project setup · Architecture decisions · New project from scratch</div></div>
+  <div class="sec-count">S11–S16</div>
+</div>
+
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S11</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Very Common</div>
+    <div class="sc-q">"You join a new project with no automation in place. The team does everything manually. How would you set up a Selenium automation framework from scratch?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — My step-by-step plan</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>Understand the application first.</strong> Explore the app manually. Identify high-value, frequently used features. Talk to business team about critical user journeys. These become first automation candidates.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>Set up Maven project</strong> in IntelliJ. Add dependencies: Selenium, TestNG, WebDriverManager, Apache POI, ExtentReports in pom.xml. Create proper folder structure: pages/, tests/, utils/, base/.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>Build BaseTest class first.</strong> Common @BeforeMethod (driver setup, maximize, navigate) and @AfterMethod (quit). All test classes extend this — no repetition.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>Create Page classes</strong> for each page using POM + PageFactory. Private @FindBy locators, public action methods. Enables test code that reads like English: <code>loginPage.login(user, pass)</code>.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">5</div><div class="step-text"><strong>Add config.properties</strong> for browser, URL, credentials. ConfigReader utility class. Switching environments = change one config file.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">6</div><div class="step-text"><strong>Integrate reporting:</strong> ExtentReports for beautiful HTML reports. TestNG Listeners for automatic screenshot on failure. Reports tell the story of each test run.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">7</div><div class="step-text"><strong>Connect to CI/CD:</strong> Push to GitHub. Create Jenkins job with <code>mvn clean test</code>. Set up to run nightly and on every PR merge.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">8</div><div class="step-text"><strong>Start with smoke suite</strong> (5-10 critical tests). Prove value quickly. Then expand to regression suite (25+ tests). Don't try to automate everything at once.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Maven + TestNG + Selenium + POM + PageFactory + BaseTest + ConfigReader + ExtentReports + Jenkins. Start small with smoke tests, prove value, then expand. Always prioritize high-business-value scenarios first.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S12</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you design your framework to handle test data — some tests need different data, some need data-driven testing from Excel?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — layered data strategy</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>Static data in config.properties:</strong> Fixed test data that rarely changes — base URL, valid credentials for login setup. <code>admin.user=testadmin</code>, <code>admin.pass=Admin@123</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>Excel data for data-driven tests (Apache POI):</strong> When same test needs to run with 10 different user profiles. ExcelUtils class reads rows as List&lt;Map&gt; — column name is key, cell value is value. Readable and maintainable.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>@DataProvider for small datasets:</strong> When you have 2-4 data sets, hardcode in @DataProvider method. No file dependency. Good for boundary value tests.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>JSON for complex structured data:</strong> When test data has nested objects (e.g., full user registration form). Read JSON files with Jackson/Gson, map to Java POJOs.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">5</div><div class="step-text"><strong>Write results back to Excel:</strong> After test execution, write actual values and PASS/FAIL with green/red cell color back to Excel. Business stakeholders can open Excel and see results without understanding code.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Multi-layer approach — config.properties for environment data, Excel+POI for data-driven test sets, @DataProvider for small inline datasets, JSON for complex structured data. Results written back to Excel for stakeholder visibility.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S13</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"50 test cases all need to login first. How do you avoid writing login code 50 times? How do you make this maintainable?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — DRY principle</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>Login in BaseTest @BeforeMethod:</strong> Put login logic once in BaseTest. All 50 test classes extend BaseTest — they automatically get login before each test. Zero code duplication.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>LoginPage as reusable POM class:</strong> Login logic is in <code>LoginPage.login(user, pass)</code>. BaseTest creates LoginPage object and calls it. If login UI changes, update ONLY LoginPage class — all 50 tests automatically get the fix.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>Credentials from config.properties:</strong> Username/password in config, not hardcoded. Change user = change one config line. Different environments (staging/prod) can have different credentials.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>If 50 tests run in sequence on same browser</strong> (@BeforeClass): Login once, all 50 tests run, logout at end. Even more efficient — 1 login for 50 tests.</div></div>
+</div>
+<div class="code-mini"><span class="kw">public class</span> <span class="cls">BaseTest</span> {
+    <span class="kw">protected</span> WebDriver driver;
+
+    <span class="ann">@BeforeMethod</span>
+    <span class="kw">public void</span> <span class="met">setUp</span>() {
+        driver = DriverFactory.<span class="met">getDriver</span>(ConfigReader.<span class="met">get</span>(<span class="str">"browser"</span>));
+        driver.<span class="met">get</span>(ConfigReader.<span class="met">get</span>(<span class="str">"url"</span>));
+        <span class="kw">new</span> <span class="cls">LoginPage</span>(driver).<span class="met">login</span>(
+            ConfigReader.<span class="met">get</span>(<span class="str">"username"</span>),
+            ConfigReader.<span class="met">get</span>(<span class="str">"password"</span>)
+        );
+    }
+    <span class="ann">@AfterMethod</span>
+    <span class="kw">public void</span> <span class="met">tearDown</span>() { driver.<span class="met">quit</span>(); }
+}</div>
+<div class="tldr"><strong>Answer:</strong> BaseTest class + POM LoginPage + config.properties. Login once in @BeforeMethod, all tests extend BaseTest. If login changes, update ONE class. This is the DRY principle in action.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S14</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you ensure that test failures are reported with screenshots and clear error messages automatically?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — Listener + ExtentReports</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>Create a TestNG Listener</strong> implementing ITestListener. Register it in testng.xml. It automatically fires <code>onTestFailure()</code> whenever any test fails — no code needed in individual tests.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>In onTestFailure():</strong> Take screenshot → save with test name + timestamp → attach to ExtentReport → log the exception message. All automatic. Developer sees exactly what was on screen when it failed.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>ExtentReports for HTML report:</strong> Creates beautiful report with pass/fail status, execution time, logs, embedded screenshots. Shared with team via Jenkins artifact or email attachment.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>Write to Excel too</strong> (as in my project): Actual value + PASS/FAIL in green/red color. Business team opens Excel and sees results without any technical knowledge.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> TestNG Listener with onTestFailure() takes screenshot automatically and attaches to ExtentReport. Zero code in test classes. Every failure captured with visual evidence and error details.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S15</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"You have 200 automated tests. Full run takes 2 hours. Management wants it to run in 30 minutes. What strategies would you use?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — parallelization + optimization</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>Parallel execution with TestNG:</strong> Set <code>parallel="methods" thread-count="4"</code> in testng.xml. Use ThreadLocal for driver. 200 tests ÷ 4 threads = ~30 mins. This alone can achieve 4x speedup.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>Selenium Grid for distributed execution:</strong> Spread tests across 4-5 machines. Each machine runs a subset. Hub distributes automatically. 200 tests across 4 machines = effectively 50 tests per machine.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>Run only critical tests in CI (smart subset):</strong> Tag tests by type. Run @smoke (20 tests, ~10 min) on every commit. Run full @regression (200 tests) only nightly.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>Optimize slow tests:</strong> Profile tests — find the 20 slowest. Often it's unnecessary Thread.sleep() or loading pages that could be skipped. Replace sleeps with explicit waits.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">5</div><div class="step-text"><strong>Headless execution:</strong> Headless Chrome is ~20-30% faster than visible Chrome (no rendering overhead).</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">6</div><div class="step-text"><strong>API for setup, not UI:</strong> Instead of clicking through UI to create test data, use API calls. Login via API + cookie. This saves 10-30 seconds per test.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Parallel execution (TestNG + ThreadLocal) + Selenium Grid + headless + smoke/regression split + replace Thread.sleep + API-level setup. Combined, easily achieves 4-5x speedup.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S16</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"A developer changes the ID of the login button. 15 tests fail. How do you fix this quickly and prevent it from happening again?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — POM saves the day</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">1</div><div class="step-text"><strong>If using POM:</strong> The login button locator is defined in ONE place — LoginPage.java. Update ONE line: <code>@FindBy(id="new-login-btn")</code>. All 15 tests fixed instantly without touching any test class. This is exactly WHY POM exists.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">2</div><div class="step-text"><strong>If NOT using POM:</strong> You'd have to find and update all 15 test files individually. Risk of missing one. Painful. This scenario perfectly demonstrates why POM is mandatory in real projects.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">3</div><div class="step-text"><strong>Prevent it from happening again:</strong> Add process rule — developer must inform QA team before changing element IDs. Use stable locators like <code>data-testid</code> attributes added specifically for automation, which developers agree not to change.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(251,146,60,.2);color:#fb923c">4</div><div class="step-text"><strong>Use data-testid attributes:</strong> Many modern teams add <code>data-testid="login-btn"</code> to elements specifically for automation. These are automation-only attributes developers won't change for styling/refactoring.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> With POM, I update ONE locator in LoginPage.java — all 15 tests instantly work again. This is precisely why POM exists. Future prevention: use data-testid attributes and have a communication process with devs about UI changes.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ TESTNG/POM ═══════════════ -->
+<div class="th-g" id="testng-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🧪</div>
+  <div><div class="sec-title">TestNG + POM Scenarios</div><div class="sec-sub">Test organization · Dependency · Parallel · Real project decisions</div></div>
+  <div class="sec-count">S17–S20</div>
+</div>
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S17</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"You have a test that verifies checkout flow: add item → go to cart → enter payment → confirm order. If 'add item' fails, what happens to the rest? How would you design this?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">1</div><div class="step-text"><strong>Option A — Single test method (best for this flow):</strong> All steps in one @Test method. If step 1 fails, steps 2-4 don't run (test stops). Clean, simple, no confusion. Best for sequential user journeys where each step depends on previous.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">2</div><div class="step-text"><strong>Option B — dependsOnMethods:</strong> Each step as separate @Test with <code>dependsOnMethods</code>. If "addItem" fails → "goToCart" is skipped (not failed). Report shows: addItem=FAIL, goToCart=SKIP, enterPayment=SKIP. Clear chain of failure.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">3</div><div class="step-text"><strong>My recommendation:</strong> Single test for end-to-end flows. Separate tests for testing each feature independently. Don't mix — sequential flow = one test, independent feature checks = separate tests.</div></div>
+</div>
+<div class="code-mini"><span class="ann">@Test</span>(priority=<span class="num">1</span>)
+<span class="kw">public void</span> <span class="met">addItemToCart</span>() { ... }
+
+<span class="ann">@Test</span>(priority=<span class="num">2</span>, dependsOnMethods=<span class="str">"addItemToCart"</span>)
+<span class="kw">public void</span> <span class="met">proceedToCheckout</span>() { ... }
+
+<span class="ann">@Test</span>(priority=<span class="num">3</span>, dependsOnMethods=<span class="str">"proceedToCheckout"</span>)
+<span class="kw">public void</span> <span class="met">enterPaymentDetails</span>() { ... }</div>
+<div class="tldr"><strong>Answer:</strong> For sequential user flows, I use either a single test method with all steps, or separate @Test methods chained with dependsOnMethods — so downstream tests are SKIPPED (not failed) when an upstream step fails. This gives clear, actionable test reports.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S18</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How would you verify that your test is testing exactly what you think it's testing — i.e., how do you ensure test reliability and avoid false positives?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">1</div><div class="step-text"><strong>Assert meaningfully — not just status.</strong> Don't just assert page loads. Assert specific expected values: <code>Assert.assertEquals(driver.getTitle(), "Dashboard - MyApp")</code>. A wrong page can also have "Dashboard" somewhere.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">2</div><div class="step-text"><strong>Test independence — clean state every time.</strong> Each test starts fresh (new browser or fresh logged-in state). Tests that share state cause false positives — test B passes only because test A left it in the right state.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">3</div><div class="step-text"><strong>Run tests in random order.</strong> TestNG can randomize order. If tests only pass in specific order, they have hidden dependencies — that's a bug in your tests.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">4</div><div class="step-text"><strong>Verify negative scenarios too.</strong> Test that invalid login DOES show an error. Test that a deleted item DOES NOT appear. False positives often come from not testing the negative.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">5</div><div class="step-text"><strong>Code review for tests.</strong> Just like production code, test code should be reviewed. Another person catches wrong assertions, missing edge cases, brittle locators.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Meaningful specific assertions, test independence, negative test cases, randomized execution order, and peer review of test code. A test that always passes is suspicious — make sure it can actually fail when it should.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S19</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your team has 10 automation engineers. How would you structure the framework so they can all work without conflicts?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">1</div><div class="step-text"><strong>Git feature branches:</strong> Each engineer works on their own branch. No conflict on main branch. Merge via Pull Request with review. Branching strategy: main (stable), develop (integration), feature/xxx (per engineer).</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">2</div><div class="step-text"><strong>Module-based ownership:</strong> Engineer 1 owns LoginPage + LoginTests. Engineer 2 owns CheckoutPage + CheckoutTests. Clear ownership = no two people editing same file simultaneously.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">3</div><div class="step-text"><strong>Shared framework utilities:</strong> BaseTest, ConfigReader, ExcelUtils, DriverFactory maintained by a framework lead. Others use these, don't modify them without review.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">4</div><div class="step-text"><strong>Coding standards document:</strong> Naming conventions, package structure, how to write page classes, assertion style. All 10 engineers follow same standards = consistent codebase.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Git branching strategy + module ownership (each engineer owns a feature area) + shared utility framework + coding standards document. POM naturally separates work — different pages = different files = no conflicts.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S20</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"In your Rediff project, why did you use @BeforeClass instead of @BeforeMethod? What tradeoff did you make?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — defend your project design</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">1</div><div class="step-text"><strong>Why @BeforeClass:</strong> All 5 test cases are part of one sequential user journey on Rediffmail — homepage → registration page → links → Terms window → child window. They all share the same browser session intentionally.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">2</div><div class="step-text"><strong>Efficiency gain:</strong> @BeforeClass opens Chrome ONCE. @BeforeMethod would open Chrome 5 times and close 5 times. That's 5× the browser launch overhead. For time-sensitive CI pipelines, this matters.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">3</div><div class="step-text"><strong>The tradeoff I accepted:</strong> Tests are not 100% independent. TC02 depends on TC01 navigating to the homepage. I handled this with <code>dependsOnMethods</code> — if TC01 fails, subsequent tests skip cleanly rather than failing with confusing errors.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(16,185,129,.2);color:#34d399">4</div><div class="step-text"><strong>Also used singleThreaded=true:</strong> Since tests share one browser, they must run on the same thread sequentially. Without this, parallel execution would have multiple threads fighting over the same driver.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> @BeforeClass for efficiency — 1 browser launch for 5 tests. Tradeoff: tests share state, but I mitigated this with dependsOnMethods for clean skip behavior and singleThreaded=true to prevent parallel thread conflicts.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ BDD SCENARIOS ═══════════════ -->
+<div class="th-t" id="bdd-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🥒</div>
+  <div><div class="sec-title">BDD Cucumber Scenarios</div><div class="sec-sub">Feature design · Step reuse · Tags · Integration with Selenium</div></div>
+  <div class="sec-count">S21–S24</div>
+</div>
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S21</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"A business analyst gives you this requirement: 'Users should be able to login and see their dashboard.' How would you write a Gherkin feature file for it?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — write the feature file live</h4>
+<div class="code-mini"><span class="ann">Feature:</span> User Login
+  <span class="kw">As a</span> registered user
+  <span class="kw">I want to</span> login to the application
+  <span class="kw">So that</span> I can access my dashboard
+
+  <span class="ann">Background:</span>
+    <span class="kw">Given</span> the user is on the login page
+
+  <span class="ann">@smoke</span>
+  <span class="ann">Scenario:</span> Successful login with valid credentials
+    <span class="kw">When</span> user enters valid username and password
+    <span class="kw">And</span> user clicks the Login button
+    <span class="kw">Then</span> user should be redirected to the dashboard
+    <span class="kw">And</span> the page title should contain <span class="str">"Dashboard"</span>
+
+  <span class="ann">@regression</span>
+  <span class="ann">Scenario:</span> Failed login with invalid password
+    <span class="kw">When</span> user enters valid username and wrong password
+    <span class="kw">And</span> user clicks the Login button
+    <span class="kw">Then</span> user should see error message <span class="str">"Invalid credentials"</span>
+    <span class="kw">And</span> user should remain on the login page
+
+  <span class="ann">@regression</span>
+  <span class="ann">Scenario Outline:</span> Login with multiple user types
+    <span class="kw">When</span> user enters <span class="str">"&lt;username&gt;"</span> and <span class="str">"&lt;password&gt;"</span>
+    <span class="kw">Then</span> they should see <span class="str">"&lt;result&gt;"</span>
+
+    <span class="ann">Examples:</span>
+      | username  | password             | result            |
+      | admin     | Admin@123            | Dashboard         |
+      | wronguser | wrongpass            | Invalid credentials|
+      | admin     |                      | Password required |</div>
+<div class="tldr"><strong>Key points I'd mention:</strong> Background for common setup, @smoke/@regression tags, Scenario Outline for multiple data sets, both positive and negative scenarios, clear Given/When/Then separation. Feature files serve as living documentation.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S22</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Two different feature files both need 'Given user is on the login page'. How do you avoid duplicating the step definition code?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — step reusability</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">1</div><div class="step-text"><strong>Step definitions are automatically shared.</strong> You write the step def ONCE in one class. Any feature file that uses the EXACT same text "Given user is on the login page" automatically maps to the same Java method. No duplication needed.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">2</div><div class="step-text"><strong>Organize step defs by domain,</strong> not by feature file. Create <code>CommonSteps.java</code> for steps used everywhere (login, navigation). Create <code>CheckoutSteps.java</code> for checkout-specific steps. Cucumber finds ALL step defs in the glue package.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">3</div><div class="step-text"><strong>Background vs reusable steps:</strong> Background repeats steps within ONE feature file. Shared step definitions reuse code across ALL feature files. These complement each other.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Step definitions are inherently reusable — write once, use in any feature file with the same text. Organize step defs by domain (CommonSteps, LoginSteps, CheckoutSteps) not by feature file. Cucumber automatically finds and maps all steps in the glue package.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S23</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your BDD tests take 2 hours to run. Management wants only critical tests run on every commit. How would you organize this?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — tag-based execution strategy</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">1</div><div class="step-text"><strong>Tag critical scenarios @smoke:</strong> 10-15 most important end-to-end scenarios. Login, core feature, checkout. Everything critical to business. These run in ~10 minutes.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4tf">2</div><div class="step-text"><strong>@regression tag for all:</strong> Full 2-hour suite. Runs nightly or before releases — not on every commit.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,246,.2);color:#2dd4bf">3</div><div class="step-text"><strong>Jenkins multi-pipeline strategy:</strong> Pipeline 1 (on every commit): <code>tags = "@smoke"</code>. Pipeline 2 (nightly 10pm): <code>tags = "@regression"</code>. Pipeline 3 (before release): <code>tags = "not @skip"</code>.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">4</div><div class="step-text"><strong>In Runner class:</strong> <code>tags = "@smoke"</code> or override from Maven: <code>mvn test -Dcucumber.filter.tags="@smoke"</code>. Jenkins passes the tag parameter per pipeline.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Tag scenarios with @smoke, @regression, @sanity. Run @smoke on every commit (~10 mins), @regression nightly (~2 hours). Two Jenkins pipelines with different tag filters. Fast feedback for developers, full coverage for releases.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S24</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"When would you choose BDD (Cucumber) over regular TestNG tests? When would you NOT use BDD?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — honest assessment</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">1</div><div class="step-text"><strong>Use BDD when:</strong> Business stakeholders actively participate in defining test scenarios. Team values living documentation. Non-technical clients want to read/verify test coverage. Feature specs are complex and need clear collaboration. Acceptance testing with clear Given/When/Then criteria.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">2</div><div class="step-text"><strong>DON'T use BDD when:</strong> Only technical team sees tests (overhead not worth it). Tests are highly technical (unit/integration level). Business team doesn't engage with feature files. Adding extra layer of abstraction without benefit. Small projects with 1-2 developers.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">3</div><div class="step-text"><strong>The hidden cost of BDD:</strong> Extra abstraction layer — feature file → step definitions → page objects. More files to maintain. If business never reads the feature files, you get all the cost without the benefit. BDD done wrong is just TestNG with extra steps.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> BDD is valuable when business actively participates. If business team never reads the feature files, use TestNG directly — simpler and less overhead. BDD's value is the collaboration and living documentation, not the syntax itself.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ API SCENARIOS ═══════════════ -->
+<div class="th-t" id="api-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🔌</div>
+  <div><div class="sec-title">API Testing Scenarios</div><div class="sec-sub">REST Assured · Real-world API testing challenges</div></div>
+  <div class="sec-count">S25–S27</div>
+</div>
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S25</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"You need to test a complete user CRUD flow via API: create user → get user → update user → delete user → verify deleted. How would you write this in REST Assured?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — chained API tests</h4>
+<div class="code-mini"><span class="kw">public class</span> <span class="cls">UserCrudTest</span> {
+    <span class="kw">private static</span> String userId;
+
+    <span class="ann">@Test</span>(priority=<span class="num">1</span>)
+    <span class="kw">public void</span> <span class="met">createUser</span>() {
+        String body = <span class="str">"{ \"name\": \"John\", \"email\": \"john@test.com\" }"</span>;
+        Response res = <span class="met">given</span>().<span class="met">contentType</span>(<span class="str">"application/json"</span>).<span class="met">body</span>(body)
+            .<span class="met">when</span>().<span class="met">post</span>(<span class="str">"/users"</span>)
+            .<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">201</span>).<span class="met">extract</span>().<span class="met">response</span>();
+        userId = res.<span class="met">jsonPath</span>().<span class="met">getString</span>(<span class="str">"id"</span>); <span class="cmt">// save ID</span>
+    }
+    <span class="ann">@Test</span>(priority=<span class="num">2</span>, dependsOnMethods=<span class="str">"createUser"</span>)
+    <span class="kw">public void</span> <span class="met">getUser</span>() {
+        <span class="met">given</span>().<span class="met">pathParam</span>(<span class="str">"id"</span>, userId)
+            .<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/{id}"</span>)
+            .<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>).<span class="met">body</span>(<span class="str">"name"</span>, equalTo(<span class="str">"John"</span>));
+    }
+    <span class="ann">@Test</span>(priority=<span class="num">3</span>, dependsOnMethods=<span class="str">"getUser"</span>)
+    <span class="kw">public void</span> <span class="met">updateUser</span>() {
+        <span class="met">given</span>().<span class="met">contentType</span>(<span class="str">"application/json"</span>)
+            .<span class="met">body</span>(<span class="str">"{ \"name\": \"John Updated\" }"</span>)
+            .<span class="met">when</span>().<span class="met">put</span>(<span class="str">"/users/"</span> + userId)
+            .<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">200</span>);
+    }
+    <span class="ann">@Test</span>(priority=<span class="num">4</span>, dependsOnMethods=<span class="str">"updateUser"</span>)
+    <span class="kw">public void</span> <span class="met">deleteUser</span>() {
+        <span class="met">given</span>().<span class="met">when</span>().<span class="met">delete</span>(<span class="str">"/users/"</span> + userId).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">204</span>);
+    }
+    <span class="ann">@Test</span>(priority=<span class="num">5</span>, dependsOnMethods=<span class="str">"deleteUser"</span>)
+    <span class="kw">public void</span> <span class="met">verifyDeleted</span>() {
+        <span class="met">given</span>().<span class="met">when</span>().<span class="met">get</span>(<span class="str">"/users/"</span> + userId).<span class="met">then</span>().<span class="met">statusCode</span>(<span class="num">404</span>);
+    }
+}</div>
+<div class="tldr"><strong>Answer:</strong> Chain tests with priority + dependsOnMethods. Save created ID in a static variable. Pass it to subsequent tests. Each test verifies appropriate status code. Verify deletion by confirming 404 on deleted resource.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S26</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"An API endpoint suddenly starts returning different field names in the response. Your tests were passing, now they fail. How do you prevent this from happening?</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — API contract testing</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">1</div><div class="step-text"><strong>This is an API contract violation.</strong> The backend changed the response structure without notifying the frontend/QA team. Field <code>firstName</code> renamed to <code>first_name</code>. Tests that checked <code>jsonPath().getString("firstName")</code> now fail.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">2</div><div class="step-text"><strong>Prevention — JSON Schema Validation:</strong> Add schema validation to every API test. Schema defines required fields and their types. If backend renames a field, schema validation fails IMMEDIATELY — before any other assertions. <code>.body(matchesJsonSchemaInClasspath("userSchema.json"))</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">3</div><div class="step-text"><strong>Prevention — Consumer Driven Contract Testing:</strong> Use Pact framework. QA defines what fields they NEED from the API. Any backend change that removes/renames those fields breaks the contract test automatically — even before the change reaches QA environment.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">4</div><div class="step-text"><strong>Process fix:</strong> API versioning (v1/v2 endpoints), breaking change policy, mandatory communication between backend and frontend/QA before merging API changes.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> JSON Schema validation catches structural changes immediately. Add it to every API test. For longer term: consumer-driven contract testing with Pact. Process-wise: API versioning and a no-breaking-changes-without-notice policy.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S27</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"How do you decide what to test at the API level vs what to test at the UI (Selenium) level?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — test pyramid thinking</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">1</div><div class="step-text"><strong>API level (more, faster):</strong> Business logic validation, data validation (100 different input combinations), error handling (all HTTP error codes), authentication/authorization, performance under load. API tests are 10-100x faster than UI tests.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">2</div><div class="step-text"><strong>UI level (fewer, critical paths):</strong> End-to-end user journeys that span multiple pages. Visual validation (button visible, form layout correct). JavaScript interactions (dropdowns, date pickers). User experience flows that only make sense through the browser.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">3</div><div class="step-text"><strong>Avoid duplicating tests.</strong> If you test "invalid email returns 400" at API level, don't also test it at UI level. UI test just needs to verify the error message APPEARS — not all the business logic behind it.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(20,184,166,.2);color:#2dd4bf">4</div><div class="step-text"><strong>Rule of thumb:</strong> Everything you can test at API = test at API. Only use UI tests for what REQUIRES a browser (visual layout, user journeys, JavaScript interactions).</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Test business logic, validation, error handling at API level — it's faster and more reliable. Use Selenium only for end-to-end user journeys and browser-specific interactions. Never duplicate the same test at both levels.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ DEVOPS SCENARIOS ═══════════════ -->
+<div class="th-p" id="devops-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">⚙️</div>
+  <div><div class="sec-title">DevOps + CI/CD Scenarios</div><div class="sec-sub">Jenkins · Git · Pipeline decisions</div></div>
+  <div class="sec-count">S28–S30</div>
+</div>
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S28</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your Jenkins build turns red (failing). Tests were passing yesterday. Developers say they didn't change anything. How do you investigate?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — systematic debugging</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">1</div><div class="step-text"><strong>Read the Jenkins console output first.</strong> The error message and stack trace tell you exactly what failed and why. Don't guess — read the error.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">2</div><div class="step-text"><strong>Check if the application is up.</strong> Sometimes the server goes down. Try accessing the test URL manually. If the app is down, it's not an automation issue — infrastructure issue.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">3</div><div class="step-text"><strong>Check git log for recent changes.</strong> <code>git log --oneline -20</code>. "Didn't change anything" often means "didn't change the area I was thinking of." A database migration, config change, or dependency update might have broken things.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">4</div><div class="step-text"><strong>Run tests locally.</strong> If tests pass locally but fail in Jenkins: environment issue (headless, paths, credentials). If tests fail locally too: actual test/app bug.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">5</div><div class="step-text"><strong>Check external dependencies.</strong> Does the app use a third-party API that might be down? Is the test database seeded correctly? Were test data records accidentally deleted?</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">6</div><div class="step-text"><strong>Check Jenkins environment.</strong> Was Chrome updated on the server? Did Java version change? Were environment variables modified?</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Read console logs → check app is up → check recent git commits → run locally to isolate → check environment differences between local and Jenkins. "Nothing changed" is rarely true — check everything including infrastructure and dependencies.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S29</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Two developers pushed code at the same time and now there's a merge conflict in LoginPage.java. How do you resolve this?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">1</div><div class="step-text"><strong>Pull latest changes:</strong> <code>git pull origin main</code>. Git identifies the conflict and marks the file with conflict markers.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">2</div><div class="step-text"><strong>Open the conflicted file.</strong> See both versions:<br>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (your version)<br>=======<br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; main (their version)</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">3</div><div class="step-text"><strong>Talk to the other developer.</strong> Best approach — understand what both changes do. Often one change is wrong, or both changes can coexist with minor edits.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">4</div><div class="step-text"><strong>Manually edit the file</strong> to keep the correct/combined version. Remove all conflict markers (&lt;&lt;&lt;, ===, &gt;&gt;&gt;).</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">5</div><div class="step-text"><strong>Stage, commit, push:</strong> <code>git add LoginPage.java && git commit -m "resolve merge conflict in LoginPage" && git push</code></div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">6</div><div class="step-text"><strong>Prevention:</strong> Small, frequent commits. Short-lived feature branches. Pull frequently. Module ownership (each person owns specific files) reduces conflicts.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> Pull → open file → understand both changes (talk to other dev) → manually merge the correct version → remove conflict markers → commit. Prevention: module ownership + frequent small commits + short-lived branches.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S30</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"You want to run Selenium tests inside Docker to ensure environment consistency. How would you set this up?"</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">1</div><div class="step-text"><strong>docker-compose.yml with Selenium Grid:</strong> Define Hub + Chrome Node containers. Start with <code>docker-compose up -d</code>. Grid automatically available at localhost:4444.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">2</div><div class="step-text"><strong>Update test code to use RemoteWebDriver:</strong> Point to Docker Grid Hub: <code>new RemoteWebDriver(new URL("http://localhost:4444"), new ChromeOptions())</code>. Tests run inside Docker Chrome container.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">3</div><div class="step-text"><strong>Jenkins pipeline:</strong> Pipeline step 1: <code>docker-compose up -d</code> (start Grid). Step 2: <code>mvn clean test</code> (run tests against Grid). Step 3: <code>docker-compose down</code> (cleanup). Consistent every single run.</div></div>
+  <div class="step-row"><div class="step-dot" style="background:rgba(139,92,246,.2);color:#a78bfa">4</div><div class="step-text"><strong>Benefits:</strong> No "wrong Chrome version" issues — Docker image specifies exact Chrome version. Clean browser state every container start. Scale nodes: <code>docker-compose up --scale chrome=5</code> for 5 parallel Chrome instances instantly.</div></div>
+</div>
+<div class="tldr"><strong>Answer:</strong> docker-compose.yml with selenium/hub + selenium/node-chrome containers. Switch test code to RemoteWebDriver pointing to localhost:4444. Jenkins pipeline starts containers, runs tests, stops containers. Guaranteed consistent environment every run.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- ═══════════════ SQL SCENARIOS ═══════════════ -->
+<div class="th-pk" id="sql-sc">
+<div class="sec-hdr">
+  <div class="sec-icon">🗄️</div>
+  <div><div class="sec-title">SQL Scenario Questions</div><div class="sec-sub">Real database queries they ask you to write live</div></div>
+  <div class="sec-count">S31–S35</div>
+</div>
+<div class="q-list">
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S31</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Common Live Coding</div>
+    <div class="sc-q">"Given an employees table (emp_id, name, dept_id, salary, manager_id), write a query to find all employees who earn more than their manager."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — think aloud</h4>
+<div class="step-block">
+  <div class="step-row"><div class="step-dot" style="background:rgba(236,72,153,.2);color:#f472b6">1</div><div class="step-text"><strong>Think first:</strong> Both employee and manager are in the SAME table. I need to join the table with itself — a SELF JOIN. Employee's manager_id = Manager's emp_id.</div></div>
+</div>
+<div class="code-mini"><span class="kw">SELECT</span>
+    e.name <span class="kw">AS</span> employee_name,
+    e.salary <span class="kw">AS</span> employee_salary,
+    m.name <span class="kw">AS</span> manager_name,
+    m.salary <span class="kw">AS</span> manager_salary
+<span class="kw">FROM</span> employees e
+<span class="kw">JOIN</span> employees m <span class="kw">ON</span> e.manager_id = m.emp_id
+<span class="kw">WHERE</span> e.salary > m.salary;</div>
+<div class="info-box">💡 <strong>Why JOIN not LEFT JOIN?</strong> INNER JOIN excludes employees with no manager (CEO). If we want to include them with NULL manager salary, use LEFT JOIN — but the WHERE condition e.salary > m.salary would filter out NULLs anyway.</div>
+<div class="tldr"><strong>Explanation:</strong> Self-join aliases the same table as 'e' (employee) and 'm' (manager). Join condition: employee's manager_id = manager's emp_id. Filter: employee salary > manager salary.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S32</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Common Live Coding</div>
+    <div class="sc-q">"Find departments that have NO employees. Write the SQL query."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — 3 ways</h4>
+<div class="code-mini"><span class="cmt">-- Method 1: LEFT JOIN + IS NULL (most common)</span>
+<span class="kw">SELECT</span> d.dept_name
+<span class="kw">FROM</span> departments d
+<span class="kw">LEFT JOIN</span> employees e <span class="kw">ON</span> d.dept_id = e.dept_id
+<span class="kw">WHERE</span> e.dept_id <span class="kw">IS NULL</span>;
+
+<span class="cmt">-- Method 2: NOT IN subquery</span>
+<span class="kw">SELECT</span> dept_name <span class="kw">FROM</span> departments
+<span class="kw">WHERE</span> dept_id <span class="kw">NOT IN</span> (<span class="kw">SELECT DISTINCT</span> dept_id <span class="kw">FROM</span> employees <span class="kw">WHERE</span> dept_id <span class="kw">IS NOT NULL</span>);
+
+<span class="cmt">-- Method 3: NOT EXISTS</span>
+<span class="kw">SELECT</span> dept_name <span class="kw">FROM</span> departments d
+<span class="kw">WHERE NOT EXISTS</span> (<span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> employees e <span class="kw">WHERE</span> e.dept_id = d.dept_id);</div>
+<div class="info-box">💡 Method 1 is preferred. LEFT JOIN keeps all departments, even with no employees. Where employee columns are NULL = no matching employee = empty department.</div>
+<div class="tldr"><strong>Answer:</strong> LEFT JOIN departments with employees. Where employee side is NULL = no employees in that department. This is the classic "find rows in A with no match in B" pattern.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S33</div>
+  <div class="sc-content">
+    <div class="sc-label">🔥 Common</div>
+    <div class="sc-q">"Find the department with the highest average salary. If two departments tie, show both."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="code-mini"><span class="cmt">-- Step 1: Calculate avg salary per dept</span>
+<span class="cmt">-- Step 2: Find max of those averages</span>
+<span class="cmt">-- Step 3: Return all depts with that max avg</span>
+
+<span class="kw">SELECT</span> d.dept_name, AVG(e.salary) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> employees e
+<span class="kw">JOIN</span> departments d <span class="kw">ON</span> e.dept_id = d.dept_id
+<span class="kw">GROUP BY</span> d.dept_id, d.dept_name
+<span class="kw">HAVING</span> AVG(e.salary) = (
+    <span class="kw">SELECT MAX</span>(avg_sal)
+    <span class="kw">FROM</span> (
+        <span class="kw">SELECT</span> AVG(salary) <span class="kw">AS</span> avg_sal
+        <span class="kw">FROM</span> employees
+        <span class="kw">GROUP BY</span> dept_id
+    ) sub
+);</div>
+<div class="info-box">💡 Why not just ORDER BY + LIMIT 1? That would miss ties. The subquery approach handles ties correctly by finding the maximum average and returning ALL departments with that average.</div>
+<div class="tldr"><strong>Answer:</strong> GROUP BY department, calculate AVG salary per group, HAVING clause filters to groups where average equals the maximum average across all departments. Handles ties correctly.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S34</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Your team's automation database has duplicate test results — same test case recorded twice. Write SQL to delete duplicates keeping the latest entry."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer</h4>
+<div class="code-mini"><span class="cmt">-- Table: test_results (id, test_name, status, executed_at)</span>
+<span class="cmt">-- Goal: keep only the LATEST execution per test_name</span>
+
+<span class="cmt">-- Step 1: Identify duplicates</span>
+<span class="kw">SELECT</span> test_name, COUNT(*) <span class="kw">FROM</span> test_results
+<span class="kw">GROUP BY</span> test_name <span class="kw">HAVING</span> COUNT(*) > <span class="num">1</span>;
+
+<span class="cmt">-- Step 2: Delete keeping only MAX id (latest)</span>
+<span class="kw">DELETE FROM</span> test_results
+<span class="kw">WHERE</span> id <span class="kw">NOT IN</span> (
+    <span class="kw">SELECT MAX</span>(id)
+    <span class="kw">FROM</span> test_results
+    <span class="kw">GROUP BY</span> test_name
+);
+
+<span class="cmt">-- Verify result</span>
+<span class="kw">SELECT</span> test_name, COUNT(*) <span class="kw">FROM</span> test_results
+<span class="kw">GROUP BY</span> test_name <span class="kw">HAVING</span> COUNT(*) > <span class="num">1</span>;
+<span class="cmt">-- Should return 0 rows</span></div>
+<div class="tldr"><strong>Answer:</strong> Keep MAX(id) per group = latest entry. Delete everything NOT in that set. Always verify with a duplicate-check query after deletion.</div>
+</div></div></div>
+
+<div class="scenario-card" onclick="toggle(this)">
+<div class="sc-head">
+  <div class="sc-num">S35</div>
+  <div class="sc-content">
+    <div class="sc-label">Common</div>
+    <div class="sc-q">"Write a query to show each employee's salary compared to their department average — above average, below average, or equal."</div>
+  </div>
+  <div class="sc-arrow">▼</div>
+</div>
+<div class="sc-body">
+<div class="sc-answer"><h4>How I would answer — CASE + Window Functions</h4>
+<div class="code-mini"><span class="kw">SELECT</span>
+    name,
+    dept_id,
+    salary,
+    ROUND(AVG(salary) <span class="kw">OVER</span> (PARTITION <span class="kw">BY</span> dept_id), <span class="num">2</span>) <span class="kw">AS</span> dept_avg,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> salary > AVG(salary) <span class="kw">OVER</span> (PARTITION <span class="kw">BY</span> dept_id) <span class="kw">THEN</span> <span class="str">'Above Average'</span>
+        <span class="kw">WHEN</span> salary < AVG(salary) <span class="kw">OVER</span> (PARTITION <span class="kw">BY</span> dept_id) <span class="kw">THEN</span> <span class="str">'Below Average'</span>
+        <span class="kw">ELSE</span> <span class="str">'Equal to Average'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> salary_category
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> dept_id, salary <span class="kw">DESC</span>;</div>
+<div class="info-box">💡 Window function AVG() OVER (PARTITION BY dept_id) calculates department average for EACH row without collapsing rows like GROUP BY would. This is the power of window functions.</div>
+<div class="tldr"><strong>Answer:</strong> Window function AVG() OVER PARTITION BY calculates dept average per row. CASE statement categorizes each employee. Elegant — no subquery, no self-join needed.</div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:60px 20px;color:#374151">
+  <div style="font-size:40px;margin-bottom:16px">🎯</div>
+  <div style="font-weight:800;color:#6b7280;font-size:18px;margin-bottom:8px">35 Scenario Questions Complete</div>
+  <div style="color:#4b5563;margin-bottom:24px">Selenium · Framework Design · TestNG/POM · BDD · API · DevOps · SQL</div>
+  <div style="background:linear-gradient(135deg,rgba(251,146,60,.1),rgba(139,92,246,.1));border:1px solid rgba(251,146,60,.2);border-radius:12px;padding:20px;max-width:500px;margin:0 auto;color:#cbd5e1;font-size:13px;line-height:1.7">
+    <strong style="color:#fb923c">💡 Remember the golden rule:</strong><br>
+    Interviewers don't care about the "right" answer — they care about <strong>HOW you think</strong>. Always think aloud: "First I would... then I would... if that doesn't work, I would try..." Show your systematic, calm approach to problems.
+  </div>
+  <div style="margin-top:24px;color:#ef4444;font-weight:800;font-size:18px">Own that interview! 🔥</div>
+</div>
+
+</div>
+
+<script>
+function toggle(card) {
+  const body = card.querySelector('.sc-body');
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (isOpen) body.classList.remove('show');
+  else body.classList.add('show');
+}
+</script>
+</body>
+</html>
