@@ -1,3 +1,5 @@
+seleniumwebdriver\DriverSetup.class
+seleniumwebdriver\Locator.class
 seleniumwebdriver\VerifyNopCommerceTitle.class
 seleniumwebdriver\LessonA_RegisterLocators.class
 seleniumwebdriver\Second.class

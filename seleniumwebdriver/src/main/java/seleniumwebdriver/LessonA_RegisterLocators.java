@@ -19,11 +19,11 @@ public class LessonA_RegisterLocators {
             // 1) linkText
             By register1 = By.linkText("Register");
 
-            // 2) cssSelector
-            By register2 = By.cssSelector("a[href*='/register']");
+            // // 2) cssSelector
+            // By register2 = By.cssSelector("a[href*='/register']");
 
-            // 3) xpath
-            By register3 = By.xpath("//a[normalize-space()='Register']");
+            // // 3) xpath
+            // By register3 = By.xpath("//a[normalize-space()='Register']");
 
             // Pick ONE locator to use (change register1 -> register2 or register3 to practice)
             wait.until(ExpectedConditions.elementToBeClickable(register1)).click();
