@@ -77,3 +77,6 @@ This usually happens when Chrome version is newer than the Selenium DevTools map
 - Selenium: https://www.selenium.dev/
 - Maven Repository: https://mvnrepository.com/
 - nopCommerce demo site: https://demo.nopcommerce.com/
+
+
+Certificate Link: https://cognizant.udemy.com/certificate/UC-9b8a3f69-234f-4d9a-808c-14d1fe407211/
